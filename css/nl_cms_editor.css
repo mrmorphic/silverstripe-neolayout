@@ -1,0 +1,105 @@
+.NLEditor {
+	position: relative;
+}
+
+	.NLEditor .component-types {
+		display: none;
+		visibility: hidden;
+	}
+
+.NLEditor .nl-editor-box-vertical {
+	width: 100%;
+	padding: 10px;
+	border: dotted 1px black;
+}
+
+/* immediate component divs in the vertical box are full width, so stack vertically */
+.NLEditor .nl-editor-box-vertical > div {
+	width: 100%;
+}
+
+.NLEditor .nl-editor-box-horizontal {
+
+}
+
+.NLEditor .nl-editor-generic {
+	background-color: #bbbbbb;
+	height: 80px;
+	margin-top: 7px;
+	margin-bottom: 7px;
+     -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+	border: 2px solid #444444;
+}
+
+	.NLEditor .nl-editor-generic >div {
+		width: 50%;
+		margin-top: 20px;
+		margin-left: auto;
+		margin-right: auto;
+		text-align: center;
+	}
+
+	.NLEditor .nl-editor-generic >div .component-toolbox {
+		margin-bottom: 7px;
+	}
+
+.NLEditor .component-toolbox {
+	position: relative;
+	top: 3px;
+}
+
+.NLEditor .tool-button {
+	margin: 2px;
+     -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    background-color: #ff6600;
+}
+
+	.NLEditor .tool-button a {
+		margin: 5px;
+		color: black;
+	}
+
+/*--- Editor pop-up styling ---*/
+
+.NLEditor > .popup {
+	-moz-box-shadow: 0 0 5px #888;
+	-webkit-box-shadow: 0 0 5px#888;
+	box-shadow: 0 0 5px #888;
+	width: 90%;
+	display: none;
+	visibility: hidden;
+	position: absolute;
+	top: 20px;
+	left: 15px;
+	z-index: 100;
+}
+
+	.NLEditor > .popup.visible {
+		display: block;
+		visibility: visible;
+	}
+
+	.NLEditor > .popup .popup-inner {
+		background-color: white;
+		padding: 15px;
+	}
+
+/*--- Add components in dialog ---*/
+.NLEditor > .popup .component-definition .preview {
+	float:; left;
+	min-width: 200px;
+}
+
+.NLEditor > .popup .component-definition .name {
+	float: left;
+	clear: right;
+}
+
+.NLEditor > .popup .component-definition .preview {
+	float: left;
+	clear: right;
+}
