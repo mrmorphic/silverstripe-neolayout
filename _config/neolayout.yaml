@@ -1,0 +1,16 @@
+---
+name: neolayout
+after: '*'
+---
+LeftAndMain:
+  extra_requirements_javascript:
+    - neolayout/thirdparty/jsonform/deps/underscore.js
+    - neolayout/thirdparty/jsonform/deps/opt/jsv.js
+    - neolayout/thirdparty/jsonform/lib/jsonform.js
+    - neolayout/javascript/nl_cms_editor.js
+    - neolayout/javascript/nl_cms_form.js
+    - neolayout/javascript/nl_cms_fields.js
+
+  extra_requirements_css:
+    - neolayout/css/nl_cms_editor.css
+    - neolayout/thirdparty/jsonform/deps/opts/bootstrap.css
