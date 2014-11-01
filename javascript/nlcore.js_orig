@@ -1,0 +1,130 @@
+(function($) {
+	var editingView = null;
+
+	// Generic view handling
+	$('div[data-class="NLView"]').entwine({
+		isEditing: function() {
+			return this.data("editing") == true;
+		},
+
+		setEditing: function(editing) {
+			this.data("editing", editing?true:false);
+			if (editing) {
+//				this.clearSelection();
+				this.addClass("view-editing");
+				$(".view-controls .action-add-to-view", this).removeClass("disabled");
+				$(".view-controls .action-edit-view", this).text("stop editing");
+				$("#nl-edit-mask").show();
+				editingView = this;
+			}
+			else {
+				this.removeClass("editing");
+				$(".view-controls .action-add-to-view", this).addClass("disabled");
+				$(".view-controls .action-edit-view", this).text("edit");
+				$("#nl-edit-mask").hide();
+				editingView = null;
+			}
+		},
+
+		// Return the URL of the method on this view.
+		getURL: function(method) {
+			var u = this.attr("data-url");
+			if (!u) return "";
+			return u + "/" + method;
+		},
+
+		// Called when the user wants to add something to the view. Opens the dialog of options.
+		addComponent: function() {
+			$.ajax({
+				url: this.getURL("getAvailableComponents"),
+				dataType: "html",
+				success: function(data, sts, xhr) {
+					$("#nl-add-component-overlay").html(data).show();
+				},
+				error: function(jqXHR, textStatus, errorThrown) {
+					alert(textStatus);
+				}
+			});
+		},
+
+		// Add a component to the view. The component type has already been selected.
+		// itemType is the class of the component type to add. params can hold extra
+		// properties depending on context, but can include:
+		// - objectType		if specified is the class of a data object that is to be encapsulated by the component
+		// - objectID		if specified is the ID of the object being encapsulated
+		// - objectBinding	if specified is the property name the object is being bound to in the component.
+		// This will call the server to retrieve the relevant initial markup, and then we position that.
+		addComponentToView: function(itemType, params) {
+			alert("wants to add item of type " + itemType);
+		}
+	});
+
+	/*** view controls ***/
+
+	$('div[data-class="NLView"] > .view-controls .action-edit-view').entwine({
+		onclick: function() {
+			var $view = this.closest('div[data-class="NLView"]');
+			$view.setEditing(!$view.isEditing());
+		}
+	});
+
+	$('div[data-class="NLView"] > .view-controls .action-add-to-view:not(.disabled)').entwine({
+		onclick: function() {
+			this.closest('div[data-class="NLView"]').addComponent();
+		}
+	});
+
+	/*** add element dialog ***/
+	$('#nl-add-component-overlay').entwine({
+		close: function() {
+			this.hide();
+		},
+
+		// Display component help for the selected item.
+		showComponentHelp: function($item) {
+			var desc = $(".description", $item).text();
+			if (!desc) desc = "There is no further information available";
+			var pos = $item.position();
+			var pos2 = $item.parent().position();
+//			pos.left += pos2.left;
+//			pos.top += pos2.top;
+			$('#nl-add-component-overlay .item-help-hover')
+					.text(desc)
+					.attr("top", pos.top + "px")
+					.attr("left", (pos.left + $item.width()) + "px")
+					.show();
+		}
+	});
+
+	$('#nl-add-component-overlay .selection-list li').entwine({
+		ondblclick: function() {
+			var itemType = this.attr("data-component-class");
+			var params = {};
+			var objType = this.attr("data-obj-class");
+			var objID = this.attr("data-obj-id");
+			var objBinding = this.attr("data-obj-binding");
+			if (objType) params.objectType = objType;
+			if (objID) params.objectID = objectID;
+			if (objBinding) params.objectBinding;
+			editingView.addComponentToView(itemType, params);
+			$('#nl-add-component-overlay').close();
+		},
+
+		onclick: function() {
+			$('#nl-add-component-overlay').showComponentHelp(this);
+		}
+	});
+
+	$('#nl-add-component-overlay .action-cancel').entwine({
+		onclick: function() {
+			$('#nl-add-component-overlay').close();
+			return false;
+		}
+	});
+
+	$(document).ready(function() {
+		// insert the view edit mask. This is only required once, and can be used by all views.
+		$("body").append('<div id="nl-edit-mask" style="display:none;"></div>');
+		$("body").append('<div id="nl-add-component-overlay" style="display:none;"></div>');
+	});
+})(jQuery);

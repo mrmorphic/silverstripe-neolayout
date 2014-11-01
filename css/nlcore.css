@@ -1,13 +1,13 @@
 /* Contains core CSS for neolayout module, including built-in layouts and simple components. */
 
 /*** box layout, horizontal ***/
-.nl-component.box-horiz[data-class="NLBoxLayout"] > .nl-component {
+.nl-component[data-class="NLHorizontalBoxLayout"] > .nl-component {
 	display: block;
 	float:left;
 }
 
 /*** box layout, vertical ***/
-.nl-component.box-vert[data-class="NLBoxLayout"] > .nl-component {
+.nl-component[data-class="NLVerticalBoxLayout"] > .nl-component {
 	display: block;
 	width: 100%;
 }

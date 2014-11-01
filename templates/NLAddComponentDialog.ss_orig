@@ -1,0 +1,33 @@
+<div class="dialog">
+	<div class="top">
+		<h1>Add to editing area</h1>
+		<ul>
+			<% loop $Tabs %>
+				<li><a href="#" rel="tab-$TabName" class="tab $Selected medium">$TabName</a></li>
+			<% end_loop %>
+		</ul>
+	</div>
+
+	<div class="rest">
+		<div class="hint">Click on an item to see more information about it. Double-click to add item, or drag it into the editing area.</div>
+		<div class="item-help-hover"></div>
+		<% control $Tabs %>
+			<div class="tab-$TabName selection-list $Selected">
+				<ul>
+					<% loop $Items %>
+						<li class="add-item-desc"
+								data-component-class="$type"
+								<% if $objectClass %>data-obj-class="$objectClass" data-obj-id="$objectID" data-obj-binding="$objectBinding"<% end_if %>>
+							<img src="<% if $imageURL %>$imageURL<% else %>$Top.DefaultComponentImage<% end_if %>" />
+							<div class="caption">$name</div>
+							<div class="description">$description</div>
+						</li>
+					<% end_loop %>
+				</ul>
+			</div>
+		<% end_control %>
+		<div class="common-actions">
+			<a href="#" class="button orange medium action-cancel">Cancel</a>
+		</div>
+	</div>
+</div>

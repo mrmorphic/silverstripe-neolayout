@@ -14,19 +14,24 @@ class NLImageComponent extends NLComponent {
 			"display" => "inline",
 			"properties" => array(
 				"ExternalURL" => array(
+					"name" => "URL",
 					"type" => "Varchar",
-					"description" => "If image is external to site or not in assets, this contains the URL"
+					"description" => "If the image is external to site or not in assets, this contains the URL."
 				),
 				"InternalImage" => array(
-					"type" => "NLObjectReference('Image')"
+					"name" => "Site image",
+					"type" => "NLObjectReference('Image')",
+					"description" => "If the image is on this site, this is the selected image."
 				),
 				"AltText" => array(
+					"name" => "Alt text",
 					"type" => "Text",
-					"description" => "Alt text of the image"
+					"description" => "Alt text of the image."
 				),
 				"ResizingOption" => array(
+					"name" => "Resizing",
 					"type" => "Enum('Resized,Scaled,Padded','Resized')",
-					"description" => "If the image is to be displayed in a different sized area, this determines how it is resized (internal images only)"
+					"description" => "If the image is to be displayed in a different sized area, this determines how it is resized (images on this site only)."
 				)
 			)
 		);

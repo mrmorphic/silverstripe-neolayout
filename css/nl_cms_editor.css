@@ -7,47 +7,123 @@
 		visibility: hidden;
 	}
 
-.NLEditor .nl-editor-box-vertical {
+/*.NLEditor .nl-editor-box-vertical {
 	width: 100%;
 	padding: 10px;
 	border: dotted 1px black;
-}
+}*/
 
 /* immediate component divs in the vertical box are full width, so stack vertically */
-.NLEditor .nl-editor-box-vertical > div {
+/*.NLEditor .nl-editor-box-vertical > div {
 	width: 100%;
+}*/
+
+/*	.NLEditor .nl-editor-box-vertical:hover >.component-toolbox {
+		display: block;
+		visibility: visible;
+	}*/
+
+/*.NLEditor .nl-editor-box-horizontal {
+
+}
+*/
+.NLEditor .metadata {
+	display: none;
+	visibility: hidden;
 }
 
-.NLEditor .nl-editor-box-horizontal {
-
+.NLEditor .component-toolbox {
+	position: absolute;
+	top: 3px;
+	left: 5px;
+	display: none;
+	visibility: hidden;
 }
 
-.NLEditor .nl-editor-generic {
-	background-color: #bbbbbb;
-	height: 80px;
+	.NLEditor .component-toolbox.visible {
+		display: block;
+		visibility: visible;
+	}
+
+.NLEditor .nl-component-editor {
+	position: relative;
+	background-color: #dddddd;
+/*	height: 80px;*/
 	margin-top: 7px;
 	margin-bottom: 7px;
-     -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
-	border: 2px solid #444444;
+     -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+	border: 1px solid #444444;
+	text-align: center;
 }
 
-	.NLEditor .nl-editor-generic >div {
-		width: 50%;
-		margin-top: 20px;
+/*	structure:
+		div.nl-component-editor
+			div.centered
+		 		div.component-toolbox
+				div.info (not shown for boxes)
+					img.component-icon
+					div.name
+				div.content
+	*/
+
+	.NLEditor .nl-component-editor .centered {
+		display: inline-block;
+		margin: 2px 10px 2px 10px;
+	}
+
+	.NLEditor .nl-component-editor img.component-icon {
+		width: 32px;
+		height: 32px;
+		vertical-align: middle;
+/*		margin-top: 20px;
 		margin-left: auto;
 		margin-right: auto;
 		text-align: center;
+*/	}
+	
+	.NLEditor .nl-component-editor .info {
+		/*vertical-align: top;*/
+/*		margin-left: auto;
+		margin-right: auto;
+		text-align: center;
+*/	}
+
+	.NLEditor .nl-component-editor .name {
+		vertical-align: middle;
 	}
 
-	.NLEditor .nl-editor-generic >div .component-toolbox {
-		margin-bottom: 7px;
+	.NLEditor .nl-component-editor .content {
+		padding: 2px;
+		background-color: #eeeeee;
 	}
 
-.NLEditor .component-toolbox {
-	position: relative;
-	top: 3px;
+.NLEditor .available-components {
+	width: 20%;
+	float: left;
+	clear: left;
+}
+
+.NLEditor .editor-area {
+	width: 79%;
+	float: left;
+	clear: right;
+}
+
+.NLEditor .available-components .thumbnail img {
+	width: 32px;
+	height: 32px;
+	vertical-align: middle;
+}
+
+.NLEditor .available-components .thumbnail .name {
+	vertical-align: middle;
+}
+
+.NLEditor .available-components .component .description {
+	display: none;
+	visibility: hidden;		
 }
 
 .NLEditor .tool-button {
@@ -103,3 +179,34 @@
 	float: left;
 	clear: right;
 }
+
+/*** proeprty editor ***/
+.NLEditor .property-editor {
+
+}
+
+/*	.NLEditor .property-editor .field-name {
+		float: left;
+		clear: left;
+		width: 15%;
+		margin-right: 5px;
+	}
+*/
+/*	.NLEditor .property-editor .field-source {
+		float: left;
+		width: 15%;
+		margin-right: 5px;
+	}
+
+	.NLEditor .property-editor .field-value {
+		float: left;
+		width: 68%;
+	}
+
+	.NLEditor .property-editor .editor-field {
+		display: block;
+	}
+*/
+	.NLEditor .property-editor .actions {
+		margin-top: 10px;
+	}

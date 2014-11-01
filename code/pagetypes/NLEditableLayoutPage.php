@@ -16,10 +16,11 @@ class NLEditableLayoutPage extends Page {
 
 		$fields->addFieldToTab(
 			"Root.Layout",
-			$layoutEditor = new NLCMSLayoutEditorField("EditableLayout", "Layout")
+			$layoutEditor = new NLCMSLayoutEditorField("EditableLayout", "Layout", $this)
 		);
 
 		$layoutEditor->setViewControllerURL($this->Link("DisplayView"));
+		$layoutEditor->setContext($this);
 
 		return $fields;
 	}

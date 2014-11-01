@@ -1,0 +1,39 @@
+<?php
+
+/**
+ * Experimental canvas layout.
+ */
+class NLCanvasLayout extends NLLayoutComponent {
+
+	static public function get_metadata() {
+		return array(
+			"name" => "Canvas layout",
+			"description" => "Lets you group other items, and lay them out by positioning and sizing them yourself.",
+			"imageURL" => null
+		);
+	}
+
+	/**
+	 * Renders the child components, but manipulates the position, sizing and z-index based on layout properties
+	 * of each child.
+	 * @param $context
+	 * @return string
+	 */
+	function renderContent($context) {
+		$content = "";
+		if ($this->children) foreach ($this->children as $child) {
+			$layout = $child->getLayoutValues();
+			$styles = array();
+			$styles["left"] = isset($layout->left) ? $layout->left : "0px";
+			$styles["top"] = isset($layout->top) ? $layout->top : "0px";
+			$styles["width"] = isset($layout->width) ? $layout->width : "0px";
+			$styles["height"] = isset($layout->height) ? $layout->height : "0px";
+
+			$content .= $child->render(
+				$context,
+				array("styles" => $styles)
+			);
+		}
+		return $content;
+	}
+}

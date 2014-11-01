@@ -7,7 +7,7 @@
  *
  * The serialised form of a component tree is represented as a json expression. e.g.:
  * {
- *     "ClassName": "NLBoxLayout",
+ *     "ClassName": "NLVerticalBoxLayout",
  *     "children": [
  *         { "ClassName": "NLTextComponent", "Text": "Some text" }
  *     ],
@@ -379,7 +379,6 @@ class NLBindingDefinition {
 	 * @param $raw
 	 */
 	function __construct($propertyName, $propertyDef, $raw = null) {
-		Debug::show($propertyName . ": " . print_r($propertyDef, true));
 		$this->propertyName = $propertyName;
 		$this->propertyDef = $propertyDef;
 
@@ -415,7 +414,8 @@ class NLBindingDefinition {
 	 * 						with the value assigned, or null if unbound.
 	 */
 	function getValue($context) {
-		$inst = Object::create_from_string($this->propertyDef["type"], $this->propertyName);
+		$type = $this->getBaseType($this->propertyDef['type']);
+		$inst = Object::create_from_string($type, $this->propertyName);
 		$inst->setValue($this->value);
 
 		switch ($this->type) {
@@ -449,6 +449,14 @@ class NLBindingDefinition {
 		}
 
 		return $value;
+	}
+
+	function getBaseType($t) {
+		$i = strpos($t, "|");
+		if ($i === FALSE) {
+			return $t;
+		}
+		return substr($t, 0, $i);
 	}
 
 	/**

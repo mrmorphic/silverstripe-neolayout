@@ -1,9 +1,24 @@
 (function($) {
-
 	/**
-	 * Load folder detail view via controller methods
-	 * rather than built-in GridField view (which is only geared towards showing files).
+	 * nl_cms_editor.js is the main editing component for Neolayout views. Each such editor (there may
+	 * be multiple editors on a single page or data object) has a parent .NLEditor dom element rendered
+	 * by the CMS, from which this editor code bootstraps.
+	 *
+	 * Unlike most CMS editors, the editing behaviour of the layout is performed entirely in javascript, including
+	 * the property editor form; the server side doesn't have the unsaved editing context to be able to do it.
+	 *
+	 * Property editing is done using a third party form library. Interfacing to that is done using nl_cms_form.js,
+	 * which is a required companion to this file.
+	 *
+	 * On load, this is initialised with metadata about the types of components, as well as the initial layout state
+	 * passed in as a json string (the internal representation for layouts). On start up, this is stored in the Model
+	 * property of this editor, a native javascript object of the same structure. This object is manipulated by the editor,
+	 * and it's textual representation (json) is saved back to the form element from which it was loaded. In this way, when the
+	 * user clicks Save or Save and Publish on the containing page, the updated json representation of the layout gets saved back.
+	 * Note that the CMS on the server really does nothing in the way of manipulating the layout; it passed it between storage
+	 * and this javascript.
 	 */
+
 	$('.NLEditor').entwine({
 		onmatch: function() {
 			this.start(this.attr("id"));
@@ -13,15 +28,28 @@
 		// This should be able to be serialised to json at any point.
 		Model: null,
 
+		// These hold metadata we get from the server
+		ComponentMetadata: null,
+		ContextMetadata: null,
+
+
 		AllocID: 0,
 
 		// Start the layout editor given the form ID.
 		start: function(id) {
 			s = $(".markup input", this).val();
 
+			var metadataRaw = $(".metadata", this).text();
+
+			var metadata = $.parseJSON($('<div />').html(metadataRaw).text());
+
+			this.setComponentMetadata(metadata.components);
+			this.setContextMetadata(metadata.context);
+
+			console.log('metadata:', metadata);
+
 			var model = eval(s);
 			this.allocateIDs(model);
-			console.log(model);
 			this.setModel(model);
 
 			this.initialiseUI(this.getModel());
@@ -46,54 +74,106 @@
 		},
 
 		initialiseUI: function(componentRoot) {
-			if (componentRoot.ClassName != "NLBoxLayout" ||
-				this.componentBinding(componentRoot, "Orientation") != "Vertical") {
+			if (componentRoot.ClassName != "NLVerticalBoxLayout") {
 				alert("Editor can only handle a layout where the outer container is a vertical box layout component");
 				return;
 			}
 
-			this.html(this.html() + this.buildMarkup(componentRoot));
+			$('.editor-area', this).html(this.buildMarkup(componentRoot, true));
+			this.buildAvailableComponents();			
 		},
 
 		// build markup for a component. Because we basically present blocks, we don't need to know how the components will
-		// present on the front end, we just need to build the blocks
-		buildMarkup: function(component) {
-			if (component == null) return "";
-			switch(component.ClassName) {
-				case "NLBoxLayout":
-					return this.buildMarkupBox(component);
-				default:
-					return this.buildMarkupGeneric(component);
-			}
-		},
-
-		buildMarkupBox: function(component) {
-			s = this.buildBoxTools(component);
-			for (var i = 0; i < component.children.length; i++) {
-				s += this.buildMarkup(component.children[i]);
+		// present on the front end, we just need to build the blocks. This function is called recursively to build
+		// markup for sub-components.
+		buildMarkup: function(component, root) {
+			if (component == null) {
+				return '';
 			}
 
-			var classes = this.componentBinding(component, "Orientation") == "Horizontal" ? "nl-editor-box-horizontal" : "nl-editor-box-vertical";
-			classes += " nl-component-editor";
-			s = this.newEl("div", s, {class: classes, "data-component-id": component.id});
+			var metadata = this.getMetadataForComponent(component),
+				tools = this.buildTools(component, root),
+				label = this.splitCamelName(component.ClassName);
 
-			return s;
+			// structure:
+			// 	div.nl-component-editor
+			//		div.centered
+			//	 		div.component-toolbox
+			//			div.info (not shown for boxes)
+			//				img
+			//				div.name
+			//			div.content
+
+			var name = this.newEl('span', label, { class: 'name'});
+
+			var children = '';
+			if (component.children) {
+				for (var i = 0; i < component.children.length; i++) {
+					children += this.buildMarkup(component.children[i]);
+				}
+			}
+
+			var content = this.newEl('div', children, {class: 'content'});
+			var img = this.newEl('img', '', {src: metadata.imageURL, class: 'component-icon'});
+			var info = '';
+			if (!root) {
+				var info = this.newEl('div', img + name, {class:'info'});
+			}
+			var centered = this.newEl('div', tools + info + content, {class:'centered'});
+
+			var properties = {
+				'class': 'nl-component-editor',
+				'data-component-id': component.id,
+				'data-component-type': component.ClassName
+			};
+
+			return this.newEl("div", centered, properties);
+			// return s;
+			// switch(component.ClassName) {
+			// 	case "NLVerticalBoxLayout":
+			// 		return this.buildMarkupBox(component, true);
+			// 	default:
+			// 		return this.buildMarkupGeneric(component);
+			// }
 		},
 
-		buildBoxTools: function(component) {
-			var s = "";
-			s += this.newToolButton('add', 'Add');
-			s += this.newToolButton('edit', 'Edit');
-			// s += this.addToolButton('remove', 'Remove');  // @todo nested may have it
-			s = this.newEl("div", s, {class: "component-toolbox"});
-			return s;
+		buildAvailableComponents: function() {
+			var componentMetadata = this.getComponentMetadata(),
+				s = '';
+
+			// @todo filter to only those that can be added in this view.
+			for (var i = 0; i < componentMetadata.length; i++) {
+				var image = this.newEl('img', '', { src: componentMetadata[i].imageURL });
+				var name = this.newEl('span', componentMetadata[i].name, { class: 'name' });
+				var thumbnail = this.newEl('div', image + name, { class: 'thumbnail' });
+				var description = this.newEl('div', '(large description of component)', { class: 'description' });
+				s += this.newEl('div', thumbnail + description, { class: 'component' });
+			}
+
+			$('.available-components', this).html(s);
 		},
 
-		buildGenericTools: function(component) {
+		// Build markup to represent a box.
+		// buildMarkupBox: function(component, root) {
+		// 	s = this.buildTools(component, root);
+		// 	for (var i = 0; i < component.children.length; i++) {
+		// 		s += this.buildMarkup(component.children[i]);
+		// 	}
+
+		// 	var classes = this.componentBinding(component, "Orientation") == "Horizontal" ? "nl-editor-box-horizontal" : "nl-editor-box-vertical";
+		// 	classes += " nl-component-editor";
+		// 	s = this.newEl("div", s, {class: classes, "data-component-id": component.id});
+
+		// 	return s;
+		// },
+
+		buildTools: function(component, root) {
 			var s = "";
 			s += this.newToolButton('edit', 'Edit');
-			s += this.newToolButton('remove', 'Remove');
-
+			if (!root) {
+				// can't delete root item, but can nested boxes can be deleted.
+				s += this.newToolButton('remove', 'Remove');
+			}
 			s = this.newEl("div", s, {class: "component-toolbox"});
 			return s;
 		},
@@ -107,18 +187,11 @@
 			return s;
 		},
 
-		buildMarkupGeneric: function(component) {
-			var s = this.buildGenericTools(component);
-			s += this.splitCamelName(component.ClassName);
-
-			s = this.newEl("div", s);
-			s = this.newEl("div", s, {class: "nl-editor-generic nl-component-editor", "data-component-id": component.id});
-			return s;
-		},
-
 		// Helper function that given a name in camel caps will split with spaces. If prefixed 'NL', that prefix will be removed.
+		// If suffixed 'Component', that suffix will be removed.
 		splitCamelName: function(s) {
-			if (s.substr(0, 2) == "NL") s = s.substr(2);
+			s = s.replace(/^NL/, '');
+			s = s.replace(/Component$/, '');
 			return s.replace(/([A-Z])/g, " $1").trim();
 		},
 
@@ -130,7 +203,7 @@
 			return component.bindings[name].value;
 		},
 
-		// Show the dialog
+		// Show a modal dialog with the specified content.
 		showDialog: function(content) {
 			$(".popup .popup-inner", this).html(content);
 			var w = this.width();
@@ -138,6 +211,7 @@
 			$(".popup", this).addClass("visible");
 		},
 
+		// Hide the modal dialog.
 		hideDialog: function() {
 			$(".popup", this).removeClass("visible");
 		},
@@ -164,18 +238,27 @@
 			this.hideDialog();
 		},
 
+		// Show dialog for editing components. The dialog is constructed programmatically using metadata about the
+		// type of component, and the component's actual bound values.
 		showEditDialog: function($component) {
 			var self = this;
-			var s = this.newEl("h2", "Edit");
-			var componentID = $component.attr("data-component-id");
-			var url = this.attr("data-view-controller-url") + "/EditForm/" + componentID;
-			$.ajax({
-				url: url,
-				success: function(data, textStatus, xhr) {
-					s += data;
-					s += self.newEl("div", self.newToolButton("save", "Save") + self.newToolButton("cancel", "Cancel"));
+			var s = this.newEl('h2', 'Edit');
+			s += this.newEl('div', '', { class: 'form property-editor'});
 
-					self.showDialog(s);
+			// Show the dialog first without the form. loadPropertyEditor will inject the form.
+			this.showDialog(s);
+
+			var componentID = $component.attr("data-component-id");
+			var component = this.findComponentInModel(componentID)
+
+			this.loadPropertyEditor({
+				element: $('.popup .form'),
+				component: component,
+				callback: function(saved) {
+					if (saved) {
+						self.modelChanged();
+					}
+					self.hideDialog();
 				}
 			});
 		},
@@ -253,6 +336,19 @@
 			this.modelChanged();
 		},
 
+		// Given a component, return the component type's metadata object, as injected by the form editor.
+		getMetadataForComponent: function(component) {
+			var m = this.getComponentMetadata();
+			console.log('getMetadataForComponent looking at:', m);
+
+			for (var i = 0; i < m.length; i++) {
+				if (m[i].componentType && m[i].componentType === component.ClassName) {
+					return m[i];
+				}
+			}
+
+			return null;
+		},
 
 		// Called whenever the model is changed, this updates the json representation of the model so a save
 		// will send this serialised form to where it is persisted.
@@ -260,6 +356,20 @@
 			var s = JSON.stringify(this.getModel());
 			$(".markup input", this).val(s);
 		}
+	});
+
+	$('.NLEditor .nl-component-editor').entwine({
+		onmouseover: function(e) {
+			this.addClass('hover');
+			$('>div >.component-toolbox', this).addClass('visible');
+			return false;
+		},
+
+		onmouseout: function(e) {
+			this.removeClass('hover');
+			$('>div >.component-toolbox', this).removeClass('visible');
+		}
+
 	});
 
 	$('.nl-editor-box-vertical').entwine({
@@ -279,18 +389,18 @@
 		}
 	});
 
-	// Handle adding a component to a vertical toolbox
-	$('.nl-editor-box-vertical > .component-toolbox .tool-button.action-add').entwine({
-		onclick: function() {
-			var self = this;
-			this.closest(".NLEditor").showAddDialog({
-				onselection: function(selected) {
-					self.closest(".nl-editor-box-vertical").addComponentByType(selected);
-				}
-			});
-			return false;
-		}
-	});
+	// // Handle adding a component to a vertical toolbox
+	// $('.nl-editor-box-vertical > .component-toolbox .tool-button.action-add').entwine({
+	// 	onclick: function() {
+	// 		var self = this;
+	// 		this.closest(".NLEditor").showAddDialog({
+	// 			onselection: function(selected) {
+	// 				self.closest(".nl-editor-box-vertical").addComponentByType(selected);
+	// 			}
+	// 		});
+	// 		return false;
+	// 	}
+	// });
 
 	$('.NLEditor .tool-button.action-edit').entwine({
 		onclick: function() {

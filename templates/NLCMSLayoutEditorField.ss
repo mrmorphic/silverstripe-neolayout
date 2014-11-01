@@ -4,14 +4,11 @@
 			This is some content in the popup
 		</div>
 	</div>
-	<div class="component-types">
-		<% loop ComponentTypes %>
-			<div class="component-definition" data-component-type="$componentType">
-				<img src="$imageURL" class="preview"/>
-				<div class="name">$name</div>
-				<div class="description">$description</div>
-			</div>
-		<% end_loop %>
+	<div class="metadata">
+		$EditorMetadata
 	</div>
+
+	<div class="available-components"></div>
+	<div class="editor-area"></div>
 	<div class="markup">$Field</div>
 </div>

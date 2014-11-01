@@ -7,13 +7,17 @@
  */
 class NLView extends Controller {
 
+	// static $allowed_methods = (
+	// 	'EditForm'
+	// );
+
 	protected $layout = null;
 	protected $rawComponents;
 	protected $context;
 
 	static $default_view_contents_proper =
 		'{
-			"ClassName": "NLBoxLayout",	
+			"ClassName": "NLVerticalBoxLayout",
 			"children": [
 				{
 					"ClassName": "NLTextComponent",
@@ -26,17 +30,13 @@ class NLView extends Controller {
 				}
 			],
 			"bindings": {
-				"Orientation": {
-					"type": "embedded",
-					"value": "Vertical"
-				}
 			}
 		}';
 
 	// This should really be in the test suite.
 	static $default_view_contents =
 		'{
-			"ClassName": "NLBoxLayout",	
+			"ClassName": "NLVerticalBoxLayout",
 			"children": [
 				{
 					"ClassName": "NLTextComponent",
@@ -78,16 +78,12 @@ class NLView extends Controller {
 				}
 			],
 			"bindings": {
-				"Orientation": {
-					"type": "embedded",
-					"value": "Vertical"
-				}
 			}
 		}';
 
 	static $default_view_contents_old =
 		'{
-			"ClassName": "NLBoxLayout",
+			"ClassName": "NLVerticalBoxLayout",
 			"children": [
 				{
 					"ClassName": "NLTextComponent",
@@ -165,10 +161,6 @@ class NLView extends Controller {
 				}
 			],
 			"bindings": {
-				"Orientation": {
-					"type": "embedded",
-					"value": "Vertical"
-				}
 			}
 		}';
 
@@ -270,6 +262,23 @@ class NLView extends Controller {
 
 	protected function findComponentByIdParented($parent, $id) {
 	}
+
+	// // Return a form for a component that can be embedded in the modal editor dialog in the javascript. This is
+	// // requested asynchronously. The component type is identified on the URL; the editor is a for the type of component,
+	// // and is not populated from any specific component.generic form The fields shown on the form
+	// // are created from meta-data, but with no values populated. The values are populated in javascript, as it always
+	// // has the most recent edition of the layout structure, particular where a component is edited the second time without
+	// // saving.
+	// public function EditFormByType() {
+	// 	// Get the component class name
+
+	// 	$fields = new FieldList();
+	// 	$actions = new FieldList();
+
+	// 	$form = new Form($this, "EditForm", $fields, $actions);
+
+	// 	return $form;
+	// }
 }
 
 class NLViewAddableItem extends ViewableData {

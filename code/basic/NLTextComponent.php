@@ -13,8 +13,9 @@ class NLTextComponent extends NLComponent {
 			"display" => "inline",
 			"properties" => array(
 				"Text" => array(
-					"type" => "Text",
-					"description" => "This is my property"
+					"name" => "Text",
+					"type" => "Text|Varchar|HTMLText",
+					"description" => "The text that will display"
 				)
 			)
 		);

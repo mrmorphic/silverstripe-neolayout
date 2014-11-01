@@ -18,15 +18,19 @@ class NLLinkComponent extends NLComponent {
 			"display" => "inline",
 			"properties" => array(
 				"ExternalURL" => array(
+					"name" => "URL",
 					"type" => "Varchar",
-					"description" => "If link is to external website, this contains the URL"
+					"description" => "If the link is to external website, this contains the URL."
 				),
 				"InternalPage" => array(
-					"type" => "NLObjectReference('SiteTree')"
+					"name" => "Site page",
+					"type" => "NLObjectReference('SiteTree')",
+					"description" => "If the link to is a page on this website, this is the selected page."
 				),
 				"LinkText" => array(
+					"name" => "Link text",
 					"type" => "Text",
-					"description" => "Text to display in link if no other components are put into the link"
+					"description" => "Text to display in the link if no other components are put into the link."
 				)
 			)
 		);
