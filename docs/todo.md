@@ -2,6 +2,7 @@
 
 Some example use cases:
 - Want a component to only show sometimes. Visibility is controlled by binding.
+  (Consider view states in Flex)
 - I have a map with my store locations, that comes from data I set up in the CMS. When someone clicks a location
   on map, I want another component to change to show details. When nothing is selected, I want a place holder image
   to show, that has some marketing info, and tells the user to click on a store. Both store and default panels
