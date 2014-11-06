@@ -11,4 +11,4 @@ Documentation is under the docs folder:
     and includes how to include and configure the module, and the ways in
     which the mechanisms provided can be added to the site.
 
-Code repository is at http://github.com/mrmorphic/silverstripe-neolayout
+This module is still in development and is NOT READY for use in projects.

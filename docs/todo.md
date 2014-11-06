@@ -1,17 +1,29 @@
 # Use cases
 
 Some example use cases:
-- Want a component to only show sometimes. Visibility is controlled by binding.
-  (Consider view states in Flex)
-- I have a map with my store locations, that comes from data I set up in the CMS. When someone clicks a location
-  on map, I want another component to change to show details. When nothing is selected, I want a place holder image
-  to show, that has some marketing info, and tells the user to click on a store. Both store and default panels
-  have buttons and links to other parts of the site, like sign-up.
-- I want a hero panel that moves between images that I upload to the CMS.
-- I want the area on my page to be fixed in size, and constrain components within it
-- I want the area on my page to automatically adjust in size depending on the compnents I put in it.
-- I want to be able to select a model from a list or a set of options, and have that display in web GL automatically,
-  with no page re-load.
+
+ -	Want a component to only show sometimes. Visibility is controlled by
+	binding. (Consider view states in Flex)
+ -	Display components conditionally based on device properties
+	 -	conditions added as extensions to the CMS editor
+	 -	components that represent conditional blocks
+ -	I have a map with my store locations, that comes from data I set up in
+	the CMS. When someone clicks a location on map, I want another component
+	to change to show details. When nothing is selected, I want a place holder
+	image to show, that has some marketing info, and tells the user to click
+	on a store. Both store and default panels have buttons and links to other
+	parts of the site, like sign-up.
+ -	I want a hero panel that moves between images that I upload to the CMS.
+ -	I want the area on my page to be fixed in size, and constrain components
+	within it
+ -	I want the area on my page to automatically adjust in size depending on
+	the compnents I put in it.
+ -	I want a piece of content spread across 4 columns within a layout.
+ -	I want a piece of content in a layout that expands and contracts
+	automatically.
+ -	I want to express sizing of components in a row in terms of:
+	 -	percentages
+	 -	columns in my grid
 
 # Features
 
@@ -65,3 +77,13 @@ Some example use cases:
  *  Sidebar
  *  Personalisation
  *  Advertisement - could be a subset of personalisation
+
+# Considerations
+
+ *	What CSS artifacts are important to expose to the CMS editor? e.g.
+ 	how important is it to expose whether a component is inline or block?
+ *	What constraints need to be applied to the CMS editor? Useful:
+ 	 -	whitelist/blacklist the components that selectable
+ 	 -	locking parts of a layout?
+ 	 -	constraining properties e.g. limit the number of items that can be
+ 		added to the top-most box.
