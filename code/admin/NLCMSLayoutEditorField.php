@@ -32,6 +32,10 @@ class NLCMSLayoutEditorField extends HiddenField {
 		return '<input id="' . $this->ID() . '" name="' . $this->getName() . '" type="hidden" value="' . $this->getValue() . '" />';
 	}
 
+	public function getComponentData() {
+		return Convert::raw2att(NLView::normalise_serialised($this->value));
+	}
+
 	public function setViewControllerURL($url) {
 		$this->viewControllerURL = $url;
 	}
