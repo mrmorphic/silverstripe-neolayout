@@ -87,3 +87,11 @@ Some example use cases:
  	 -	locking parts of a layout?
  	 -	constraining properties e.g. limit the number of items that can be
  		added to the top-most box.
+ *	Version the serialised format, to allow for handling old versions and
+ 	updates to the mechanism.
+
+# Technical Tasks
+
+ *	Refactor CSS into SCSS
+ *	Add IDs to components to support indentification in form processing
+ *	Use namespaces. Need to consider how third party components will work here.
