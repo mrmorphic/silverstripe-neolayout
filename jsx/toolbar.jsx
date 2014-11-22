@@ -75,8 +75,6 @@ var Toolbar = React.createClass({
             });
         }
 
-        console.log(this.props.data);
-
         return (
             <div className="nl-toolbar">
                 <button type="button" onClick={this.toggleModalEditor}>Edit</button>

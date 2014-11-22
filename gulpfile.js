@@ -5,26 +5,20 @@ var gulp = require('gulp'),
     react = require('gulp-react'),
     browserify = require('gulp-browserify');
 
-gulp.task('stylus', function () {
+gulp.task('css', function () {
     gulp.src('./styl/main.styl')
         .pipe(stylus())
         .pipe(gulp.dest('./css'));
 });
 
-gulp.task('jsx', function (done) {
+gulp.task('js', function () {
     gulp.src('./jsx/**/*.jsx')
         .pipe(react())
-        .pipe(gulp.dest('./javascript/build'));
-
-    done();
+        .pipe(gulp.dest('./javascript/build')).on('end', function () {
+            gulp.src('./javascript/build/app.js')
+                .pipe(browserify())
+                .pipe(gulp.dest('./javascript'));
+        });
 });
 
-gulp.task('browserify', function (done) {
-    gulp.src('./javascript/build/app.js')
-        .pipe(browserify())
-        .pipe(gulp.dest('./javascript'));
-
-    done();
-});
-
-gulp.task('default', ['stylus', 'jsx', 'browserify'], function () {});
+gulp.task('default', ['css', 'js']);
