@@ -1,15 +1,23 @@
 'use strict';
 
 var React = require('react'),
-    $ = require('jquery'),
-    util = require('./util');
+    $ = require('jquery');
 
-var Toolbar = React.createClass({
-    getInitialState: function () {
-        return { editing: false };
-    },
-    getCssClasses: function (requiredClasses) {
-        return this.state.editing === true ? requiredClasses : requiredClasses + ' hide';
+var FieldEditorForm = React.createClass({
+    getFieldSchema: function (componentType, schemas) {
+        var i = 0;
+
+        // Don't compare undefined to schema[i].componentType.
+        // If schema[i].componentType is undefined, it will match.
+        if (typeof componentType !== 'string') {
+            throw new Error('componentType should be a string, you passed typeof ' + typeof componentType);
+        }
+
+        for (i; i < schemas.length; i += 1) {
+            if (schemas[i].componentType === componentType) {
+                return schemas[i];
+            }
+        }
     },
     toggleContextInput: function (event) {
         var $row = $(event.target).closest('.field-editor-row'),
@@ -30,7 +38,7 @@ var Toolbar = React.createClass({
         var self = this,
             rows = [];
 
-        $.each(schema.properties, function (i, prop) {
+        $.each(schema.properties, function (index, prop) {
             var contextOptions = this.type.split('|').map(function (dataType) {
                 var i = 0,
                     options = [];
@@ -49,13 +57,13 @@ var Toolbar = React.createClass({
             });
 
             rows.push(
-                <div className="field-editor-row" key={i}>
+                <div className="field-editor-row" key={index}>
                     <label>{prop.name}</label>
                     <select className="field-editor-field context-selector" onChange={self.toggleContextInput}>
                         <option>Context</option>
                         <option>Embedded</option>
                     </select>
-                    <select className="firld-editor-field field-value-input data-type-selector">
+                    <select className="field-editor-field field-value-input data-type-selector">
                         {contextOptions}
                     </select>
                     <input className="field-editor-field field-value-input embedded-input hide"></input>
@@ -65,39 +73,30 @@ var Toolbar = React.createClass({
 
         return rows;
     },
-    toggleModalEditor: function () {
-        this.setState({ editing: !this.state.editing });
+    handleSave: function () {
+        console.log(this);
+        this.props.toggleModalEditor();
+    },
+    handleCancel: function () {
+        console.log(this);
+        this.props.toggleModalEditor();
     },
     render: function () {
-        var fieldSchema = util.getFieldSchema(this.props.data.ClassName, this.props.metadata.components),
+        var fieldSchema = this.getFieldSchema(this.props.data.ClassName, this.props.metadata.components),
             formRows = this.createFormRows(fieldSchema, this.props.metadata.context);
 
-        if (typeof this.props.data.bindings !== 'undefined') {
-            $.each(this.props.data.bindings, function () {
-                // @todo What do we do with bindings?
-            });
-        }
-
         return (
-            <div className="nl-toolbar">
-                <button type="button" onClick={this.toggleModalEditor}>Edit</button>
-                <button type="button">Remove</button>
-                <div className={this.getCssClasses('nl-modal-editor')}>
-                    <h3>{this.props.data.ClassName}</h3>
-                    <div className="field-editor-form">
-                        <div className="field-editor-rows">
-                            {formRows}
-                        </div>
-                        <div className="field-editor-actions">
-                            <button className="field-editor-action save">Save</button>
-                            <button className="field-editor-action cancel" onClick={this.toggleModalEditor}>Cancel</button>
-                        </div>
-                    </div>
+            <div className="field-editor-form">
+                <div className="field-editor-rows">
+                    {formRows}
                 </div>
-                <div className={this.getCssClasses('nl-modal-mask')}></div>
+                <div className="field-editor-actions">
+                    <button className="field-editor-action save" onClick={this.handleSave}>Save</button>
+                    <button className="field-editor-action cancel" onClick={this.handleCancel}>Cancel</button>
+                </div>
             </div>
         );
     }
 });
 
-module.exports = Toolbar;
+module.exports = FieldEditorForm;

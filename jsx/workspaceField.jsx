@@ -2,7 +2,7 @@
 
 var React = require('react'),
     $ = require('jquery'),
-    Toolbar = require('./toolbar');
+    FieldEditor = require('./fieldEditor');
 
 var WorkspaceField = React.createClass({
     createChildFields: function () {
@@ -27,7 +27,7 @@ var WorkspaceField = React.createClass({
         return (
             <div className="nl-component nl-workspace-field">
                 <h3>{this.props.data.ClassName}</h3>
-                <Toolbar data={this.props.data} metadata={this.props.metadata} />
+                <FieldEditor data={this.props.data} metadata={this.props.metadata} />
                 {childFields}
             </div>
         );

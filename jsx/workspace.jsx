@@ -1,7 +1,7 @@
 'use strict';
 
 var React = require('react'),
-    Toolbar = require('./toolbar'),
+    FieldEditor = require('./fieldEditor'),
     WorkspaceField = require('./workspaceField');
 
 var Workspace = React.createClass({
@@ -19,7 +19,7 @@ var Workspace = React.createClass({
 
         return (
             <div className="nl-workspace">
-                <Toolbar data={this.props.data} metadata={this.props.metadata} />
+                <FieldEditor data={this.props.data} metadata={this.props.metadata} />
                 {workspaceFields}
             </div>
         );
