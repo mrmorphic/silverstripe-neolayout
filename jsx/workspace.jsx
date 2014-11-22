@@ -5,6 +5,10 @@ var React = require('react'),
     WorkspaceField = require('./workspaceField');
 
 var Workspace = React.createClass({
+    propTypes: {
+        data: React.PropTypes.object.isRequired,
+        metadata: React.PropTypes.object.isRequired
+    },
     createWorkspaceFields: function () {
         var self = this;
 

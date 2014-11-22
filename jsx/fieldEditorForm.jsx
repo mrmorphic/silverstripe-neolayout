@@ -4,6 +4,11 @@ var React = require('react'),
     $ = require('jquery');
 
 var FieldEditorForm = React.createClass({
+    propTypes: {
+        data: React.PropTypes.object.isRequired,
+        metadata: React.PropTypes.object.isRequired,
+        toggleModalEditor: React.PropTypes.func.isRequired
+    },
     getFieldSchema: function (componentType, schemas) {
         var i = 0;
 

@@ -5,6 +5,10 @@ var React = require('react'),
     FieldEditor = require('./fieldEditor');
 
 var WorkspaceField = React.createClass({
+    propTypes: {
+        data: React.PropTypes.object.isRequired,
+        metadata: React.PropTypes.object.isRequired
+    },
     createChildFields: function () {
         var self = this,
             childFields = null;

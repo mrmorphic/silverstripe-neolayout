@@ -5,8 +5,11 @@ var React = require('react'),
     PaletteField = require('./paletteField');
 
 var Palette = React.createClass({
+    propTypes: {
+        metadata: React.PropTypes.object.isRequired
+    },
     render: function () {
-        var availableComponents = this.props.data.components.map(function (component, i) {
+        var availableComponents = this.props.metadata.components.map(function (component, i) {
             return (
                 <PaletteField data={component} key={i} />
             );

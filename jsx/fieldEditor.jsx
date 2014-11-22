@@ -5,6 +5,10 @@ var React = require('react'),
     FieldEditorForm = require('./fieldEditorForm');
 
 var FieldEditor = React.createClass({
+    propTypes: {
+        data: React.PropTypes.object.isRequired,
+        metadata: React.PropTypes.object.isRequired
+    },
     getInitialState: function () {
         return { editing: false };
     },

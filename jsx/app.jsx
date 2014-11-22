@@ -9,7 +9,7 @@ var metadata = $('#neolayout').data('metadata'),
     workspaceData = $('#neolayout').data('workspace');
 
 React.render(
-    <Palette data={metadata} />,
+    <Palette metadata={metadata} />,
     document.getElementById('palette')
 );
 

@@ -3,6 +3,9 @@
 var React = require('react');
 
 var PaletteField = React.createClass({
+    propTypes: {
+        data: React.PropTypes.object.isRequired
+    },
     render: function () {
         return (
             <div className="nl-component nl-palette-field">
