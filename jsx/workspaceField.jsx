@@ -12,8 +12,10 @@ var WorkspaceField = React.createClass({
         if (typeof this.props.data.children !== 'undefined') {
             childFields = [];
 
-            $.each(this.props.data.children, function () {
-                childFields.push(<WorkspaceField data={this} metadata={self.props.metadata} />);
+            $.each(this.props.data.children, function (i, fieldData) {
+                childFields.push(
+                    <WorkspaceField data={fieldData} metadata={self.props.metadata} key={i} />
+                );
             });
         }
 

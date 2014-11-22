@@ -6,9 +6,9 @@ var React = require('react'),
 
 var Palette = React.createClass({
     render: function () {
-        var availableComponents = this.props.data.components.map(function (component) {
+        var availableComponents = this.props.data.components.map(function (component, i) {
             return (
-                <PaletteField data={component} />
+                <PaletteField data={component} key={i} />
             );
         });
 

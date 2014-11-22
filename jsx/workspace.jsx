@@ -8,9 +8,9 @@ var Workspace = React.createClass({
     createWorkspaceFields: function () {
         var self = this;
 
-        return this.props.data.children.map(function (fieldData) {
+        return this.props.data.children.map(function (fieldData, i) {
             return (
-                <WorkspaceField data={fieldData} metadata={self.props.metadata} />
+                <WorkspaceField data={fieldData} metadata={self.props.metadata} key={i} />
             );
         });
     },

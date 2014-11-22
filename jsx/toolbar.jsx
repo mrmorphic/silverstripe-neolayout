@@ -30,24 +30,27 @@ var Toolbar = React.createClass({
         var self = this,
             rows = [];
 
-        $.each(schema.properties, function () {
+        $.each(schema.properties, function (i, prop) {
             var contextOptions = this.type.split('|').map(function (dataType) {
-                var options = [];
+                var i = 0,
+                    options = [];
 
                 $.each(contextMetadata, function (key, value) {
+                    i += 1;
+
                     if (value === dataType) {
-                        options.push((
-                            <option>{key}</option>
-                        ));
+                        options.push(
+                            <option key={i}>{key}</option>
+                        );
                     }
                 });
 
                 return options;
             });
 
-            rows.push((
-                <div className="field-editor-row">
-                    <label>{this.name}</label>
+            rows.push(
+                <div className="field-editor-row" key={i}>
+                    <label>{prop.name}</label>
                     <select className="field-editor-field context-selector" onChange={self.toggleContextInput}>
                         <option>Context</option>
                         <option>Embedded</option>
@@ -57,7 +60,7 @@ var Toolbar = React.createClass({
                     </select>
                     <input className="field-editor-field field-value-input embedded-input hide"></input>
                 </div>
-            ));
+            );
         });
 
         return rows;
