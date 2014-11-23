@@ -3,7 +3,8 @@
 var gulp = require('gulp'),
     stylus = require('gulp-stylus'),
     react = require('gulp-react'),
-    browserify = require('gulp-browserify');
+    browserify = require('gulp-browserify'),
+    del = require('del');
 
 gulp.task('css', function () {
     gulp.src('./styl/main.styl')
@@ -17,7 +18,9 @@ gulp.task('js', function () {
         .pipe(gulp.dest('./javascript/build')).on('end', function () {
             gulp.src('./javascript/build/app.js')
                 .pipe(browserify())
-                .pipe(gulp.dest('./javascript'));
+                .pipe(gulp.dest('./javascript')).on('end', function () {
+                    del('./javascript/build/');
+                });
         });
 });
 
