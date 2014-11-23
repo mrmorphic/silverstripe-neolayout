@@ -10,7 +10,10 @@ var FieldEditorFormRow = React.createClass({
         contextMetadata: React.PropTypes.object.isRequired
     },
     getInitialState: function () {
-        return { dataSource: 'Context' };
+        return {
+            dataSource: 'Context',
+            contextDataType: ''
+        };
     },
     getContextOptions: function () {
         var self = this;
@@ -32,6 +35,9 @@ var FieldEditorFormRow = React.createClass({
             return options;
         });
     },
+    handleContextDataTypeChange: function (event) {
+        this.setState({ contextDataType: event.target.value });
+    },
     getDataSourceInputs: function () {
         var dataSourceInput = null,
             contextOptions = null;
@@ -40,7 +46,7 @@ var FieldEditorFormRow = React.createClass({
             contextOptions = this.getContextOptions();
 
             dataSourceInput = (
-                <select className="field-editor-field">
+                <select className="field-editor-field" onChange={this.handleContextDataTypeChange} value={this.state.contextDataType}>
                     {contextOptions}
                 </select>
             );
@@ -62,7 +68,7 @@ var FieldEditorFormRow = React.createClass({
         return (
             <div className="field-editor-row">
                 <label>{this.props.name}</label>
-                <select className="field-editor-field" onChange={this.handleContextChange}>
+                <select className="field-editor-field" onChange={this.handleContextChange} value={this.state.dataSource}>
                     <option>Context</option>
                     <option>Embedded</option>
                 </select>

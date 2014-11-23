@@ -30,8 +30,10 @@ var FieldEditorForm = React.createClass({
             i = 0;
 
         $.each(schema.properties, function () {
+            var refName = 'fieldEditorRow_' + i;
+
             rows.push(
-                <FieldEditorFormRow name={this.name} dataTypes={this.type} contextMetadata={contextMetadata} key={i} />
+                <FieldEditorFormRow name={this.name} dataTypes={this.type} contextMetadata={contextMetadata} key={i} ref={refName} />
             );
 
             i += 1;
@@ -40,11 +42,16 @@ var FieldEditorForm = React.createClass({
         return rows;
     },
     handleSave: function () {
-        console.log(this);
         this.props.toggleModalEditor();
     },
     handleCancel: function () {
-        console.log(this);
+        // Reset each row's state
+        $.each(this.refs, function (key, ref) {
+            if (key.indexOf('fieldEditorRow') > -1) {
+                this.replaceState(this.getInitialState());
+            }
+        });
+
         this.props.toggleModalEditor();
     },
     render: function () {
