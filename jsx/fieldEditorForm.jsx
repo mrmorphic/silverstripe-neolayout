@@ -1,7 +1,8 @@
 'use strict';
 
 var React = require('react'),
-    $ = require('jquery');
+    $ = require('jquery'),
+    FieldEditorFormRow = require('./fieldEditorFormRow');
 
 var FieldEditorForm = React.createClass({
     propTypes: {
@@ -24,56 +25,16 @@ var FieldEditorForm = React.createClass({
             }
         }
     },
-    toggleContextInput: function (event) {
-        var $row = $(event.target).closest('.field-editor-row'),
-            contextValue = $row.find('.context-selector').val();
-
-        $row.find('.field-value-input').addClass('hide');
-
-        switch(contextValue) {
-            case 'Context':
-                $row.find('.data-type-selector').removeClass('hide');
-                break;
-            case 'Embedded':
-                $row.find('.embedded-input').removeClass('hide');
-                break;
-        }
-    },
     createFormRows: function (schema, contextMetadata) {
-        var self = this,
-            rows = [];
+        var rows = [],
+            i = 0;
 
-        $.each(schema.properties, function (index, prop) {
-            var contextOptions = this.type.split('|').map(function (dataType) {
-                var i = 0,
-                    options = [];
-
-                $.each(contextMetadata, function (key, value) {
-                    i += 1;
-
-                    if (value === dataType) {
-                        options.push(
-                            <option key={i}>{key}</option>
-                        );
-                    }
-                });
-
-                return options;
-            });
-
+        $.each(schema.properties, function () {
             rows.push(
-                <div className="field-editor-row" key={index}>
-                    <label>{prop.name}</label>
-                    <select className="field-editor-field context-selector" onChange={self.toggleContextInput}>
-                        <option>Context</option>
-                        <option>Embedded</option>
-                    </select>
-                    <select className="field-editor-field field-value-input data-type-selector">
-                        {contextOptions}
-                    </select>
-                    <input className="field-editor-field field-value-input embedded-input hide"></input>
-                </div>
+                <FieldEditorFormRow name={this.name} dataTypes={this.type} contextMetadata={contextMetadata} key={i} />
             );
+
+            i += 1;
         });
 
         return rows;
