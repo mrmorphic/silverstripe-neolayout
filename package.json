@@ -2,7 +2,6 @@
   "name": "neolayout",
   "private": true,
   "dependencies": {
-    "jquery": "^2.1.1",
     "react": "^0.12.1"
   },
   "devDependencies": {

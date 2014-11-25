@@ -1,12 +1,13 @@
 'use strict';
 
-var $ = require('jquery'),
-    React = require('react'),
+var React = require('react'),
     Palette = require('./palette'),
     Workspace = require('./workspace');
 
-var metadata = $('#neolayout').data('metadata'),
-    workspaceData = $('#neolayout').data('workspace');
+var rootElement = document.getElementById('neolayout');
+
+var metadata = JSON.parse(rootElement.getAttribute('data-metadata')),
+    workspaceData = JSON.parse(rootElement.getAttribute('data-workspace'));
 
 React.render(
     <Palette metadata={metadata} />,
