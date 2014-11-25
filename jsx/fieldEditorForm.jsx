@@ -8,7 +8,7 @@ var FieldEditorForm = React.createClass({
         data: React.PropTypes.object.isRequired,
         metadata: React.PropTypes.object.isRequired,
         toggleModalEditor: React.PropTypes.func.isRequired,
-        updateFieldBindings: React.PropTypes.func.isRequired
+        updateFieldData: React.PropTypes.func.isRequired
     },
     getFieldSchema: function (componentType, schemas) {
         var i = 0;
@@ -51,7 +51,7 @@ var FieldEditorForm = React.createClass({
         return rows;
     },
     handleSave: function () {
-        this.props.updateFieldBindings({ foo: 'bar' });
+        this.props.updateFieldData({ foo: 'bar' });
         this.props.toggleModalEditor();
     },
     handleCancel: function () {

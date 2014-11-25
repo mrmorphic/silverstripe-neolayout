@@ -1,7 +1,6 @@
 'use strict';
 
 var React = require('react'),
-    FieldEditor = require('./fieldEditor'),
     WorkspaceField = require('./workspaceField');
 
 var Workspace = React.createClass({
@@ -11,29 +10,19 @@ var Workspace = React.createClass({
     },
     getInitialState: function () {
         return {
-            bindings: this.props.data.bindings
+            fieldData: this.props.data
         };
     },
-    updateFieldBindings: function (value) {
-        this.setState({ bindings: value });
-    },
-    createWorkspaceFields: function () {
-        var self = this;
-
-        return this.props.data.children.map(function (fieldData, i) {
-            return (
-                <WorkspaceField data={fieldData} metadata={self.props.metadata} key={i} />
-            );
-        });
+    updateFieldData: function (value) {
+        console.log('field data updated');
+        console.log(value);
     },
     render: function () {
-        var workspaceFields = this.createWorkspaceFields();
-
         return (
-            <div className="nl-workspace">
-                <FieldEditor data={this.props.data} metadata={this.props.metadata} updateFieldBindings={this.updateFieldBindings} />
-                {workspaceFields}
-            </div>
+            <WorkspaceField
+                data={this.props.data}
+                metadata={this.props.metadata}
+                updateFieldData={this.updateFieldData} />
         );
     }
 });

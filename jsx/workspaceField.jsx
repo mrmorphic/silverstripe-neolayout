@@ -8,16 +8,6 @@ var WorkspaceField = React.createClass({
         data: React.PropTypes.object.isRequired,
         metadata: React.PropTypes.object.isRequired,
     },
-    getInitialState: function () {
-        return {
-            bindings: this.props.data.bindings
-        };
-    },
-    updateFieldBindings: function (value) {
-        console.log('updated field with:');
-        console.log(value);
-        //this.setState({ bindings: value });
-    },
     createChildFields: function () {
         var childFields = null,
             i = 0;
@@ -25,9 +15,13 @@ var WorkspaceField = React.createClass({
         if (typeof this.props.data.children !== 'undefined') {
             childFields = [];
 
-            for (i; i < this.props.data.children; i +=1) {
+            for (i; i < this.props.data.children.length; i +=1) {
                 childFields.push(
-                    <WorkspaceField data={this.props.data.children[i]} metadata={this.props.metadata} key={i} />
+                    <WorkspaceField
+                        key={i}
+                        data={this.props.data.children[i]}
+                        metadata={this.props.metadata}
+                        updateFieldData={this.props.updateFieldData} />
                 );
             };
         }
@@ -40,7 +34,11 @@ var WorkspaceField = React.createClass({
         return (
             <div className="nl-component nl-workspace-field">
                 <h3>{this.props.data.ClassName}</h3>
-                <FieldEditor data={this.props.data} metadata={this.props.metadata} updateFieldBindings={this.updateFieldBindings} />
+                <FieldEditor
+                    data={this.props.data}
+                    metadata={this.props.metadata}
+                    updateFieldData={this.props.updateFieldData} />
+
                 {childFields}
             </div>
         );

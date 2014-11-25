@@ -24,7 +24,7 @@ gulp.task('js', function () {
                         .pipe(uglify())
                         .pipe(gulp.dest('./javascript'));
 
-                        del('./javascript/build/');
+                    del('./javascript/build/');
                 });
         });
 });

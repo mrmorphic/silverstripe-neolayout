@@ -35,3 +35,4 @@ Installation
 
 Configuration
 =============
+ * Run `npm run build` to build the front-end application.

@@ -7,7 +7,7 @@ var FieldEditor = React.createClass({
     propTypes: {
         data: React.PropTypes.object.isRequired,
         metadata: React.PropTypes.object.isRequired,
-        updateFieldBindings: React.PropTypes.func.isRequired
+        updateFieldData: React.PropTypes.func.isRequired
     },
     getInitialState: function () {
         return {
@@ -32,7 +32,7 @@ var FieldEditor = React.createClass({
                         data={this.props.data}
                         metadata={this.props.metadata}
                         toggleModalEditor={this.toggleModalEditor}
-                        updateFieldBindings={this.props.updateFieldBindings} />
+                        updateFieldData={this.props.updateFieldData} />
                 </div>
                 <div className={this.getCssClasses('nl-modal-mask')}></div>
             </div>
