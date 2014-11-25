@@ -30,8 +30,18 @@ class NLImageComponent extends NLComponent {
 				),
 				"ResizingOption" => array(
 					"name" => "Resizing",
-					"type" => "Enum('Resized,Scaled,Padded','Resized')",
+					"type" => "Enum('None,Resized,Scaled,Padded,Cropped,ResizeToHeight,ResizeToWidth','None')",
 					"description" => "If the image is to be displayed in a different sized area, this determines how it is resized (images on this site only)."
+				),
+				"Width" => array(
+					"name" => "Width",
+					"type" => "Int",
+					"description" => "If provided, the width of the image in pixels, used for resizing."
+				),
+				"Height" => array(
+					"name" => "Height",
+					"type" => "Int",
+					"description" => "If provided, the height of the image in pixels, used for resizing."
 				)
 			)
 		);
@@ -42,8 +52,8 @@ class NLImageComponent extends NLComponent {
 
 		$intImage = $v->InternalImage;
 		if ($intImage) {
-			// @todo handle resize etc
-			return $intImage;
+			// Reference to an internal image.
+			return $this->getInternalImage($intImage, $v);
 		}
 
 		$url = $v->ExternalURL;
@@ -51,5 +61,74 @@ class NLImageComponent extends NLComponent {
 		if ($altText) $altText = "alt=\"$altText\"";
 
 		return "<img src=\"$url\" $altText />";
+	}
+
+	// Render an image on the site. $imageRef is an object reference, which we expect will be
+	// class:id where class is Image or a descendant, and id is the object ID. So we fetch that
+	// image, apply resizing, and get the image to return it's markup.
+	function getInternalImage($imageRef, $values) {
+		$parts = explode(":", $value);
+		if (!is_array($parts) || count($parts) != 2 || !ClassInfo::exists($parts[0]) || !is_numeric($parts[1])) {
+			// invalid reference
+			return "";
+		}
+
+		// Get this object
+		$image = DataObject::get_by_id($parts[0], $parts[1]);
+		if (!$image) {
+			return "";
+		}
+
+		// Ensure this instance is an Image or a descendent. Should always be OK, ORM shouldn't
+		// return otherwise.
+		if (!($image instanceof Image)) {
+			return "";
+		}
+
+		// Handle resizing
+		$resizeOption = $values->ResizingOption;
+
+		// Get width and height properties, if any
+		// @todo get width and height, don't resize if these are absent.
+		$width = $values->Width;
+		$height = $values->Height;
+
+		switch ($resizeOption) {
+			case 'Resized':
+				if ($width && $height) {
+					$image->resize($width, $height);
+				}
+				break;
+			case 'Scaled':
+				if ($width && $height) {
+					$image->resizeRatio($width, $height); // Resizes an image with max width and height
+				}
+				break;
+			case 'Padded':
+				if ($width && $height) {
+					$image->paddedResize($width, $height); // Adds padding after resizing to width or height.
+				}
+				break;
+			case 'Cropped':
+				if ($width && $height) {
+					$image->croppedImage($width, $height); // Crops the image from the centre, to given values.
+				}
+				break;
+			case 'ResizeToHeight':
+				if ($height) {
+					$image->resizeByHeight($height); // Maximum height the image resizes to, keeps proportion
+				}
+				break;
+			case 'ResizeToWidth':
+				if ($width) {
+					$image->resizeByWidth($width); // Maximum width the image resizes to, keeps proportion 
+				}
+				break;
+			default: // including None
+				break;
+		}
+
+		// Generate the markup.
+		return $image->forTemplate();
 	}
 }

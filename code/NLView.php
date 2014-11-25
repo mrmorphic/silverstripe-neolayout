@@ -165,7 +165,7 @@ class NLView extends Controller {
 		}';
 
 	// Helper function that given a serialised form, returns it cleaned. Specifically, if it is not defined, returns
-	// the default.
+	// the default, and also strips '(' and ')' wrapper if present.
 	static function normalise_serialised($serialised) {
 		if (!$serialised) {
 			$serialised = self::$default_view_contents;
