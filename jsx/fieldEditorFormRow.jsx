@@ -1,7 +1,6 @@
 'use strict';
 
-var React = require('react'),
-    $ = require('jquery');
+var React = require('react');
 
 var FieldEditorFormRow = React.createClass({
     propTypes: {
@@ -20,17 +19,20 @@ var FieldEditorFormRow = React.createClass({
 
         return this.props.dataTypes.split('|').map(function (dataType) {
             var i = 0,
+                prop = '',
                 options = [];
 
-            $.each(self.props.contextMetadata, function (key, value) {
-                if (value === dataType) {
+            for (prop in self.props.contextMetadata) {
+                if (self.props.contextMetadata.hasOwnProperty(prop) &&
+                    self.props.contextMetadata[prop] === dataType) {
+
                     options.push(
-                        <option key={i}>{key}</option>
+                        <option key={i}>{prop}</option>
                     );
 
                     i += 1;
                 }
-            });
+            }
 
             return options;
         });

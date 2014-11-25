@@ -1,16 +1,19 @@
 'use strict';
 
 var React = require('react'),
-    $ = require('jquery'),
     FieldEditorForm = require('./fieldEditorForm');
 
 var FieldEditor = React.createClass({
     propTypes: {
         data: React.PropTypes.object.isRequired,
-        metadata: React.PropTypes.object.isRequired
+        metadata: React.PropTypes.object.isRequired,
+        updateFieldBindings: React.PropTypes.func.isRequired
     },
     getInitialState: function () {
-        return { editing: false };
+        return {
+            editing: false,
+            bindings: this.props.data.bindings
+        };
     },
     getCssClasses: function (requiredClasses) {
         return this.state.editing === true ? requiredClasses : requiredClasses + ' hide';
@@ -19,19 +22,17 @@ var FieldEditor = React.createClass({
         this.setState({ editing: !this.state.editing });
     },
     render: function () {
-        if (typeof this.props.data.bindings !== 'undefined') {
-            $.each(this.props.data.bindings, function () {
-                // @todo What do we do with bindings?
-            });
-        }
-
         return (
             <div className="nl-field-editor">
                 <button type="button" onClick={this.toggleModalEditor}>Edit</button>
                 <button type="button">Remove</button>
                 <div className={this.getCssClasses('nl-modal-editor')}>
                     <h3>{this.props.data.ClassName}</h3>
-                    <FieldEditorForm data={this.props.data} metadata={this.props.metadata} toggleModalEditor={this.toggleModalEditor} />
+                    <FieldEditorForm
+                        data={this.props.data}
+                        metadata={this.props.metadata}
+                        toggleModalEditor={this.toggleModalEditor}
+                        updateFieldBindings={this.props.updateFieldBindings} />
                 </div>
                 <div className={this.getCssClasses('nl-modal-mask')}></div>
             </div>

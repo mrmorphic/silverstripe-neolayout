@@ -9,6 +9,14 @@ var Workspace = React.createClass({
         data: React.PropTypes.object.isRequired,
         metadata: React.PropTypes.object.isRequired
     },
+    getInitialState: function () {
+        return {
+            bindings: this.props.data.bindings
+        };
+    },
+    updateFieldBindings: function (value) {
+        this.setState({ bindings: value });
+    },
     createWorkspaceFields: function () {
         var self = this;
 
@@ -23,7 +31,7 @@ var Workspace = React.createClass({
 
         return (
             <div className="nl-workspace">
-                <FieldEditor data={this.props.data} metadata={this.props.metadata} />
+                <FieldEditor data={this.props.data} metadata={this.props.metadata} updateFieldBindings={this.updateFieldBindings} />
                 {workspaceFields}
             </div>
         );

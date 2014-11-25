@@ -1,14 +1,14 @@
 'use strict';
 
 var React = require('react'),
-    $ = require('jquery'),
     FieldEditorFormRow = require('./fieldEditorFormRow');
 
 var FieldEditorForm = React.createClass({
     propTypes: {
         data: React.PropTypes.object.isRequired,
         metadata: React.PropTypes.object.isRequired,
-        toggleModalEditor: React.PropTypes.func.isRequired
+        toggleModalEditor: React.PropTypes.func.isRequired,
+        updateFieldBindings: React.PropTypes.func.isRequired
     },
     getFieldSchema: function (componentType, schemas) {
         var i = 0;
@@ -27,30 +27,39 @@ var FieldEditorForm = React.createClass({
     },
     createFormRows: function (schema, contextMetadata) {
         var rows = [],
+            prop = '',
+            refName = '',
             i = 0;
 
-        $.each(schema.properties, function () {
-            var refName = 'fieldEditorRow_' + i;
+        for (prop in schema.properties) {
+            if (schema.properties.hasOwnProperty(prop)) {
+                refName = 'fieldEditorRow_' + i;
 
-            rows.push(
-                <FieldEditorFormRow name={this.name} dataTypes={this.type} contextMetadata={contextMetadata} key={i} ref={refName} />
-            );
+                rows.push(
+                    <FieldEditorFormRow
+                        name={schema.properties[prop].name}
+                        dataTypes={schema.properties[prop].type}
+                        contextMetadata={contextMetadata}
+                        key={i}
+                        ref={refName} />
+                );
 
-            i += 1;
-        });
+                i += 1;
+            }
+        }
 
         return rows;
     },
     handleSave: function () {
+        this.props.updateFieldBindings({ foo: 'bar' });
         this.props.toggleModalEditor();
     },
     handleCancel: function () {
-        // Reset each row's state
-        $.each(this.refs, function (key, ref) {
-            if (key.indexOf('fieldEditorRow') > -1) {
+        for (var prop in this.refs) {
+            if (this.refs.hasOwnProperty(prop) && this.refs[prop].indexOf('fieldEditorRow') > -1) {
                 this.replaceState(this.getInitialState());
             }
-        });
+        }
 
         this.props.toggleModalEditor();
     },

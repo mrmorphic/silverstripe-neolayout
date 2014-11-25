@@ -1,7 +1,6 @@
 'use strict';
 
 var React = require('react'),
-    $ = require('jquery'),
     PaletteField = require('./paletteField');
 
 var Palette = React.createClass({
