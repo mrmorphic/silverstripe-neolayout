@@ -1,13 +1,25 @@
+/**
+ * @file The core component used to create layouts.
+ * @module WorkspaceField
+ */
+
 'use strict';
 
 var React = require('react'),
     FieldEditor = require('./fieldEditor');
 
 var WorkspaceField = React.createClass({
+
     propTypes: {
         data: React.PropTypes.object.isRequired,
         metadata: React.PropTypes.object.isRequired,
     },
+
+    /**
+     * @func createChildFields
+     * @return {Array} Child layout fields of the current WorkspaceField.
+     * @desc Create the child components for the current WorkspaceField.
+     */
     createChildFields: function () {
         var childFields = null,
             i = 0;
@@ -28,6 +40,7 @@ var WorkspaceField = React.createClass({
 
         return childFields;
     },
+
     render: function () {
         var childFields = this.createChildFields();
 

@@ -1,19 +1,32 @@
+/**
+ * @file A sub-component of FieldEditorForm, populated with the data of a WorkspaceField schema.
+ * @module FieldEditorFormRow
+ */
+
 'use strict';
 
 var React = require('react');
 
 var FieldEditorFormRow = React.createClass({
+
     propTypes: {
         name: React.PropTypes.string.isRequired,
         dataTypes: React.PropTypes.string.isRequired,
         contextMetadata: React.PropTypes.object.isRequired
     },
+
     getInitialState: function () {
         return {
             dataSource: 'Context',
             contextDataType: ''
         };
     },
+
+    /**
+     * @func getContextOptions
+     * @return {Array}
+     * @desc Get a list of options to populate the context dropdown.
+     */
     getContextOptions: function () {
         var self = this;
 
@@ -37,9 +50,11 @@ var FieldEditorFormRow = React.createClass({
             return options;
         });
     },
+
     handleContextDataTypeChange: function (event) {
         this.setState({ contextDataType: event.target.value });
     },
+
     getDataSourceInputs: function () {
         var dataSourceInput = null,
             contextOptions = null;
@@ -59,11 +74,12 @@ var FieldEditorFormRow = React.createClass({
         }
 
         return dataSourceInput;
-        
     },
+
     handleContextChange: function (event) {
         this.setState({ dataSource: event.target.value });
     },
+
     render: function () {
         var dataSourceInputs = this.getDataSourceInputs();
 

@@ -1,3 +1,8 @@
+/**
+ * @file Wrapper component for the available fields.
+ * @module Palette
+ */
+
 'use strict';
 
 var React = require('react'),
@@ -8,15 +13,15 @@ var Palette = React.createClass({
         metadata: React.PropTypes.object.isRequired
     },
     render: function () {
-        var availableComponents = this.props.metadata.components.map(function (component, i) {
+        var availableFields = this.props.metadata.components.map(function (field, i) {
             return (
-                <PaletteField data={component} key={i} />
+                <PaletteField data={field} key={i} />
             );
         });
 
         return (
             <div className="nl-pallete">
-                {availableComponents}
+                {availableFields}
             </div>
         );
     }

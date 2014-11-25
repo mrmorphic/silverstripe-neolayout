@@ -1,3 +1,7 @@
+/**
+ * @file Entry point to the application.
+ */
+
 'use strict';
 
 var React = require('react'),

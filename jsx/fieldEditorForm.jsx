@@ -1,15 +1,29 @@
+/**
+ * @file A sub-component of FieldEditor, responsible for saving and canceling changes.
+ * @module FieldEditorForm
+ */
+
 'use strict';
 
 var React = require('react'),
     FieldEditorFormRow = require('./fieldEditorFormRow');
 
 var FieldEditorForm = React.createClass({
+
     propTypes: {
         data: React.PropTypes.object.isRequired,
         metadata: React.PropTypes.object.isRequired,
         toggleModalEditor: React.PropTypes.func.isRequired,
         updateFieldData: React.PropTypes.func.isRequired
     },
+
+    /**
+     * @func getFieldSchema
+     * @param {String} componentType The ClassName of a WorkspaceField.
+     * @param {Array} schemas Schemas defined by metadata.components.
+     * @return {Array} The schemas relating to a WorkspaceField.
+     * @desc Get a list a schemas which apply to a Workspace field.
+     */
     getFieldSchema: function (componentType, schemas) {
         var i = 0;
 
@@ -25,6 +39,14 @@ var FieldEditorForm = React.createClass({
             }
         }
     },
+
+    /**
+     * @func createFormRows
+     * @param {Object} schema
+     * @param {Object} contextMetadata
+     * @return A list of FieldEditorRow's.
+     * @desc Get a FieldEditorRow for each schema relating to the WorkspaceField.
+     */
     createFormRows: function (schema, contextMetadata) {
         var rows = [],
             prop = '',
@@ -50,19 +72,24 @@ var FieldEditorForm = React.createClass({
 
         return rows;
     },
+
+    /**
+     * @func handleSave
+     * @desc Handle saving updates to a WorkspaceField.
+     */
     handleSave: function () {
         this.props.updateFieldData({ foo: 'bar' });
         this.props.toggleModalEditor();
     },
-    handleCancel: function () {
-        for (var prop in this.refs) {
-            if (this.refs.hasOwnProperty(prop) && this.refs[prop].indexOf('fieldEditorRow') > -1) {
-                this.replaceState(this.getInitialState());
-            }
-        }
 
+    /**
+     * @func handleCancel
+     * @desc Handle canceling changes made in the editor.
+     */
+    handleCancel: function () {
         this.props.toggleModalEditor();
     },
+
     render: function () {
         var fieldSchema = this.getFieldSchema(this.props.data.ClassName, this.props.metadata.components),
             formRows = this.createFormRows(fieldSchema, this.props.metadata.context);

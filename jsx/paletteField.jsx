@@ -1,3 +1,8 @@
+/**
+ * @file A field which can be added to the Workspace.
+ * @module PaletteField
+ */
+
 'use strict';
 
 var React = require('react');
