@@ -82,6 +82,24 @@ var FieldEditorForm = React.createClass({
     },
 
     /**
+     * @func getRows
+     * @return {Array}
+     * @desc Gets the FieldEditorFormRow's belonging to the current FieldEditorForm.
+     */
+    getRows: function () {
+        var key = '',
+            rows = [];
+
+        for (key in this.refs) {
+            if (this.refs.hasOwnProperty(key) && key.indexOf('fieldEditorRow_') > -1) {
+                rows.push(this.refs[key]);
+            }
+        }
+
+        return rows;
+    },
+
+    /**
      * @func handleSave
      * @desc Handle saving updates to a WorkspaceField.
      */
@@ -95,6 +113,15 @@ var FieldEditorForm = React.createClass({
      * @desc Handle canceling changes made in the editor.
      */
     handleCancel: function () {
+        var i = 0,
+            rows = this.getRows();
+
+        // Reset each row's state
+        for (i; i < rows.length; i += 1) {
+            rows[i].replaceState(rows[i].getInitialState());
+        }
+
+        // Close the modal
         this.props.toggleModalEditor();
     },
 

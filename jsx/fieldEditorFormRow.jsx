@@ -71,13 +71,16 @@ var FieldEditorFormRow = React.createClass({
             contextOptions = this.getContextOptions();
 
             typeInput = (
-                <select className="field-editor-field" onChange={this.handleValueChange} defaultValue={this.state.value}>
+                <select className="field-editor-field" onChange={this.handleValueChange} value={this.state.value}>
                     {contextOptions}
                 </select>
             );
-        } else {
+        } else if (this.state.type === 'embedded') {
             typeInput = (
-                <input className="field-editor-field" onChange={this.handleValueChange} defaultValue={this.state.value}></input>
+                <input
+                    className="field-editor-field"
+                    type="text" onChange={this.handleValueChange}
+                    value={this.state.value} />
             );
         }
 
@@ -109,7 +112,7 @@ var FieldEditorFormRow = React.createClass({
         return (
             <div className="field-editor-row">
                 <label>{this.props.name}</label>
-                <select className="field-editor-field" onChange={this.handleTypeChange} defaultValue={this.state.type}>
+                <select className="field-editor-field" onChange={this.handleTypeChange} value={this.state.type}>
                     <option value="context">Context</option>
                     <option value="embedded">Embedded</option>
                 </select>
