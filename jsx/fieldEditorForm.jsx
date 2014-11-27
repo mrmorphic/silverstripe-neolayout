@@ -49,18 +49,26 @@ var FieldEditorForm = React.createClass({
      */
     createFormRows: function (schema, contextMetadata) {
         var rows = [],
-            prop = '',
+            key = '',
             refName = '',
-            i = 0;
+            i = 0,
+            binding = { type: '', value: '' };
 
-        for (prop in schema.properties) {
-            if (schema.properties.hasOwnProperty(prop)) {
+        for (key in schema.properties) {
+            if (schema.properties.hasOwnProperty(key)) {
                 refName = 'fieldEditorRow_' + i;
+
+                // Check if the field has a binding relating to the current row.
+                // Do this by checking if the schema's key exists in the binding.
+                if (typeof this.props.data.bindings[key] !== 'undefined') {
+                    binding = this.props.data.bindings[key];
+                }
 
                 rows.push(
                     <FieldEditorFormRow
-                        name={schema.properties[prop].name}
-                        dataTypes={schema.properties[prop].type}
+                        binding={binding}
+                        name={schema.properties[key].name}
+                        dataTypes={schema.properties[key].type}
                         contextMetadata={contextMetadata}
                         key={i}
                         ref={refName} />
