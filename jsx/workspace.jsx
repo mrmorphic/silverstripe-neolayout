@@ -35,6 +35,14 @@ var Workspace = React.createClass({
     },
 
     /**
+     * @func removeFieldFromWorkspace
+     * @desc Revomes a WorkspaceField and all of it's children from the Workspace.
+     */
+    removeFieldFromWorkspace: function (workspaceFieldId) {
+        console.log(workspaceFieldId);
+    },
+
+    /**
      * @func allocateIds
      * @param {Object} workspaceField The field you wish to assign an id to.
      * @return {Object} The updated workspaceField.
@@ -57,9 +65,10 @@ var Workspace = React.createClass({
     render: function () {
         return (
             <WorkspaceField
-                data={this.props.data}
+                data={this.state.fieldData}
                 metadata={this.props.metadata}
-                updateFieldData={this.updateFieldData} />
+                updateFieldData={this.updateFieldData}
+                removeFieldFromWorkspace={this.removeFieldFromWorkspace} />
         );
     }
 });

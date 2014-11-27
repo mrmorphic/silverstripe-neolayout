@@ -13,7 +13,8 @@ var FieldEditor = React.createClass({
     propTypes: {
         data: React.PropTypes.object.isRequired,
         metadata: React.PropTypes.object.isRequired,
-        updateFieldData: React.PropTypes.func.isRequired
+        updateFieldData: React.PropTypes.func.isRequired,
+        removeFieldFromWorkspace: React.PropTypes.func.isRequired
     },
 
     getInitialState: function () {
@@ -40,11 +41,15 @@ var FieldEditor = React.createClass({
         this.setState({ editing: !this.state.editing });
     },
 
+    removeFieldFromWorkspace: function () {
+        this.props.removeFieldFromWorkspace(this.props.data.id);
+    },
+
     render: function () {
         return (
             <div className="nl-field-editor">
                 <button type="button" onClick={this.toggleModalEditor}>Edit</button>
-                <button type="button">Remove</button>
+                <button type="button" onClick={this.removeFieldFromWorkspace}>Remove</button>
                 <div className={this.getCssClasses('nl-modal-editor')}>
                     <h3>{this.props.data.ClassName}</h3>
                     <FieldEditorForm

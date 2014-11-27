@@ -13,6 +13,8 @@ var WorkspaceField = React.createClass({
     propTypes: {
         data: React.PropTypes.object.isRequired,
         metadata: React.PropTypes.object.isRequired,
+        updateFieldData: React.PropTypes.func.isRequired,
+        removeFieldFromWorkspace: React.PropTypes.func.isRequired
     },
 
     /**
@@ -33,7 +35,8 @@ var WorkspaceField = React.createClass({
                         key={i}
                         data={this.props.data.children[i]}
                         metadata={this.props.metadata}
-                        updateFieldData={this.props.updateFieldData} />
+                        updateFieldData={this.props.updateFieldData}
+                        removeFieldFromWorkspace={this.props.removeFieldFromWorkspace} />
                 );
             };
         }
@@ -50,7 +53,8 @@ var WorkspaceField = React.createClass({
                 <FieldEditor
                     data={this.props.data}
                     metadata={this.props.metadata}
-                    updateFieldData={this.props.updateFieldData} />
+                    updateFieldData={this.props.updateFieldData}
+                    removeFieldFromWorkspace={this.props.removeFieldFromWorkspace} />
 
                 {childFields}
             </div>
