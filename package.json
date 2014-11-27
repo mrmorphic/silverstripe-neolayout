@@ -2,6 +2,7 @@
   "name": "neolayout",
   "private": true,
   "dependencies": {
+    "node-uuid": "^1.4.1",
     "react": "^0.12.1"
   },
   "devDependencies": {
