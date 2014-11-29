@@ -1,4 +1,7 @@
-<div id="neolayout" data-view-controller-url="$ViewControllerURL" data-metadata="$EditorMetadata" data-workspace="$ComponentData">
+<div id="neolayout" data-view-controller-url="$ViewControllerURL">
     <div id="palette"></div>
     <div id="workspace"></div>
+    <div id="neolayout-data" data-metadata="$EditorMetadata">
+        $Field
+    </div>
 </div>

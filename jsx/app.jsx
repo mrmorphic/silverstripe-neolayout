@@ -10,9 +10,8 @@ var React = require('react'),
 
 window.jQuery('#neolayout').entwine({
     onmatch: function () {
-        var rootElement = document.getElementById('neolayout'),
-            metadata = JSON.parse(rootElement.getAttribute('data-metadata')),
-            workspaceData = JSON.parse(rootElement.getAttribute('data-workspace'));
+        var metadata = JSON.parse(document.getElementById('neolayout-data').getAttribute('data-metadata')),
+            workspaceData = JSON.parse(document.getElementById('Form_EditForm_EditableLayout').value);
 
         React.render(
             <Palette metadata={metadata} />,

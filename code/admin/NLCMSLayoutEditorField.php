@@ -25,15 +25,11 @@ class NLCMSLayoutEditorField extends HiddenField {
 	}
 
 	function getValue() {
-		return "(" . Convert::raw2att(NLView::normalise_serialised($this->value)) . ")";
+		return Convert::raw2att(NLView::normalise_serialised($this->value));
 	}
 
 	function Field($properties = array()) {
 		return '<input id="' . $this->ID() . '" name="' . $this->getName() . '" type="hidden" value="' . $this->getValue() . '" />';
-	}
-
-	public function getComponentData() {
-		return Convert::raw2att(NLView::normalise_serialised($this->value));
 	}
 
 	public function setViewControllerURL($url) {
