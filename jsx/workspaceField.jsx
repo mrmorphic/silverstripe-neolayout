@@ -14,7 +14,26 @@ var WorkspaceField = React.createClass({
         data: React.PropTypes.object.isRequired,
         metadata: React.PropTypes.object.isRequired,
         updateFieldData: React.PropTypes.func.isRequired,
-        removeFieldFromWorkspace: React.PropTypes.func.isRequired
+        removeFieldFromWorkspace: React.PropTypes.func.isRequired,
+        fieldIsRoot: React.PropTypes.func.isRequired
+    },
+
+    /**
+     * @func canEdit
+     * @return {Boolean}
+     * @desc Returns true if the user is able to edit the field.
+     */
+    canEdit: function () {
+        return true;
+    },
+
+    /**
+     * @func canRemove
+     * @return {Boolean}
+     * @desc Returns true if the user is able to remove the field from the workspace.
+     */
+    canRemove: function () {
+        return this.props.fieldIsRoot(this.props.data.id) === false;
     },
 
     /**
@@ -36,7 +55,8 @@ var WorkspaceField = React.createClass({
                         data={this.props.data.children[i]}
                         metadata={this.props.metadata}
                         updateFieldData={this.props.updateFieldData}
-                        removeFieldFromWorkspace={this.props.removeFieldFromWorkspace} />
+                        removeFieldFromWorkspace={this.props.removeFieldFromWorkspace}
+                        fieldIsRoot={this.props.fieldIsRoot} />
                 );
             };
         }
@@ -54,7 +74,9 @@ var WorkspaceField = React.createClass({
                     data={this.props.data}
                     metadata={this.props.metadata}
                     updateFieldData={this.props.updateFieldData}
-                    removeFieldFromWorkspace={this.props.removeFieldFromWorkspace} />
+                    removeFieldFromWorkspace={this.props.removeFieldFromWorkspace}
+                    canEdit={this.canEdit}
+                    canRemove={this.canRemove} />
 
                 {childFields}
             </div>

@@ -14,7 +14,9 @@ var FieldEditor = React.createClass({
         data: React.PropTypes.object.isRequired,
         metadata: React.PropTypes.object.isRequired,
         updateFieldData: React.PropTypes.func.isRequired,
-        removeFieldFromWorkspace: React.PropTypes.func.isRequired
+        removeFieldFromWorkspace: React.PropTypes.func.isRequired,
+        canEdit: React.PropTypes.func.isRequired,
+        canRemove: React.PropTypes.func.isRequired
     },
 
     getInitialState: function () {
@@ -45,11 +47,37 @@ var FieldEditor = React.createClass({
         this.props.removeFieldFromWorkspace(this.props.data.id);
     },
 
+    /**
+     * @func getEditorButtons
+     * @return {Object}
+     * @desc Generate the buttons available in the editor.
+     */
+    getEditorButtons: function () {
+        var editButton = null,
+            removeButton = null;
+
+        if (this.props.canEdit()) {
+            editButton = <button type="button" onClick={this.toggleModalEditor}>Edit</button>;
+        }
+
+        if (this.props.canRemove()) {
+            removeButton = <button type="button" onClick={this.removeFieldFromWorkspace}>Remove</button>;
+        }
+
+        return (
+            <div className="actions">
+                {editButton}
+                {removeButton}
+            </div>
+        );
+    },
+
     render: function () {
+        var editorButtons = this.getEditorButtons();
+
         return (
             <div className="nl-field-editor">
-                <button type="button" onClick={this.toggleModalEditor}>Edit</button>
-                <button type="button" onClick={this.removeFieldFromWorkspace}>Remove</button>
+                {editorButtons}
                 <div className={this.getCssClasses('nl-modal-editor')}>
                     <h3>{this.props.data.ClassName}</h3>
                     <FieldEditorForm
