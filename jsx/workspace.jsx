@@ -93,6 +93,9 @@ var Workspace = React.createClass({
             // We've modified the state directly, rather than via setState(),
             // so we have to call forceUpdate() to re-render.
             this.forceUpdate();
+
+            // Save the new state to the CMS input field so we can save to the DB.
+            document.getElementById('Form_EditForm_EditableLayout').value = JSON.stringify(this.state.fieldData);
         }
     },
 
