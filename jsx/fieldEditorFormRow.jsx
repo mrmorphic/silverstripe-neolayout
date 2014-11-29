@@ -11,8 +11,7 @@ var FieldEditorFormRow = React.createClass({
 
     propTypes: {
         binding: React.PropTypes.object.isRequired,
-        name: React.PropTypes.string.isRequired,
-        dataTypes: React.PropTypes.string.isRequired,
+        schema: React.PropTypes.object.isRequired,
         contextMetadata: React.PropTypes.object.isRequired
     },
 
@@ -28,14 +27,14 @@ var FieldEditorFormRow = React.createClass({
     getContextOptions: function () {
         var self = this;
 
-        return this.props.dataTypes.split('|').map(function (dataType) {
+        return this.props.schema.types.split('|').map(function (type) {
             var i = 0,
                 prop = '',
                 options = [];
 
             for (prop in self.props.contextMetadata) {
                 if (self.props.contextMetadata.hasOwnProperty(prop) &&
-                    self.props.contextMetadata[prop] === dataType) {
+                    self.props.contextMetadata[prop] === type) {
 
                     options.push(
                         <option key={i}>{prop}</option>
@@ -65,11 +64,11 @@ var FieldEditorFormRow = React.createClass({
      */
     getTypeInputs: function () {
         var typeInput = null,
-            contextOptions = null;
-
-        if (this.state.type === 'context') {
+            contextOptions = null,
+            contextValue = null,
             contextOptions = this.getContextOptions();
 
+        if (this.state.type === 'context' && contextOptions[0].length > 0) {
             typeInput = (
                 <select className="field-editor-field" onChange={this.handleValueChange} value={this.state.value}>
                     {contextOptions}
@@ -93,12 +92,24 @@ var FieldEditorFormRow = React.createClass({
      * @desc Event handler for changes triggered by the type dropdown. Switching between context and embedded.
      */
     handleTypeChange: function (event) {
-        // As well as setting the type, we also have to update the value.
-        // Clear the value, unless we're changing back to the initial type (context / embedded),
-        // in which case the value should be what we initially set.
-
         var newType = event.target.value.toLowerCase(),
-            newValue = newType !== this.props.binding.type ? '' : this.props.binding.value;
+            newValue = '',
+            contextOptions = this.getContextOptions();
+
+        // If we're changing to a type that's not initial type.
+        if (newType !== this.props.binding.type) {
+            // The new type is not the initial type.
+            // If the new type is `context` then select the first option,
+            // otherwise set an empty string, for embedded.
+            if (newType === 'context' && contextOptions[0].length > 0) {
+                newValue = contextOptions[0][0].props.children.toString();
+            } else {
+                newValue = '';
+            }
+        } else {
+            // Set the value back to the initial value.
+            newValue = this.props.binding.value;
+        }
 
         this.setState({
             type: newType,
@@ -110,8 +121,8 @@ var FieldEditorFormRow = React.createClass({
         var typeInputs = this.getTypeInputs();
 
         return (
-            <div className="field-editor-row">
-                <label>{this.props.name}</label>
+            <div className="field-editor-row" data-type={this.props.schema.key}>
+                <label>{this.props.schema.name}</label>
                 <select className="field-editor-field" onChange={this.handleTypeChange} value={this.state.type}>
                     <option value="context">Context</option>
                     <option value="embedded">Embedded</option>

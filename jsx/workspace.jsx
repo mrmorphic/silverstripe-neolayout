@@ -26,12 +26,33 @@ var Workspace = React.createClass({
 
     /**
      * @func updateFieldData
-     * @param {Object} value The new value of the layout field.
-     * @desc Update the Workspace's state.
+     * @param {String} workspaceFieldId The id of the WorkspaceField you want to update.
+     * @param {Object} binding The new value of the WorkspaceField.
+     * @param {Object} workspaceField The workspace field you want to start at. If undefined will recursivly search from the root element.
+     * @desc Update the Workspace's state. Will recurse down children from the `workspaceField` param.
      */
-    updateFieldData: function (value) {
-        console.log('field data updated');
-        console.log(value);
+    updateFieldData: function (workspaceFieldId, binding, workspaceField) {
+        var i = 0;
+
+        if (typeof workspaceField === 'undefined') {
+            workspaceField = this.state.fieldData;
+        }
+
+        if (workspaceField.id !== workspaceFieldId) {
+            // The id's don't match, so try the children.
+            if (typeof workspaceField.children !== 'undefined' && workspaceField.children.length > 0) {
+                for (i; i < workspaceField.children.length; i += 1) {
+                    this.updateFieldData(workspaceFieldId, binding, workspaceField.children[i]);
+                }
+            }
+        } else {
+            // Update the WorkspaceField's binding value.
+            workspaceField.bindings = binding;
+
+            // We've modified the state directly, rather than via setState(),
+            // so we have to call forceUpdate() to re-render.
+            this.forceUpdate();
+        }
     },
 
     /**

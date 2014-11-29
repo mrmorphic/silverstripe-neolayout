@@ -45,14 +45,15 @@ var FieldEditorForm = React.createClass({
      * @param {Object} schema
      * @param {Object} contextMetadata
      * @return A list of FieldEditorRow's.
-     * @desc Get a FieldEditorRow for each schema relating to the WorkspaceField.
+     * @desc Create a FieldEditorRow for each schema relating to the WorkspaceField.
      */
     createFormRows: function (schema, contextMetadata) {
         var rows = [],
+            schemaData = {},
             key = '',
             refName = '',
             i = 0,
-            binding = { type: '', value: '' };
+            binding = {};
 
         for (key in schema.properties) {
             if (schema.properties.hasOwnProperty(key)) {
@@ -62,13 +63,20 @@ var FieldEditorForm = React.createClass({
                 // Do this by checking if the schema's key exists in the binding.
                 if (typeof this.props.data.bindings[key] !== 'undefined') {
                     binding = this.props.data.bindings[key];
+                } else {
+                    binding = { type: 'embedded', value: '' };
                 }
+
+                schemaData = {
+                    name: schema.properties[key].name,
+                    types: schema.properties[key].type,
+                    key: key
+                };
 
                 rows.push(
                     <FieldEditorFormRow
                         binding={binding}
-                        name={schema.properties[key].name}
-                        dataTypes={schema.properties[key].type}
+                        schema={schemaData}
                         contextMetadata={contextMetadata}
                         key={i}
                         ref={refName} />
@@ -102,9 +110,19 @@ var FieldEditorForm = React.createClass({
     /**
      * @func handleSave
      * @desc Handle saving updates to a WorkspaceField.
+     * @todo Refactor so we only save one binding (row).
      */
     handleSave: function () {
-        this.props.updateFieldData({ foo: 'bar' });
+        var i = 0,
+            rows = this.getRows(),
+            binding = {};
+
+        // Extract row data and save it.
+        for (i; i < rows.length; i += 1) {
+            binding[rows[i].getDOMNode().getAttribute('data-type')] = rows[i].state;
+        }
+
+        this.props.updateFieldData(this.props.data.id, binding);
         this.props.toggleModalEditor();
     },
 
