@@ -4,10 +4,7 @@ after: '*'
 ---
 LeftAndMain:
   extra_requirements_javascript:
-    - neolayout/javascript/nl_cms_editor.js
-    - neolayout/javascript/nl_cms_form.js
-    - neolayout/javascript/nl_cms_fields.js
+    - neolayout/javascript/app.js
 
   extra_requirements_css:
-    - neolayout/css/nl_cms_editor.css
-    - neolayout/thirdparty/jsonform/deps/opts/bootstrap.css
+    - neolayout/css/main.css

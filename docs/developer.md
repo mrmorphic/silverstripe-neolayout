@@ -30,6 +30,9 @@ Neolayouts requires SilverStripe 3.2 or higher.
 
 Installation
 ============
+ *  Run `npm install` from the module's root directory. This will download all
+    front-end dependencies and bundle the app for you.
 
 Configuration
 =============
+ * Run `npm run build` to build the front-end application.
