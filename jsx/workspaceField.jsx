@@ -5,7 +5,8 @@
 
 'use strict';
 
-var React = require('react'),
+var $ = require('jquery'),
+    React = require('react'),
     FieldEditor = require('./fieldEditor');
 
 var WorkspaceField = React.createClass({
@@ -15,7 +16,8 @@ var WorkspaceField = React.createClass({
         metadata: React.PropTypes.object.isRequired,
         updateFieldData: React.PropTypes.func.isRequired,
         removeFieldFromWorkspace: React.PropTypes.func.isRequired,
-        fieldIsRoot: React.PropTypes.func.isRequired
+        fieldIsRoot: React.PropTypes.func.isRequired,
+        addWorkspaceField: React.PropTypes.func.isRequired
     },
 
     /**
@@ -56,7 +58,8 @@ var WorkspaceField = React.createClass({
                         metadata={this.props.metadata}
                         updateFieldData={this.props.updateFieldData}
                         removeFieldFromWorkspace={this.props.removeFieldFromWorkspace}
-                        fieldIsRoot={this.props.fieldIsRoot} />
+                        fieldIsRoot={this.props.fieldIsRoot}
+                        addWorkspaceField={this.props.addWorkspaceField} />
                 );
             };
         }
@@ -64,11 +67,42 @@ var WorkspaceField = React.createClass({
         return childFields;
     },
 
+    /**
+     * @func _allowDrop
+     * @desc By default, data/elements cannot be dropped in other elements. To allow a drop, we must prevent the default handling of the element.
+     */
+    _allowDrop: function (event) {
+        event.preventDefault();
+    },
+
+    /**
+     * @func _handleDrop
+     * @desc Handle dropping PaletteField's onto the WorkspaceField.
+     */
+    _handleDrop: function (event) {
+        // This function gets called once for every WorkspaceField in the target
+        // node's parent chain. So if the WorkspaceField recieving the drop event
+        // is nested inside another WorkspaceField, _handleDrop will get call on
+        // on both WorkspaceField's. So we only care about the the WorkspaceField
+        // that is closest to event.target.
+
+        var $target = $(event.target);
+
+        if ($target.data('uuid') === this.props.data.id ||
+            $target.closest('.nl-workspace-field').data('uuid') === this.props.data.id) {
+
+            this.props.addWorkspaceField({
+                parentId: this.props.data.id,
+                fieldType: event.dataTransfer.getData('text')
+            });
+        }
+    },
+
     render: function () {
         var childFields = this.createChildFields();
 
         return (
-            <div className="nl-component nl-workspace-field">
+            <div className="nl-component nl-workspace-field" onDrop={this._handleDrop} onDragOver={this._allowDrop} data-uuid={this.props.data.id}>
                 <h3>{this.props.data.ClassName}</h3>
                 <FieldEditor
                     data={this.props.data}

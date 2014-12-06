@@ -30,6 +30,7 @@ var Workspace = React.createClass({
      * @param {Object} binding The new value of the WorkspaceField.
      * @param {Object} workspaceField The workspace field you want to start at. If undefined will recursivly search from the root element.
      * @desc Update the Workspace's state. Will recurse down children from the `workspaceField` param.
+     * @todo Use _getFieldById to get the field
      */
     updateFieldData: function (workspaceFieldId, binding, workspaceField) {
         var i = 0;
@@ -59,8 +60,60 @@ var Workspace = React.createClass({
     },
 
     /**
+     * @func _getFieldById
+     * @param {String} id The id of the WorkspaceField you're looking for
+     * @param {Object} parent The field to check against (if undefined, starts from root)
+     */
+    _getFieldById: function (id, parent) {
+        var i = 0,
+            field = null;
+
+        if (typeof parent === 'undefined') {
+            parent = this.state.fieldData;
+        }
+
+        if (id !== parent.id) {
+            if (typeof parent.children !== 'undefined' && parent.children.length > 0) {
+                for (i; i < parent.children.length; i += 1) {
+                    field = this._getFieldById(id, parent.children[i]);
+
+                    if (field !== null) {
+                        break;
+                    }
+                }
+            }
+        } else {
+            field = parent;
+        }
+
+        return field;
+    },
+
+    /**
+     * @func _addWorkspaceField
+     * @param {Object} data
+     * @desc Add a workspce field to the Workspace.
+     */
+    _addWorkspaceField: function (data) {
+        var parentField = this._getFieldById(data.parentId);
+
+        parentField.children = parentField.children || [];
+
+        parentField.children.push({
+            ClassName: data.fieldType,
+            bindings: {},
+            id: uuid.v4()
+        });
+
+        this.forceUpdate();
+
+        document.getElementById('Form_EditForm_EditableLayout').value = JSON.stringify(this.state.fieldData);
+    },
+
+    /**
      * @func removeFieldFromWorkspace
      * @desc Revomes a WorkspaceField and all of it's children from the Workspace.
+     * @todo Use _getFieldById to get the field
      */
     removeFieldFromWorkspace: function (workspaceFieldId, workspaceField, parent) {
         var i = 0;
@@ -154,7 +207,8 @@ var Workspace = React.createClass({
                 metadata={this.props.metadata}
                 updateFieldData={this.updateFieldData}
                 removeFieldFromWorkspace={this.removeFieldFromWorkspace}
-                fieldIsRoot={this.fieldIsRoot} />
+                fieldIsRoot={this.fieldIsRoot}
+                addWorkspaceField={this._addWorkspaceField} />
         );
     },
 
