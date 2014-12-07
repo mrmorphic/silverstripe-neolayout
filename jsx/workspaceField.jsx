@@ -100,7 +100,7 @@ var WorkspaceField = React.createClass({
             fieldData: this.props.data
         };
 
-        if (this._nodeBelongsToField(event.target)) {
+        if (this._nodeBelongsToField(event.target) || this.getDOMNode() === event.target) {
             event.dataTransfer.setData('text', JSON.stringify(data));
         }
     },
@@ -122,7 +122,7 @@ var WorkspaceField = React.createClass({
     _handleDrop: function (event) {
         var data;
 
-        if (this._nodeBelongsToField(event.target)) {
+        if (this._nodeBelongsToField(event.target) || this.getDOMNode() === event.target) {
             data = JSON.parse(event.dataTransfer.getData('text'));
 
             // Check the type of field being dropped.
