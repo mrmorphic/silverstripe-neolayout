@@ -17,7 +17,8 @@ var WorkspaceField = React.createClass({
         updateFieldData: React.PropTypes.func.isRequired,
         removeFieldFromWorkspace: React.PropTypes.func.isRequired,
         fieldIsRoot: React.PropTypes.func.isRequired,
-        addWorkspaceField: React.PropTypes.func.isRequired
+        addWorkspaceField: React.PropTypes.func.isRequired,
+        moveWorkspaceField: React.PropTypes.func.isRequired
     },
 
     /**
@@ -59,7 +60,8 @@ var WorkspaceField = React.createClass({
                         updateFieldData={this.props.updateFieldData}
                         removeFieldFromWorkspace={this.props.removeFieldFromWorkspace}
                         fieldIsRoot={this.props.fieldIsRoot}
-                        addWorkspaceField={this.props.addWorkspaceField} />
+                        addWorkspaceField={this.props.addWorkspaceField}
+                        moveWorkspaceField={this.props.moveWorkspaceField} />
                 );
             };
         }
@@ -76,25 +78,55 @@ var WorkspaceField = React.createClass({
     },
 
     /**
+     * @func _nodeBelongsToField
+     * @param {Object} node A DOM node
+     * @return {Boolean}
+     * @desc Check if a DOM node is part of a WorkspaceField.
+     */
+    _nodeBelongsToField: function (node) {
+        var $node = $(node);
+
+        return $node.data('uuid') === this.props.data.id ||
+            $node.closest('.nl-workspace-field').data('uuid') === this.props.data.id;
+    },
+
+    /**
+     * @func _handleDragStart
+     * @desc Handle the drag event on WorkspaceField's
+     */
+    _handleDragStart: function (event) {
+        var data = {
+            fieldType: "WorkspaceField",
+            fieldData: this.props.data
+        };
+
+        if (this._nodeBelongsToField(event.target)) {
+            event.dataTransfer.setData('text', JSON.stringify(data));
+        }
+    },
+
+    /**
      * @func _handleDrop
-     * @desc Handle dropping PaletteField's onto the WorkspaceField.
+     * @desc Handle the drop event on a WorkspaceField. Handles dropping of PaletteField's and other WorkspaceField's.
      */
     _handleDrop: function (event) {
-        // This function gets called once for every WorkspaceField in the target
-        // node's parent chain. So if the WorkspaceField recieving the drop event
-        // is nested inside another WorkspaceField, _handleDrop will get call on
-        // on both WorkspaceField's. So we only care about the the WorkspaceField
-        // that is closest to event.target.
+        var data;
 
-        var $target = $(event.target);
+        if (this._nodeBelongsToField(event.target)) {
+            data = JSON.parse(event.dataTransfer.getData('text'));
 
-        if ($target.data('uuid') === this.props.data.id ||
-            $target.closest('.nl-workspace-field').data('uuid') === this.props.data.id) {
-
-            this.props.addWorkspaceField({
-                parentId: this.props.data.id,
-                fieldType: event.dataTransfer.getData('text')
-            });
+            // Check the type of field being dropped.
+            if (data.fieldType === "PaletteField") {
+                this.props.addWorkspaceField({
+                    parentId: this.props.data.id,
+                    fieldType: data.fieldData.componentType
+                });
+            } else if (data.fieldType === "WorkspaceField") {
+                this.props.moveWorkspaceField({
+                    fieldId: data.fieldData.id, // Field that's moving
+                    toId: this.props.data.id // Parent element we're moving to
+                });
+            }
         }
     },
 
@@ -102,7 +134,14 @@ var WorkspaceField = React.createClass({
         var childFields = this.createChildFields();
 
         return (
-            <div className="nl-component nl-workspace-field" onDrop={this._handleDrop} onDragOver={this._allowDrop} data-uuid={this.props.data.id}>
+            <div
+                className="nl-component nl-workspace-field"
+                data-uuid={this.props.data.id}
+                draggable="true"
+                onDragStart={this._handleDragStart}
+                onDrop={this._handleDrop}
+                onDragOver={this._allowDrop}>
+
                 <h3>{this.props.data.ClassName}</h3>
                 <FieldEditor
                     data={this.props.data}

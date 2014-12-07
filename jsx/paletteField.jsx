@@ -17,8 +17,12 @@ var PaletteField = React.createClass({
      * @desc Handle the drag event on PaletteField's
      */
     _handleDragStart: function (event) {
-        // Set the type of field we want to create when the field is dropped.
-        event.dataTransfer.setData('text', this.props.data.componentType);
+        var data = {
+            fieldType: "PaletteField",
+            fieldData: this.props.data
+        };
+
+        event.dataTransfer.setData('text', JSON.stringify(data));
     },
 
     render: function () {

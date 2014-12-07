@@ -90,6 +90,29 @@ var Workspace = React.createClass({
     },
 
     /**
+     * @func _moveWorkspaceField
+     * @param {Object} data
+     * @param {String} data.fieldId Field that's getting moved
+     * @param {String} data.toId Parent we're moving the field to
+     * @desc Move a workspace field to a new parent.
+     */
+    _moveWorkspaceField: function (data) {
+        var field = this._getFieldById(data.fieldId),
+            newParent = this._getFieldById(data.toId);
+
+        // Remove the field from its current location
+        this.removeFieldFromWorkspace(field.id);
+
+        // Add the field to its new location.
+        newParent.children = newParent.children || [];
+        newParent.children.push(field);
+
+        this.forceUpdate();
+
+        document.getElementById('Form_EditForm_EditableLayout').value = JSON.stringify(this.state.fieldData);
+    },
+
+    /**
      * @func _addWorkspaceField
      * @param {Object} data
      * @desc Add a workspce field to the Workspace.
@@ -208,7 +231,8 @@ var Workspace = React.createClass({
                 updateFieldData={this.updateFieldData}
                 removeFieldFromWorkspace={this.removeFieldFromWorkspace}
                 fieldIsRoot={this.fieldIsRoot}
-                addWorkspaceField={this._addWorkspaceField} />
+                addWorkspaceField={this._addWorkspaceField}
+                moveWorkspaceField={this._moveWorkspaceField} />
         );
     },
 
