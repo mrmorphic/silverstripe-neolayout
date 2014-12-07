@@ -106,6 +106,16 @@ var WorkspaceField = React.createClass({
     },
 
     /**
+     * @func _hasAncestor
+     * @param {String} id
+     * @desc Check if the current WorkspaceField has an ancestor matching a WorkspaceField ID.
+     * @todo Do this via React rather than DOM.
+     */
+    _hasAncestor: function (id) {
+        return ($.contains($('[data-uuid="' + id + '"]')[0], this.getDOMNode()));
+    },
+
+    /**
      * @func _handleDrop
      * @desc Handle the drop event on a WorkspaceField. Handles dropping of PaletteField's and other WorkspaceField's.
      */
@@ -122,10 +132,13 @@ var WorkspaceField = React.createClass({
                     fieldType: data.fieldData.componentType
                 });
             } else if (data.fieldType === "WorkspaceField") {
-                this.props.moveWorkspaceField({
-                    fieldId: data.fieldData.id, // Field that's moving
-                    toId: this.props.data.id // Parent element we're moving to
-                });
+                // Don't allow dropping parents onto children.
+                if (!this._hasAncestor(data.fieldData.id)) {
+                    this.props.moveWorkspaceField({
+                        fieldId: data.fieldData.id, // Field that's moving
+                        toId: this.props.data.id // Parent element we're moving to
+                    });
+                }
             }
         }
     },

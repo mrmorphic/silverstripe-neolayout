@@ -117,7 +117,6 @@ var Workspace = React.createClass({
     /**
      * @func removeFieldFromWorkspace
      * @desc Revomes a WorkspaceField and all of it's children from the Workspace.
-     * @todo Use _getFieldById to get the field
      */
     removeFieldFromWorkspace: function (workspaceFieldId, workspaceField, parent) {
         var i = 0;
