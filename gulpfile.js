@@ -25,11 +25,21 @@ gulp.task('js', function () {
 
             gulp.src(['./javascript/build/app.js'])
                 .pipe(browserified)
-                //.pipe(uglify())
+                .pipe(uglify())
                 .pipe(gulp.dest('./javascript')).on('end', function () {
                     del('./javascript/build/');
                 });
         });
+});
+
+gulp.task('js:debug', function () {
+    gulp.src('./jsx/**/*.jsx')
+        .pipe(react())
+        .pipe(gulp.dest('./javascript/build'));
+});
+
+gulp.task('clean:js', function () {
+    del('./javascript/build/');
 });
 
 gulp.task('default', ['css', 'js']);
