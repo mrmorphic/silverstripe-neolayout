@@ -1,0 +1,8 @@
+{
+    componentType: "NLHorizontalBoxLayout",
+    description: "Lets you group other items, and arrange them horizontally",
+    display: "block",
+    imageURL: "neolayout/images/unknown-component.png",
+    name: "Horizontal Box layout",
+    properties: []
+}

@@ -1,0 +1,24 @@
+{
+    componentType: "NLLinkComponent",
+    description: "Link to this site or another site",
+    display: "inline",
+    imageURL: "neolayout/images/unknown-component.png",
+    name: "Link",
+    properties: {
+        ExternalURL: {
+            description: "If the link is to external website, this contains the URL.",
+            name: "URL",
+            type: "Varchar"
+        },
+        InternalPage: {
+            description: "If the link to is a page on this website, this is the selected page.",
+            name: "Site page",
+            type: "NLObjectReference('SiteTree')"
+        },
+        LinkText: {
+            description: "Text to display in the link if no other components are put into the link.",
+            name: "Link text",
+            type: "Text"
+        }
+    }
+}

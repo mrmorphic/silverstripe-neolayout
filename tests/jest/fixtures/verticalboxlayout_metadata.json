@@ -1,0 +1,8 @@
+{
+    componentType: "NLVerticalBoxLayout",
+    description: "Lets you group other items, and arrange them vertically",
+    display: "block",
+    imageURL: "neolayout/images/unknown-component.png",
+    name: "Vertical Box layout",
+    properties: []
+}

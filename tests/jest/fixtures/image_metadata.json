@@ -1,0 +1,39 @@
+{
+    componentType: "NLImageComponent"
+    description: "An image, from this site or another",
+    display: "inline",
+    imageURL: "neolayout/images/unknown-component.png",
+    name: "Image",
+    properties: {
+        AltText: {
+            description: "Alt text of the image.",
+            name: "Alt text",
+            type: "Text"
+        },
+        ExternalURL: {
+            description: "If the image is external to site or not in assets, this contains the URL.",
+            name: "URL",
+            type: "Varchar"
+        },
+        Height: {
+            description: "If provided, the height of the image in pixels, used for resizing.",
+            name: "Height",
+            type: "Int"
+        },
+        InternalImage: {
+            description: "If the image is on this site, this is the selected image.",
+            name: "Site image",
+            type: "NLObjectReference('Image')"
+        },
+        ResizingOption: {
+            description: "If the image is to be displayed in a different sized area, this determines how it is resized (images on this site only).",
+            name: "Resizing",
+            type: "Enum('None,Resized,Scaled,Padded,Cropped,ResizeToHeight,ResizeToWidth','None')"
+        },
+        Width: {
+            description: "If provided, the width of the image in pixels, used for resizing.",
+            name: "Width",
+            type: "Int"
+        }
+    }
+}

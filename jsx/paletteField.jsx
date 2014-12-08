@@ -28,8 +28,8 @@ var PaletteField = React.createClass({
     render: function () {
         return (
             <div className="nl-component nl-palette-field" draggable="true" onDragStart={this._handleDragStart}>
-                <p><strong>{this.props.data.name}</strong></p>
-                <p>{this.props.data.description}</p>
+                <p className="name">{this.props.data.name}</p>
+                <p className="description">{this.props.data.description}</p>
             </div>
         );
     }
