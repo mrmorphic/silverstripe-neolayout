@@ -21,13 +21,13 @@
 * [PaletteField](#module_PaletteField)
   * [PaletteField~_handleDragStart()](#module_PaletteField.._handleDragStart)
 * [Workspace](#module_Workspace)
-  * [Workspace~_updateFieldData(id, binding)](#module_Workspace.._updateFieldData)
+  * [Workspace~_allocateIds(workspaceField)](#module_Workspace.._allocateIds)
   * [Workspace~_getFieldById(id, parent)](#module_Workspace.._getFieldById)
-  * [Workspace~_moveWorkspaceField(data)](#module_Workspace.._moveWorkspaceField)
-  * [Workspace~_addWorkspaceField(data)](#module_Workspace.._addWorkspaceField)
-  * [Workspace~removeFieldFromWorkspace()](#module_Workspace..removeFieldFromWorkspace)
-  * [Workspace~fieldIsRoot(id)](#module_Workspace..fieldIsRoot)
-  * [Workspace~allocateIds(workspaceField)](#module_Workspace..allocateIds)
+  * [Workspace~_updateFieldData(id, binding)](#module_Workspace.._updateFieldData)
+  * [Workspace~_removeFieldFromWorkspace()](#module_Workspace.._removeFieldFromWorkspace)
+  * [Workspace~_moveWorkspaceField(fieldId, toId)](#module_Workspace.._moveWorkspaceField)
+  * [Workspace~_addWorkspaceField(parentId, fieldType)](#module_Workspace.._addWorkspaceField)
+  * [Workspace~_fieldIsRoot(id)](#module_Workspace.._fieldIsRoot)
 * [WorkspaceField](#module_WorkspaceField)
   * [WorkspaceField~canEdit()](#module_WorkspaceField..canEdit)
   * [WorkspaceField~canRemove()](#module_WorkspaceField..canRemove)
@@ -183,14 +183,32 @@ Wrapper component for the various layout types.
 **Members**
 
 * [Workspace](#module_Workspace)
-  * [Workspace~_updateFieldData(id, binding)](#module_Workspace.._updateFieldData)
+  * [Workspace~_allocateIds(workspaceField)](#module_Workspace.._allocateIds)
   * [Workspace~_getFieldById(id, parent)](#module_Workspace.._getFieldById)
-  * [Workspace~_moveWorkspaceField(data)](#module_Workspace.._moveWorkspaceField)
-  * [Workspace~_addWorkspaceField(data)](#module_Workspace.._addWorkspaceField)
-  * [Workspace~removeFieldFromWorkspace()](#module_Workspace..removeFieldFromWorkspace)
-  * [Workspace~fieldIsRoot(id)](#module_Workspace..fieldIsRoot)
-  * [Workspace~allocateIds(workspaceField)](#module_Workspace..allocateIds)
+  * [Workspace~_updateFieldData(id, binding)](#module_Workspace.._updateFieldData)
+  * [Workspace~_removeFieldFromWorkspace()](#module_Workspace.._removeFieldFromWorkspace)
+  * [Workspace~_moveWorkspaceField(fieldId, toId)](#module_Workspace.._moveWorkspaceField)
+  * [Workspace~_addWorkspaceField(parentId, fieldType)](#module_Workspace.._addWorkspaceField)
+  * [Workspace~_fieldIsRoot(id)](#module_Workspace.._fieldIsRoot)
 
+<a name="module_Workspace.._allocateIds"></a>
+##Workspace~_allocateIds(workspaceField)
+Recursivly allocate id's to a WorkspaceField. WorkspaceField's with an existing id are ignored.
+
+**Params**
+
+- workspaceField `Object` - The field you wish to assign an id to.  
+
+**Scope**: inner function of [Workspace](#module_Workspace)  
+**Returns**: `Object` - The updated workspaceField.  
+<a name="module_Workspace.._getFieldById"></a>
+##Workspace~_getFieldById(id, parent)
+**Params**
+
+- id `String` - The id of the WorkspaceField you're looking for  
+- parent `Object` - The field to check against (if undefined, starts from root)  
+
+**Scope**: inner function of [Workspace](#module_Workspace)  
 <a name="module_Workspace.._updateFieldData"></a>
 ##Workspace~_updateFieldData(id, binding)
 Update the Workspace's state. Will recurse down children from the `workspaceField` param.
@@ -201,41 +219,34 @@ Update the Workspace's state. Will recurse down children from the `workspaceFiel
 - binding `Object` - The new value of the WorkspaceField.  
 
 **Scope**: inner function of [Workspace](#module_Workspace)  
-<a name="module_Workspace.._getFieldById"></a>
-##Workspace~_getFieldById(id, parent)
-**Params**
-
-- id `String` - The id of the WorkspaceField you're looking for  
-- parent `Object` - The field to check against (if undefined, starts from root)  
+<a name="module_Workspace.._removeFieldFromWorkspace"></a>
+##Workspace~_removeFieldFromWorkspace()
+Revomes a WorkspaceField and all of it's children from the Workspace.
 
 **Scope**: inner function of [Workspace](#module_Workspace)  
 <a name="module_Workspace.._moveWorkspaceField"></a>
-##Workspace~_moveWorkspaceField(data)
+##Workspace~_moveWorkspaceField(fieldId, toId)
 Move a workspace field to a new parent.
 
 **Params**
 
-- data `Object`  
-  - fieldId `String` - Field that's getting moved  
-  - toId `String` - Parent we're moving the field to  
+- fieldId `String` - Field that's getting moved  
+- toId `String` - Parent we're moving the field to  
 
 **Scope**: inner function of [Workspace](#module_Workspace)  
 <a name="module_Workspace.._addWorkspaceField"></a>
-##Workspace~_addWorkspaceField(data)
+##Workspace~_addWorkspaceField(parentId, fieldType)
 Add a workspce field to the Workspace.
 
 **Params**
 
-- data `Object`  
+- parentId `String` - ID of the WorkspaceField we're adding the new component to.  
+- fieldType `String` - Type of field we're adding.  
 
 **Scope**: inner function of [Workspace](#module_Workspace)  
-<a name="module_Workspace..removeFieldFromWorkspace"></a>
-##Workspace~removeFieldFromWorkspace()
-Revomes a WorkspaceField and all of it's children from the Workspace.
-
-**Scope**: inner function of [Workspace](#module_Workspace)  
-<a name="module_Workspace..fieldIsRoot"></a>
-##Workspace~fieldIsRoot(id)
+**Returns**: `String` - ID of the new WorkspaceField.  
+<a name="module_Workspace.._fieldIsRoot"></a>
+##Workspace~_fieldIsRoot(id)
 Determine if a WorkspaceField is the root component.
 
 **Params**
@@ -244,16 +255,6 @@ Determine if a WorkspaceField is the root component.
 
 **Scope**: inner function of [Workspace](#module_Workspace)  
 **Returns**: `Boolean`  
-<a name="module_Workspace..allocateIds"></a>
-##Workspace~allocateIds(workspaceField)
-Recursivly allocate id's to a WorkspaceField. WorkspaceField's with an existing id are ignored.
-
-**Params**
-
-- workspaceField `Object` - The field you wish to assign an id to.  
-
-**Scope**: inner function of [Workspace](#module_Workspace)  
-**Returns**: `Object` - The updated workspaceField.  
 <a name="module_WorkspaceField"></a>
 #WorkspaceField
 The core component used to create layouts.

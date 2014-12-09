@@ -127,17 +127,11 @@ var WorkspaceField = React.createClass({
 
             // Check the type of field being dropped.
             if (data.fieldType === "PaletteField") {
-                this.props.addWorkspaceField({
-                    parentId: this.props.data.id,
-                    fieldType: data.fieldData.componentType
-                });
+                this.props.addWorkspaceField(this.props.data.id, data.fieldData.componentType);
             } else if (data.fieldType === "WorkspaceField") {
                 // Don't allow dropping parents onto children.
                 if (!this._hasAncestor(data.fieldData.id)) {
-                    this.props.moveWorkspaceField({
-                        fieldId: data.fieldData.id, // Field that's moving
-                        toId: this.props.data.id // Parent element we're moving to
-                    });
+                    this.props.moveWorkspaceField(data.fieldData.id, this.props.data.id);
                 }
             }
         }

@@ -29,6 +29,6 @@
     "moduleFileExtensions": ["js", "jsx", "json"],
     "scriptPreprocessor": "./tests/jest/preprocessor.js",
     "testDirectoryName": "tests/jest/tests",
-    "unmockedModulePathPatterns": ["./node_modules/react", "./tests/jest/fixtures"]
+    "unmockedModulePathPatterns": ["./node_modules/react", "./node_modules/node-uuid", "./tests/jest/fixtures"]
   }
 }

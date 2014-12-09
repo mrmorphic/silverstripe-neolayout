@@ -43,7 +43,7 @@ var FieldEditor = React.createClass({
         this.setState({ editing: !this.state.editing });
     },
 
-    removeFieldFromWorkspace: function () {
+    _removeFieldFromWorkspace: function () {
         this.props.removeFieldFromWorkspace(this.props.data.id);
     },
 
@@ -61,7 +61,7 @@ var FieldEditor = React.createClass({
         }
 
         if (this.props.canRemove()) {
-            removeButton = <button type="button" onClick={this.removeFieldFromWorkspace}>Remove</button>;
+            removeButton = <button type="button" onClick={this._removeFieldFromWorkspace}>Remove</button>;
         }
 
         return (
