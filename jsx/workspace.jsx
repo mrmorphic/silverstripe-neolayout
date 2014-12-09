@@ -25,12 +25,12 @@ var Workspace = React.createClass({
     },
 
     /**
-     * @func updateFieldData
+     * @func _updateFieldData
      * @param {String} id The id of the WorkspaceField you want to update.
      * @param {Object} binding The new value of the WorkspaceField.
      * @desc Update the Workspace's state. Will recurse down children from the `workspaceField` param.
      */
-    updateFieldData: function (id, binding) {
+    _updateFieldData: function (id, binding) {
         var workspaceField = this._getFieldById(id);
 
         workspaceField.bindings = binding;
@@ -191,12 +191,7 @@ var Workspace = React.createClass({
         return workspaceField;
     },
 
-    /**
-     * @func getWorkspaceFields
-     * @return {Object}
-     * @desc Get the root workspace field for rendering.
-     */
-    getWorkspaceFields: function () {
+    render: function () {
         // if the state's fieldData property is an empty object, there are no fields to render.
         if (Object.getOwnPropertyNames(this.state.fieldData).length === 0) {
             return (
@@ -208,16 +203,12 @@ var Workspace = React.createClass({
             <WorkspaceField
                 data={this.state.fieldData}
                 metadata={this.props.metadata}
-                updateFieldData={this.updateFieldData}
+                updateFieldData={this._updateFieldData}
                 removeFieldFromWorkspace={this.removeFieldFromWorkspace}
                 fieldIsRoot={this.fieldIsRoot}
                 addWorkspaceField={this._addWorkspaceField}
                 moveWorkspaceField={this._moveWorkspaceField} />
         );
-    },
-
-    render: function () {
-        return this.getWorkspaceFields();
     }
 });
 

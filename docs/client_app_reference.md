@@ -21,14 +21,13 @@
 * [PaletteField](#module_PaletteField)
   * [PaletteField~_handleDragStart()](#module_PaletteField.._handleDragStart)
 * [Workspace](#module_Workspace)
-  * [Workspace~updateFieldData(id, binding)](#module_Workspace..updateFieldData)
+  * [Workspace~_updateFieldData(id, binding)](#module_Workspace.._updateFieldData)
   * [Workspace~_getFieldById(id, parent)](#module_Workspace.._getFieldById)
   * [Workspace~_moveWorkspaceField(data)](#module_Workspace.._moveWorkspaceField)
   * [Workspace~_addWorkspaceField(data)](#module_Workspace.._addWorkspaceField)
   * [Workspace~removeFieldFromWorkspace()](#module_Workspace..removeFieldFromWorkspace)
   * [Workspace~fieldIsRoot(id)](#module_Workspace..fieldIsRoot)
   * [Workspace~allocateIds(workspaceField)](#module_Workspace..allocateIds)
-  * [Workspace~getWorkspaceFields()](#module_Workspace..getWorkspaceFields)
 * [WorkspaceField](#module_WorkspaceField)
   * [WorkspaceField~canEdit()](#module_WorkspaceField..canEdit)
   * [WorkspaceField~canRemove()](#module_WorkspaceField..canRemove)
@@ -184,17 +183,16 @@ Wrapper component for the various layout types.
 **Members**
 
 * [Workspace](#module_Workspace)
-  * [Workspace~updateFieldData(id, binding)](#module_Workspace..updateFieldData)
+  * [Workspace~_updateFieldData(id, binding)](#module_Workspace.._updateFieldData)
   * [Workspace~_getFieldById(id, parent)](#module_Workspace.._getFieldById)
   * [Workspace~_moveWorkspaceField(data)](#module_Workspace.._moveWorkspaceField)
   * [Workspace~_addWorkspaceField(data)](#module_Workspace.._addWorkspaceField)
   * [Workspace~removeFieldFromWorkspace()](#module_Workspace..removeFieldFromWorkspace)
   * [Workspace~fieldIsRoot(id)](#module_Workspace..fieldIsRoot)
   * [Workspace~allocateIds(workspaceField)](#module_Workspace..allocateIds)
-  * [Workspace~getWorkspaceFields()](#module_Workspace..getWorkspaceFields)
 
-<a name="module_Workspace..updateFieldData"></a>
-##Workspace~updateFieldData(id, binding)
+<a name="module_Workspace.._updateFieldData"></a>
+##Workspace~_updateFieldData(id, binding)
 Update the Workspace's state. Will recurse down children from the `workspaceField` param.
 
 **Params**
@@ -256,12 +254,6 @@ Recursivly allocate id's to a WorkspaceField. WorkspaceField's with an existing 
 
 **Scope**: inner function of [Workspace](#module_Workspace)  
 **Returns**: `Object` - The updated workspaceField.  
-<a name="module_Workspace..getWorkspaceFields"></a>
-##Workspace~getWorkspaceFields()
-Get the root workspace field for rendering.
-
-**Scope**: inner function of [Workspace](#module_Workspace)  
-**Returns**: `Object`  
 <a name="module_WorkspaceField"></a>
 #WorkspaceField
 The core component used to create layouts.

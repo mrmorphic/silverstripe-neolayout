@@ -1,0 +1,123 @@
+{
+    "components": [
+        {
+            "componentType": "NLImageComponent",
+            "description": "An image, from this site or another",
+            "display": "inline",
+            "imageURL": "neolayout/images/unknown-component.png",
+            "name": "Image",
+            "properties": {
+                "AltText": {
+                    "description": "Alt text of the image.",
+                    "name": "Alt text",
+                    "type": "Text"
+                },
+                "ExternalURL": {
+                    "description": "If the image is external to site or not in assets, this contains the URL.",
+                    "name": "URL",
+                    "type": "Varchar"
+                },
+                "Height": {
+                    "description": "If provided, the height of the image in pixels, used for resizing.",
+                    "name": "Height",
+                    "type": "Int"
+                },
+                "InternalImage": {
+                    "description": "If the image is on this site, this is the selected image.",
+                    "name": "Site image",
+                    "type": "NLObjectReference('Image')"
+                },
+                "ResizingOption": {
+                    "description": "If the image is to be displayed in a different sized area, this determines how it is resized (images on this site only).",
+                    "name": "Resizing",
+                    "type": "Enum('None,Resized,Scaled,Padded,Cropped,ResizeToHeight,ResizeToWidth','None')"
+                },
+                "Width": {
+                    "description": "If provided, the width of the image in pixels, used for resizing.",
+                    "name": "Width",
+                    "type": "Int"
+                }
+            }
+        },
+        {
+            "componentType": "NLLinkComponent",
+            "description": "Link to this site or another site",
+            "display": "inline",
+            "imageURL": "neolayout/images/unknown-component.png",
+            "name": "Link",
+            "properties": {
+                "ExternalURL": {
+                    "description": "If the link is to external website, this contains the URL.",
+                    "name": "URL",
+                    "type": "Varchar"
+                },
+                "InternalPage": {
+                    "description": "If the link to is a page on this website, this is the selected page.",
+                    "name": "Site page",
+                    "type": "NLObjectReference('SiteTree')"
+                },
+                "LinkText": {
+                    "description": "Text to display in the link if no other components are put into the link.",
+                    "name": "Link text",
+                    "type": "Text"
+                }
+            }
+        },
+        {
+            "componentType": "NLTextComponent",
+            "description": "Rich text",
+            "display": "inline",
+            "imageURL": "neolayout/images/unknown-component.png",
+            "name": "Text",
+            "properties": {
+                "Text": {
+                    "description": "The text that will display",
+                    "name": "Text",
+                    "type": "Text|Varchar|HTMLText"
+                }
+            }
+        },
+        {
+            "componentType": "NLHorizontalBoxLayout",
+            "description": "Lets you group other items, and arrange them horizontally",
+            "display": "block",
+            "imageURL": "neolayout/images/unknown-component.png",
+            "name": "Horizontal Box layout",
+            "properties": []
+        },
+        {
+            "componentType": "NLInlineLayout",
+            "description": "Lets you group other items, and displays them inline.",
+            "display": "block",
+            "imageURL": "neolayout/images/unknown-component.png",
+            "name": "Inline layout",
+            "properties": []
+        },
+        {
+            "componentType": "NLVerticalBoxLayout",
+            "description": "Lets you group other items, and arrange them vertically",
+            "display": "block",
+            "imageURL": "neolayout/images/unknown-component.png",
+            "name": "Vertical Box layout",
+            "properties": []
+        }
+    ],
+    "context": {
+        "URLSegment": "Varchar",
+        "Title": "Varchar",
+        "MenuTitle": "Varchar",
+        "Content": "HTMLText",
+        "MetaDescription": "Text",
+        "ExtraMeta": "HTMLText('meta, link')",
+        "ShowInMenus": "Boolean",
+        "ShowInSearch": "Boolean",
+        "Sort": "Int",
+        "HasBrokenFile": "Boolean",
+        "HasBrokenLink": "Boolean",
+        "ReportClass": "Varchar",
+        "CanViewType": "Enum('Anyone, LoggedInUsers, OnlyTheseUsers, Inherit', 'Inherit')",
+        "CanEditType": "Enum('LoggedInUsers, OnlyTheseUsers, Inherit', 'Inherit')",
+        "Version": "Int",
+        "EditableLayout": "Text"
+    }
+}

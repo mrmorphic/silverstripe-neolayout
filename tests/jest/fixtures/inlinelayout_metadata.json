@@ -1,8 +1,0 @@
-{
-    componentType: "NLInlineLayout",
-    description: "Lets you group other items, and displays them inline.",
-    display: "block",
-    imageURL: "neolayout/images/unknown-component.png",
-    name: "Inline layout",
-    properties: []
-}
