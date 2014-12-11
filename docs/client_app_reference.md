@@ -3,13 +3,13 @@
 **Modules**
 
 * [FieldEditor](#module_FieldEditor)
-  * [FieldEditor~getCssClasses(requiredClasses)](#module_FieldEditor..getCssClasses)
-  * [FieldEditor~toggleModalEditor()](#module_FieldEditor..toggleModalEditor)
-  * [FieldEditor~getEditorButtons()](#module_FieldEditor..getEditorButtons)
+  * [FieldEditor~_getCssClasses(requiredClasses)](#module_FieldEditor.._getCssClasses)
+  * [FieldEditor~_toggleModalEditor()](#module_FieldEditor.._toggleModalEditor)
+  * [FieldEditor~_getEditorButtons()](#module_FieldEditor.._getEditorButtons)
 * [FieldEditorForm](#module_FieldEditorForm)
-  * [FieldEditorForm~getFieldSchema(componentType, schemas)](#module_FieldEditorForm..getFieldSchema)
-  * [FieldEditorForm~createFormRows(schema, contextMetadata)](#module_FieldEditorForm..createFormRows)
-  * [FieldEditorForm~getRows()](#module_FieldEditorForm..getRows)
+  * [FieldEditorForm~_getFieldSchema(componentType, schemas)](#module_FieldEditorForm.._getFieldSchema)
+  * [FieldEditorForm~_createFormRows(schema, contextMetadata)](#module_FieldEditorForm.._createFormRows)
+  * [FieldEditorForm~_getRows()](#module_FieldEditorForm.._getRows)
   * [FieldEditorForm~handleSave()](#module_FieldEditorForm..handleSave)
   * [FieldEditorForm~handleCancel()](#module_FieldEditorForm..handleCancel)
 * [FieldEditorFormRow](#module_FieldEditorFormRow)
@@ -29,9 +29,9 @@
   * [Workspace~_addWorkspaceField(parentId, fieldType)](#module_Workspace.._addWorkspaceField)
   * [Workspace~_fieldIsRoot(id)](#module_Workspace.._fieldIsRoot)
 * [WorkspaceField](#module_WorkspaceField)
-  * [WorkspaceField~canEdit()](#module_WorkspaceField..canEdit)
-  * [WorkspaceField~canRemove()](#module_WorkspaceField..canRemove)
-  * [WorkspaceField~createChildFields()](#module_WorkspaceField..createChildFields)
+  * [WorkspaceField~_canEdit()](#module_WorkspaceField.._canEdit)
+  * [WorkspaceField~_canRemove()](#module_WorkspaceField.._canRemove)
+  * [WorkspaceField~_createChildFields()](#module_WorkspaceField.._createChildFields)
   * [WorkspaceField~_allowDrop()](#module_WorkspaceField.._allowDrop)
   * [WorkspaceField~_nodeBelongsToField(node)](#module_WorkspaceField.._nodeBelongsToField)
   * [WorkspaceField~_handleDragStart()](#module_WorkspaceField.._handleDragStart)
@@ -45,12 +45,12 @@ Enables editing of a WorkspaceField.
 **Members**
 
 * [FieldEditor](#module_FieldEditor)
-  * [FieldEditor~getCssClasses(requiredClasses)](#module_FieldEditor..getCssClasses)
-  * [FieldEditor~toggleModalEditor()](#module_FieldEditor..toggleModalEditor)
-  * [FieldEditor~getEditorButtons()](#module_FieldEditor..getEditorButtons)
+  * [FieldEditor~_getCssClasses(requiredClasses)](#module_FieldEditor.._getCssClasses)
+  * [FieldEditor~_toggleModalEditor()](#module_FieldEditor.._toggleModalEditor)
+  * [FieldEditor~_getEditorButtons()](#module_FieldEditor.._getEditorButtons)
 
-<a name="module_FieldEditor..getCssClasses"></a>
-##FieldEditor~getCssClasses(requiredClasses)
+<a name="module_FieldEditor.._getCssClasses"></a>
+##FieldEditor~_getCssClasses(requiredClasses)
 If the FieldEditor is not currently in use, the hide class will be added to the element.
 
 **Params**
@@ -59,13 +59,13 @@ If the FieldEditor is not currently in use, the hide class will be added to the 
 
 **Scope**: inner function of [FieldEditor](#module_FieldEditor)  
 **Returns**: `String` - Includes the required class and the 'hide' class if the condition is met.  
-<a name="module_FieldEditor..toggleModalEditor"></a>
-##FieldEditor~toggleModalEditor()
+<a name="module_FieldEditor.._toggleModalEditor"></a>
+##FieldEditor~_toggleModalEditor()
 Toggle the 'editing' state of the editor.
 
 **Scope**: inner function of [FieldEditor](#module_FieldEditor)  
-<a name="module_FieldEditor..getEditorButtons"></a>
-##FieldEditor~getEditorButtons()
+<a name="module_FieldEditor.._getEditorButtons"></a>
+##FieldEditor~_getEditorButtons()
 Generate the buttons available in the editor.
 
 **Scope**: inner function of [FieldEditor](#module_FieldEditor)  
@@ -77,14 +77,14 @@ A sub-component of FieldEditor, responsible for saving and canceling changes.
 **Members**
 
 * [FieldEditorForm](#module_FieldEditorForm)
-  * [FieldEditorForm~getFieldSchema(componentType, schemas)](#module_FieldEditorForm..getFieldSchema)
-  * [FieldEditorForm~createFormRows(schema, contextMetadata)](#module_FieldEditorForm..createFormRows)
-  * [FieldEditorForm~getRows()](#module_FieldEditorForm..getRows)
+  * [FieldEditorForm~_getFieldSchema(componentType, schemas)](#module_FieldEditorForm.._getFieldSchema)
+  * [FieldEditorForm~_createFormRows(schema, contextMetadata)](#module_FieldEditorForm.._createFormRows)
+  * [FieldEditorForm~_getRows()](#module_FieldEditorForm.._getRows)
   * [FieldEditorForm~handleSave()](#module_FieldEditorForm..handleSave)
   * [FieldEditorForm~handleCancel()](#module_FieldEditorForm..handleCancel)
 
-<a name="module_FieldEditorForm..getFieldSchema"></a>
-##FieldEditorForm~getFieldSchema(componentType, schemas)
+<a name="module_FieldEditorForm.._getFieldSchema"></a>
+##FieldEditorForm~_getFieldSchema(componentType, schemas)
 Get a list a schemas which apply to a Workspace field.
 
 **Params**
@@ -94,9 +94,9 @@ Get a list a schemas which apply to a Workspace field.
 
 **Scope**: inner function of [FieldEditorForm](#module_FieldEditorForm)  
 **Returns**: `Array` - The schemas relating to a WorkspaceField.  
-<a name="module_FieldEditorForm..createFormRows"></a>
-##FieldEditorForm~createFormRows(schema, contextMetadata)
-Create a FieldEditorRow for each schema relating to the WorkspaceField.
+<a name="module_FieldEditorForm.._createFormRows"></a>
+##FieldEditorForm~_createFormRows(schema, contextMetadata)
+Create a FieldEditorRow for each binding type relating to the WorkspaceField.
 
 **Params**
 
@@ -105,8 +105,8 @@ Create a FieldEditorRow for each schema relating to the WorkspaceField.
 
 **Scope**: inner function of [FieldEditorForm](#module_FieldEditorForm)  
 **Returns**:  - A list of FieldEditorRow's.  
-<a name="module_FieldEditorForm..getRows"></a>
-##FieldEditorForm~getRows()
+<a name="module_FieldEditorForm.._getRows"></a>
+##FieldEditorForm~_getRows()
 Gets the FieldEditorFormRow's belonging to the current FieldEditorForm.
 
 **Scope**: inner function of [FieldEditorForm](#module_FieldEditorForm)  
@@ -262,29 +262,29 @@ The core component used to create layouts.
 **Members**
 
 * [WorkspaceField](#module_WorkspaceField)
-  * [WorkspaceField~canEdit()](#module_WorkspaceField..canEdit)
-  * [WorkspaceField~canRemove()](#module_WorkspaceField..canRemove)
-  * [WorkspaceField~createChildFields()](#module_WorkspaceField..createChildFields)
+  * [WorkspaceField~_canEdit()](#module_WorkspaceField.._canEdit)
+  * [WorkspaceField~_canRemove()](#module_WorkspaceField.._canRemove)
+  * [WorkspaceField~_createChildFields()](#module_WorkspaceField.._createChildFields)
   * [WorkspaceField~_allowDrop()](#module_WorkspaceField.._allowDrop)
   * [WorkspaceField~_nodeBelongsToField(node)](#module_WorkspaceField.._nodeBelongsToField)
   * [WorkspaceField~_handleDragStart()](#module_WorkspaceField.._handleDragStart)
   * [WorkspaceField~_hasAncestor(id)](#module_WorkspaceField.._hasAncestor)
   * [WorkspaceField~_handleDrop()](#module_WorkspaceField.._handleDrop)
 
-<a name="module_WorkspaceField..canEdit"></a>
-##WorkspaceField~canEdit()
+<a name="module_WorkspaceField.._canEdit"></a>
+##WorkspaceField~_canEdit()
 Returns true if the user is able to edit the field.
 
 **Scope**: inner function of [WorkspaceField](#module_WorkspaceField)  
 **Returns**: `Boolean`  
-<a name="module_WorkspaceField..canRemove"></a>
-##WorkspaceField~canRemove()
+<a name="module_WorkspaceField.._canRemove"></a>
+##WorkspaceField~_canRemove()
 Returns true if the user is able to remove the field from the workspace.
 
 **Scope**: inner function of [WorkspaceField](#module_WorkspaceField)  
 **Returns**: `Boolean`  
-<a name="module_WorkspaceField..createChildFields"></a>
-##WorkspaceField~createChildFields()
+<a name="module_WorkspaceField.._createChildFields"></a>
+##WorkspaceField~_createChildFields()
 Create the child components for the current WorkspaceField.
 
 **Scope**: inner function of [WorkspaceField](#module_WorkspaceField)  
