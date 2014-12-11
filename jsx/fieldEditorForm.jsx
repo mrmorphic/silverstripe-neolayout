@@ -18,36 +18,40 @@ var FieldEditorForm = React.createClass({
     },
 
     /**
-     * @func getFieldSchema
+     * @func _getFieldSchema
      * @param {String} componentType The ClassName of a WorkspaceField.
      * @param {Array} schemas Schemas defined by metadata.components.
      * @return {Array} The schemas relating to a WorkspaceField.
      * @desc Get a list a schemas which apply to a Workspace field.
      */
-    getFieldSchema: function (componentType, schemas) {
-        var i = 0;
+    _getFieldSchema: function (componentType, schemas) {
+        var schema = null,
+            i = 0;
 
         // Don't compare undefined to schema[i].componentType.
         // If schema[i].componentType is undefined, it will match.
         if (typeof componentType !== 'string') {
-            throw new Error('componentType should be a string, you passed typeof ' + typeof componentType);
+            return null
         }
 
         for (i; i < schemas.length; i += 1) {
             if (schemas[i].componentType === componentType) {
-                return schemas[i];
+                schema = schemas[i];
+                break;
             }
         }
+
+        return schema;
     },
 
     /**
-     * @func createFormRows
+     * @func _createFormRows
      * @param {Object} schema
      * @param {Object} contextMetadata
      * @return A list of FieldEditorRow's.
-     * @desc Create a FieldEditorRow for each schema relating to the WorkspaceField.
+     * @desc Create a FieldEditorRow for each binding type relating to the WorkspaceField.
      */
-    createFormRows: function (schema, contextMetadata) {
+    _createFormRows: function (schema, contextMetadata) {
         var rows = [],
             schemaData = {},
             key = '',
@@ -90,11 +94,11 @@ var FieldEditorForm = React.createClass({
     },
 
     /**
-     * @func getRows
+     * @func _getRows
      * @return {Array}
      * @desc Gets the FieldEditorFormRow's belonging to the current FieldEditorForm.
      */
-    getRows: function () {
+    _getRows: function () {
         var key = '',
             rows = [];
 
@@ -114,7 +118,7 @@ var FieldEditorForm = React.createClass({
      */
     handleSave: function () {
         var i = 0,
-            rows = this.getRows(),
+            rows = this._getRows(),
             binding = {};
 
         // Extract row data and save it.
@@ -132,7 +136,7 @@ var FieldEditorForm = React.createClass({
      */
     handleCancel: function () {
         var i = 0,
-            rows = this.getRows();
+            rows = this._getRows();
 
         // Reset each row's state
         for (i; i < rows.length; i += 1) {
@@ -144,8 +148,8 @@ var FieldEditorForm = React.createClass({
     },
 
     render: function () {
-        var fieldSchema = this.getFieldSchema(this.props.data.ClassName, this.props.metadata.components),
-            formRows = this.createFormRows(fieldSchema, this.props.metadata.context);
+        var fieldSchema = this._getFieldSchema(this.props.data.ClassName, this.props.metadata.components),
+            formRows = this._createFormRows(fieldSchema, this.props.metadata.context);
 
         return (
             <div className="field-editor-form">
