@@ -22,29 +22,29 @@ var WorkspaceField = React.createClass({
     },
 
     /**
-     * @func canEdit
+     * @func _canEdit
      * @return {Boolean}
      * @desc Returns true if the user is able to edit the field.
      */
-    canEdit: function () {
+    _canEdit: function () {
         return true;
     },
 
     /**
-     * @func canRemove
+     * @func _canRemove
      * @return {Boolean}
      * @desc Returns true if the user is able to remove the field from the workspace.
      */
-    canRemove: function () {
+    _canRemove: function () {
         return this.props.fieldIsRoot(this.props.data.id) === false;
     },
 
     /**
-     * @func createChildFields
+     * @func _createChildFields
      * @return {Array} Child layout fields of the current WorkspaceField.
      * @desc Create the child components for the current WorkspaceField.
      */
-    createChildFields: function () {
+    _createChildFields: function () {
         var childFields = null,
             i = 0;
 
@@ -138,7 +138,7 @@ var WorkspaceField = React.createClass({
     },
 
     render: function () {
-        var childFields = this.createChildFields();
+        var childFields = this._createChildFields();
 
         return (
             <div
@@ -155,8 +155,8 @@ var WorkspaceField = React.createClass({
                     metadata={this.props.metadata}
                     updateFieldData={this.props.updateFieldData}
                     removeFieldFromWorkspace={this.props.removeFieldFromWorkspace}
-                    canEdit={this.canEdit}
-                    canRemove={this.canRemove} />
+                    canEdit={this._canEdit}
+                    canRemove={this._canRemove} />
 
                 {childFields}
             </div>
