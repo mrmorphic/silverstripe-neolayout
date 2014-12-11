@@ -26,20 +26,20 @@ var FieldEditor = React.createClass({
     },
 
     /**
-     * @func getCssClasses
+     * @func _getCssClasses
      * @param {String} requiredClasses CSS classes that are required for the element.
      * @return {String} Includes the required class and the 'hide' class if the condition is met.
      * @desc If the FieldEditor is not currently in use, the hide class will be added to the element.
      */
-    getCssClasses: function (requiredClasses) {
+    _getCssClasses: function (requiredClasses) {
         return this.state.editing === true ? requiredClasses : requiredClasses + ' hide';
     },
 
     /**
-     * @func toggleModalEditor
+     * @func _toggleModalEditor
      * @desc Toggle the 'editing' state of the editor.
      */
-    toggleModalEditor: function () {
+    _toggleModalEditor: function () {
         this.setState({ editing: !this.state.editing });
     },
 
@@ -48,16 +48,16 @@ var FieldEditor = React.createClass({
     },
 
     /**
-     * @func getEditorButtons
+     * @func _getEditorButtons
      * @return {Object}
      * @desc Generate the buttons available in the editor.
      */
-    getEditorButtons: function () {
+    _getEditorButtons: function () {
         var editButton = null,
             removeButton = null;
 
         if (this.props.canEdit()) {
-            editButton = <button type="button" onClick={this.toggleModalEditor}>Edit</button>;
+            editButton = <button type="button" onClick={this._toggleModalEditor}>Edit</button>;
         }
 
         if (this.props.canRemove()) {
@@ -73,20 +73,20 @@ var FieldEditor = React.createClass({
     },
 
     render: function () {
-        var editorButtons = this.getEditorButtons();
+        var editorButtons = this._getEditorButtons();
 
         return (
             <div className="nl-field-editor">
                 {editorButtons}
-                <div className={this.getCssClasses('nl-modal-editor')}>
+                <div className={this._getCssClasses('nl-modal-editor')}>
                     <h3>{this.props.data.ClassName}</h3>
                     <FieldEditorForm
                         data={this.props.data}
                         metadata={this.props.metadata}
-                        toggleModalEditor={this.toggleModalEditor}
+                        toggleModalEditor={this._toggleModalEditor}
                         updateFieldData={this.props.updateFieldData} />
                 </div>
-                <div className={this.getCssClasses('nl-modal-mask')}></div>
+                <div className={this._getCssClasses('nl-modal-mask')}></div>
             </div>
         );
     }

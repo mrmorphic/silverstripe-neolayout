@@ -6,7 +6,7 @@ var React = require('react/addons'),
     TestUtils = React.addons.TestUtils,
     WorkspaceField = require('../../../jsx/workspaceField.jsx');
 
-describe('Workspace', function () {
+describe('WorkspaceField', function () {
     var workspaceField,
         metadata = require('../fixtures/metadata.json'),
         workspaceData = require('../fixtures/workspacedata.json');
