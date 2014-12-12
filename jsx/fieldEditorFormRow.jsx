@@ -20,11 +20,11 @@ var FieldEditorFormRow = React.createClass({
     },
 
     /**
-     * @func getContextOptions
+     * @func _getContextOptions
      * @return {Array}
      * @desc Generates a list of options to populate the value dropdown (when state.type === 'context').
      */
-    getContextOptions: function () {
+    _getContextOptions: function () {
         var self = this;
 
         return this.props.schema.types.split('|').map(function (type) {
@@ -66,7 +66,7 @@ var FieldEditorFormRow = React.createClass({
         var typeInput = null,
             contextOptions = null,
             contextValue = null,
-            contextOptions = this.getContextOptions();
+            contextOptions = this._getContextOptions();
 
         if (this.state.type === 'context' && contextOptions[0].length > 0) {
             typeInput = (
@@ -94,7 +94,7 @@ var FieldEditorFormRow = React.createClass({
     handleTypeChange: function (event) {
         var newType = event.target.value.toLowerCase(),
             newValue = '',
-            contextOptions = this.getContextOptions();
+            contextOptions = this._getContextOptions();
 
         // If we're changing to a type that's not initial type.
         if (newType !== this.props.binding.type) {
