@@ -6,42 +6,16 @@
 'use strict';
 
 var React = require('react'),
-    FieldEditorFormRow = require('./fieldEditorFormRow');
+    EditorFormRow = require('./editorFormRow');
 
-var FieldEditorForm = React.createClass({
+var EditorForm = React.createClass({
 
     propTypes: {
-        data: React.PropTypes.object.isRequired,
+        layoutdata: React.PropTypes.object.isRequired,
         metadata: React.PropTypes.object.isRequired,
         toggleModalEditor: React.PropTypes.func.isRequired,
-        updateFieldData: React.PropTypes.func.isRequired
-    },
-
-    /**
-     * @func _getFieldSchema
-     * @param {String} componentType The ClassName of a WorkspaceField.
-     * @param {Array} schemas Schemas defined by metadata.components.
-     * @return {Array} The schemas relating to a WorkspaceField.
-     * @desc Get a list a schemas which apply to a Workspace field.
-     */
-    _getFieldSchema: function (componentType, schemas) {
-        var schema = null,
-            i = 0;
-
-        // Don't compare undefined to schema[i].componentType.
-        // If schema[i].componentType is undefined, it will match.
-        if (typeof componentType !== 'string') {
-            return null
-        }
-
-        for (i; i < schemas.length; i += 1) {
-            if (schemas[i].componentType === componentType) {
-                schema = schemas[i];
-                break;
-            }
-        }
-
-        return schema;
+        updateLayoutComponentData: React.PropTypes.func.isRequired,
+        getLayoutComponentSchema: React.PropTypes.func.isRequired
     },
 
     /**
@@ -61,12 +35,12 @@ var FieldEditorForm = React.createClass({
 
         for (key in schema.properties) {
             if (schema.properties.hasOwnProperty(key)) {
-                refName = 'fieldEditorRow_' + i;
+                refName = 'editorRow_' + i;
 
-                // Check if the field has a binding relating to the current row.
+                // Check if the LayoutComponent has a binding relating to the current row.
                 // Do this by checking if the schema's key exists in the binding.
-                if (typeof this.props.data.bindings[key] !== 'undefined') {
-                    binding = this.props.data.bindings[key];
+                if (typeof this.props.layoutdata.bindings[key] !== 'undefined') {
+                    binding = this.props.layoutdata.bindings[key];
                 } else {
                     binding = { type: 'embedded', value: '' };
                 }
@@ -78,7 +52,7 @@ var FieldEditorForm = React.createClass({
                 };
 
                 rows.push(
-                    <FieldEditorFormRow
+                    <EditorFormRow
                         binding={binding}
                         schema={schemaData}
                         contextMetadata={contextMetadata}
@@ -96,14 +70,14 @@ var FieldEditorForm = React.createClass({
     /**
      * @func _getRows
      * @return {Array}
-     * @desc Gets the FieldEditorFormRow's belonging to the current FieldEditorForm.
+     * @desc Gets the EditorFormRows belonging to the current EditorForm.
      */
     _getRows: function () {
         var key = '',
             rows = [];
 
         for (key in this.refs) {
-            if (this.refs.hasOwnProperty(key) && key.indexOf('fieldEditorRow_') > -1) {
+            if (this.refs.hasOwnProperty(key) && key.indexOf('editorRow_') > -1) {
                 rows.push(this.refs[key]);
             }
         }
@@ -113,8 +87,8 @@ var FieldEditorForm = React.createClass({
 
     /**
      * @func handleSave
-     * @desc Handle saving updates to a WorkspaceField.
-     * @todo Refactor so we only save one binding (row).
+     * @desc Handle saving updates to a LayoutComponent.
+     * @todo Only save one binding (row).
      */
     handleSave: function () {
         var i = 0,
@@ -126,7 +100,7 @@ var FieldEditorForm = React.createClass({
             binding[rows[i].getDOMNode().getAttribute('data-type')] = rows[i].state;
         }
 
-        this.props.updateFieldData(this.props.data.id, binding);
+        this.props.updateLayoutComponentData(this.props.layoutdata.id, binding);
         this.props.toggleModalEditor();
     },
 
@@ -148,8 +122,7 @@ var FieldEditorForm = React.createClass({
     },
 
     render: function () {
-        var fieldSchema = this._getFieldSchema(this.props.data.ClassName, this.props.metadata.components),
-            formRows = this._createFormRows(fieldSchema, this.props.metadata.context);
+        var formRows = this._createFormRows(this.props.getLayoutComponentSchema(), this.props.metadata.context);
 
         return (
             <div className="field-editor-form">
@@ -165,4 +138,4 @@ var FieldEditorForm = React.createClass({
     }
 });
 
-module.exports = FieldEditorForm;
+module.exports = EditorForm;

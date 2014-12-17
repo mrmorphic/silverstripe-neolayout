@@ -1,13 +1,14 @@
 /**
- * @file A field which can be added to the Workspace.
- * @module PaletteField
+ * @file A PalettleComponent can be dragged onto a Layout, creating a LayoutComponent.
+ * @module PaletteComponent
  */
 
 'use strict';
 
 var React = require('react');
 
-var PaletteField = React.createClass({
+var PaletteComponent = React.createClass({
+
     propTypes: {
         data: React.PropTypes.object.isRequired
     },
@@ -18,8 +19,8 @@ var PaletteField = React.createClass({
      */
     _handleDragStart: function (event) {
         var data = {
-            fieldType: "PaletteField",
-            fieldData: this.props.data
+            componentType: "PaletteComponent",
+            componentData: this.props.data
         };
 
         event.dataTransfer.setData('text', JSON.stringify(data));
@@ -27,7 +28,7 @@ var PaletteField = React.createClass({
 
     render: function () {
         return (
-            <div className="nl-component nl-palette-field" draggable="true" onDragStart={this._handleDragStart}>
+            <div className="nl-component nl-palette-component" draggable="true" onDragStart={this._handleDragStart}>
                 <p className="name">{this.props.data.name}</p>
                 <p className="description">{this.props.data.description}</p>
             </div>
@@ -35,4 +36,4 @@ var PaletteField = React.createClass({
     }
 });
 
-module.exports = PaletteField;
+module.exports = PaletteComponent;

@@ -2,324 +2,201 @@
 
 **Modules**
 
-* [FieldEditor](#module_FieldEditor)
-  * [FieldEditor~_getCssClasses(requiredClasses)](#module_FieldEditor.._getCssClasses)
-  * [FieldEditor~_toggleModalEditor()](#module_FieldEditor.._toggleModalEditor)
-  * [FieldEditor~_getEditorButtons()](#module_FieldEditor.._getEditorButtons)
-* [FieldEditorForm](#module_FieldEditorForm)
-  * [FieldEditorForm~_getFieldSchema(componentType, schemas)](#module_FieldEditorForm.._getFieldSchema)
-  * [FieldEditorForm~_createFormRows(schema, contextMetadata)](#module_FieldEditorForm.._createFormRows)
-  * [FieldEditorForm~_getRows()](#module_FieldEditorForm.._getRows)
-  * [FieldEditorForm~handleSave()](#module_FieldEditorForm..handleSave)
-  * [FieldEditorForm~handleCancel()](#module_FieldEditorForm..handleCancel)
-* [FieldEditorFormRow](#module_FieldEditorFormRow)
-  * [FieldEditorFormRow~getContextOptions()](#module_FieldEditorFormRow..getContextOptions)
-  * [FieldEditorFormRow~handleValueChange(event)](#module_FieldEditorFormRow..handleValueChange)
-  * [FieldEditorFormRow~getInputTypes()](#module_FieldEditorFormRow..getInputTypes)
-  * [FieldEditorFormRow~handleTypeChange(event)](#module_FieldEditorFormRow..handleTypeChange)
+* [Layout](#module_Layout)
+  * [Layout~_allocateIds(layoutComponent)](#module_Layout.._allocateIds)
+  * [Layout~_getLayoutComponentById(id, parent)](#module_Layout.._getLayoutComponentById)
+  * [Layout~_updateLayoutComponentData(id, binding)](#module_Layout.._updateLayoutComponentData)
+  * [Layout~_removeLayoutComponentFromLayout(id)](#module_Layout.._removeLayoutComponentFromLayout)
+  * [Layout~_moveLayoutComponent(id, toId)](#module_Layout.._moveLayoutComponent)
+  * [Layout~_addLayoutComponent(parentId, layoutComponentType)](#module_Layout.._addLayoutComponent)
+  * [Layout~_layoutComponentIsRoot(id)](#module_Layout.._layoutComponentIsRoot)
+* [LayoutComponent](#module_LayoutComponent)
+  * [LayoutComponent~_canEdit()](#module_LayoutComponent.._canEdit)
+  * [LayoutComponent~_canRemove()](#module_LayoutComponent.._canRemove)
+  * [LayoutComponent~_createChildLayoutComponents()](#module_LayoutComponent.._createChildLayoutComponents)
+  * [LayoutComponent~_allowDrop()](#module_LayoutComponent.._allowDrop)
+  * [LayoutComponent~_nodeBelongsToLayoutComponent(node)](#module_LayoutComponent.._nodeBelongsToLayoutComponent)
+  * [LayoutComponent~_handleDragStart()](#module_LayoutComponent.._handleDragStart)
+  * [LayoutComponent~_hasAncestor(id)](#module_LayoutComponent.._hasAncestor)
+  * [LayoutComponent~_handleDrop()](#module_LayoutComponent.._handleDrop)
+  * [LayoutComponent~_getLayoutComponentSchema()](#module_LayoutComponent.._getLayoutComponentSchema)
 * [Palette](#module_Palette)
-* [PaletteField](#module_PaletteField)
-  * [PaletteField~_handleDragStart()](#module_PaletteField.._handleDragStart)
+* [PaletteComponent](#module_PaletteComponent)
+  * [PaletteComponent~_handleDragStart()](#module_PaletteComponent.._handleDragStart)
 * [Workspace](#module_Workspace)
-  * [Workspace~_allocateIds(workspaceField)](#module_Workspace.._allocateIds)
-  * [Workspace~_getFieldById(id, parent)](#module_Workspace.._getFieldById)
-  * [Workspace~_updateFieldData(id, binding)](#module_Workspace.._updateFieldData)
-  * [Workspace~_removeFieldFromWorkspace()](#module_Workspace.._removeFieldFromWorkspace)
-  * [Workspace~_moveWorkspaceField(fieldId, toId)](#module_Workspace.._moveWorkspaceField)
-  * [Workspace~_addWorkspaceField(parentId, fieldType)](#module_Workspace.._addWorkspaceField)
-  * [Workspace~_fieldIsRoot(id)](#module_Workspace.._fieldIsRoot)
-* [WorkspaceField](#module_WorkspaceField)
-  * [WorkspaceField~_canEdit()](#module_WorkspaceField.._canEdit)
-  * [WorkspaceField~_canRemove()](#module_WorkspaceField.._canRemove)
-  * [WorkspaceField~_createChildFields()](#module_WorkspaceField.._createChildFields)
-  * [WorkspaceField~_allowDrop()](#module_WorkspaceField.._allowDrop)
-  * [WorkspaceField~_nodeBelongsToField(node)](#module_WorkspaceField.._nodeBelongsToField)
-  * [WorkspaceField~_handleDragStart()](#module_WorkspaceField.._handleDragStart)
-  * [WorkspaceField~_hasAncestor(id)](#module_WorkspaceField.._hasAncestor)
-  * [WorkspaceField~_handleDrop()](#module_WorkspaceField.._handleDrop)
  
-<a name="module_FieldEditor"></a>
-#FieldEditor
-Enables editing of a WorkspaceField.
+<a name="module_Layout"></a>
+#Layout
+A Layout is made up of one or more LayoutComponents.
 
 **Members**
 
-* [FieldEditor](#module_FieldEditor)
-  * [FieldEditor~_getCssClasses(requiredClasses)](#module_FieldEditor.._getCssClasses)
-  * [FieldEditor~_toggleModalEditor()](#module_FieldEditor.._toggleModalEditor)
-  * [FieldEditor~_getEditorButtons()](#module_FieldEditor.._getEditorButtons)
+* [Layout](#module_Layout)
+  * [Layout~_allocateIds(layoutComponent)](#module_Layout.._allocateIds)
+  * [Layout~_getLayoutComponentById(id, parent)](#module_Layout.._getLayoutComponentById)
+  * [Layout~_updateLayoutComponentData(id, binding)](#module_Layout.._updateLayoutComponentData)
+  * [Layout~_removeLayoutComponentFromLayout(id)](#module_Layout.._removeLayoutComponentFromLayout)
+  * [Layout~_moveLayoutComponent(id, toId)](#module_Layout.._moveLayoutComponent)
+  * [Layout~_addLayoutComponent(parentId, layoutComponentType)](#module_Layout.._addLayoutComponent)
+  * [Layout~_layoutComponentIsRoot(id)](#module_Layout.._layoutComponentIsRoot)
 
-<a name="module_FieldEditor.._getCssClasses"></a>
-##FieldEditor~_getCssClasses(requiredClasses)
-If the FieldEditor is not currently in use, the hide class will be added to the element.
-
-**Params**
-
-- requiredClasses `String` - CSS classes that are required for the element.  
-
-**Scope**: inner function of [FieldEditor](#module_FieldEditor)  
-**Returns**: `String` - Includes the required class and the 'hide' class if the condition is met.  
-<a name="module_FieldEditor.._toggleModalEditor"></a>
-##FieldEditor~_toggleModalEditor()
-Toggle the 'editing' state of the editor.
-
-**Scope**: inner function of [FieldEditor](#module_FieldEditor)  
-<a name="module_FieldEditor.._getEditorButtons"></a>
-##FieldEditor~_getEditorButtons()
-Generate the buttons available in the editor.
-
-**Scope**: inner function of [FieldEditor](#module_FieldEditor)  
-**Returns**: `Object`  
-<a name="module_FieldEditorForm"></a>
-#FieldEditorForm
-A sub-component of FieldEditor, responsible for saving and canceling changes.
-
-**Members**
-
-* [FieldEditorForm](#module_FieldEditorForm)
-  * [FieldEditorForm~_getFieldSchema(componentType, schemas)](#module_FieldEditorForm.._getFieldSchema)
-  * [FieldEditorForm~_createFormRows(schema, contextMetadata)](#module_FieldEditorForm.._createFormRows)
-  * [FieldEditorForm~_getRows()](#module_FieldEditorForm.._getRows)
-  * [FieldEditorForm~handleSave()](#module_FieldEditorForm..handleSave)
-  * [FieldEditorForm~handleCancel()](#module_FieldEditorForm..handleCancel)
-
-<a name="module_FieldEditorForm.._getFieldSchema"></a>
-##FieldEditorForm~_getFieldSchema(componentType, schemas)
-Get a list a schemas which apply to a Workspace field.
+<a name="module_Layout.._allocateIds"></a>
+##Layout~_allocateIds(layoutComponent)
+Recursivly allocate id's to a LayoutComponent. LayoutComponents with an existing id are ignored.
 
 **Params**
 
-- componentType `String` - The ClassName of a WorkspaceField.  
-- schemas `Array` - Schemas defined by metadata.components.  
+- layoutComponent `Object` - The field you wish to assign an id to.  
 
-**Scope**: inner function of [FieldEditorForm](#module_FieldEditorForm)  
-**Returns**: `Array` - The schemas relating to a WorkspaceField.  
-<a name="module_FieldEditorForm.._createFormRows"></a>
-##FieldEditorForm~_createFormRows(schema, contextMetadata)
-Create a FieldEditorRow for each binding type relating to the WorkspaceField.
+**Scope**: inner function of [Layout](#module_Layout)  
+**Returns**: `Object` - The updated LayoutComponent.  
+<a name="module_Layout.._getLayoutComponentById"></a>
+##Layout~_getLayoutComponentById(id, parent)
+**Params**
+
+- id `String` - The id of the LayoutComponent you're looking for  
+- parent `Object` - The LayoutComponent to check against (if undefined, starts from root)  
+
+**Scope**: inner function of [Layout](#module_Layout)  
+<a name="module_Layout.._updateLayoutComponentData"></a>
+##Layout~_updateLayoutComponentData(id, binding)
+Update the Layout's state with new LayoutComponent data.
 
 **Params**
 
-- schema `Object`  
-- contextMetadata `Object`  
+- id `String` - The id of the LayoutComponent you want to update.  
+- binding `Object` - The new value of the LayoutComponent.  
 
-**Scope**: inner function of [FieldEditorForm](#module_FieldEditorForm)  
-**Returns**:  - A list of FieldEditorRow's.  
-<a name="module_FieldEditorForm.._getRows"></a>
-##FieldEditorForm~_getRows()
-Gets the FieldEditorFormRow's belonging to the current FieldEditorForm.
-
-**Scope**: inner function of [FieldEditorForm](#module_FieldEditorForm)  
-**Returns**: `Array`  
-<a name="module_FieldEditorForm..handleSave"></a>
-##FieldEditorForm~handleSave()
-Handle saving updates to a WorkspaceField.
-
-**Scope**: inner function of [FieldEditorForm](#module_FieldEditorForm)  
-<a name="module_FieldEditorForm..handleCancel"></a>
-##FieldEditorForm~handleCancel()
-Handle canceling changes made in the editor.
-
-**Scope**: inner function of [FieldEditorForm](#module_FieldEditorForm)  
-<a name="module_FieldEditorFormRow"></a>
-#FieldEditorFormRow
-A sub-component of FieldEditorForm. Each row represents a field binding.
-
-**Members**
-
-* [FieldEditorFormRow](#module_FieldEditorFormRow)
-  * [FieldEditorFormRow~getContextOptions()](#module_FieldEditorFormRow..getContextOptions)
-  * [FieldEditorFormRow~handleValueChange(event)](#module_FieldEditorFormRow..handleValueChange)
-  * [FieldEditorFormRow~getInputTypes()](#module_FieldEditorFormRow..getInputTypes)
-  * [FieldEditorFormRow~handleTypeChange(event)](#module_FieldEditorFormRow..handleTypeChange)
-
-<a name="module_FieldEditorFormRow..getContextOptions"></a>
-##FieldEditorFormRow~getContextOptions()
-Generates a list of options to populate the value dropdown (when state.type === 'context').
-
-**Scope**: inner function of [FieldEditorFormRow](#module_FieldEditorFormRow)  
-**Returns**: `Array`  
-<a name="module_FieldEditorFormRow..handleValueChange"></a>
-##FieldEditorFormRow~handleValueChange(event)
-Event handler for changes triggered by the value input.
+**Scope**: inner function of [Layout](#module_Layout)  
+<a name="module_Layout.._removeLayoutComponentFromLayout"></a>
+##Layout~_removeLayoutComponentFromLayout(id)
+Revomes a LayoutComponent and all of it's children from the Layout.
 
 **Params**
 
-- event `Object`  
+- id `String` - The ID of the LayoutComponent to remove.  
 
-**Scope**: inner function of [FieldEditorFormRow](#module_FieldEditorFormRow)  
-<a name="module_FieldEditorFormRow..getInputTypes"></a>
-##FieldEditorFormRow~getInputTypes()
-Generates the input field bound to the state's `value` property.
-
-**Scope**: inner function of [FieldEditorFormRow](#module_FieldEditorFormRow)  
-**Returns**: `Object`  
-<a name="module_FieldEditorFormRow..handleTypeChange"></a>
-##FieldEditorFormRow~handleTypeChange(event)
-Event handler for changes triggered by the type dropdown. Switching between context and embedded.
+**Scope**: inner function of [Layout](#module_Layout)  
+<a name="module_Layout.._moveLayoutComponent"></a>
+##Layout~_moveLayoutComponent(id, toId)
+Move a LayoutComponent to a new parent.
 
 **Params**
 
-- event `Object`  
+- id `String` - The ID of the LayoutComponent that's getting moved.  
+- toId `String` - Parent we're moving the LayoutComponent to.  
 
-**Scope**: inner function of [FieldEditorFormRow](#module_FieldEditorFormRow)  
-<a name="module_Palette"></a>
-#Palette
-Wrapper component for the available fields.
-
-<a name="module_PaletteField"></a>
-#PaletteField
-A field which can be added to the Workspace.
-
-<a name="module_PaletteField.._handleDragStart"></a>
-##PaletteField~_handleDragStart()
-Handle the drag event on PaletteField's
-
-**Scope**: inner function of [PaletteField](#module_PaletteField)  
-<a name="module_Workspace"></a>
-#Workspace
-Wrapper component for the various layout types.
-
-**Members**
-
-* [Workspace](#module_Workspace)
-  * [Workspace~_allocateIds(workspaceField)](#module_Workspace.._allocateIds)
-  * [Workspace~_getFieldById(id, parent)](#module_Workspace.._getFieldById)
-  * [Workspace~_updateFieldData(id, binding)](#module_Workspace.._updateFieldData)
-  * [Workspace~_removeFieldFromWorkspace()](#module_Workspace.._removeFieldFromWorkspace)
-  * [Workspace~_moveWorkspaceField(fieldId, toId)](#module_Workspace.._moveWorkspaceField)
-  * [Workspace~_addWorkspaceField(parentId, fieldType)](#module_Workspace.._addWorkspaceField)
-  * [Workspace~_fieldIsRoot(id)](#module_Workspace.._fieldIsRoot)
-
-<a name="module_Workspace.._allocateIds"></a>
-##Workspace~_allocateIds(workspaceField)
-Recursivly allocate id's to a WorkspaceField. WorkspaceField's with an existing id are ignored.
-
-**Params**
-
-- workspaceField `Object` - The field you wish to assign an id to.  
-
-**Scope**: inner function of [Workspace](#module_Workspace)  
-**Returns**: `Object` - The updated workspaceField.  
-<a name="module_Workspace.._getFieldById"></a>
-##Workspace~_getFieldById(id, parent)
-**Params**
-
-- id `String` - The id of the WorkspaceField you're looking for  
-- parent `Object` - The field to check against (if undefined, starts from root)  
-
-**Scope**: inner function of [Workspace](#module_Workspace)  
-<a name="module_Workspace.._updateFieldData"></a>
-##Workspace~_updateFieldData(id, binding)
-Update the Workspace's state. Will recurse down children from the `workspaceField` param.
-
-**Params**
-
-- id `String` - The id of the WorkspaceField you want to update.  
-- binding `Object` - The new value of the WorkspaceField.  
-
-**Scope**: inner function of [Workspace](#module_Workspace)  
-<a name="module_Workspace.._removeFieldFromWorkspace"></a>
-##Workspace~_removeFieldFromWorkspace()
-Revomes a WorkspaceField and all of it's children from the Workspace.
-
-**Scope**: inner function of [Workspace](#module_Workspace)  
-<a name="module_Workspace.._moveWorkspaceField"></a>
-##Workspace~_moveWorkspaceField(fieldId, toId)
-Move a workspace field to a new parent.
-
-**Params**
-
-- fieldId `String` - Field that's getting moved  
-- toId `String` - Parent we're moving the field to  
-
-**Scope**: inner function of [Workspace](#module_Workspace)  
-<a name="module_Workspace.._addWorkspaceField"></a>
-##Workspace~_addWorkspaceField(parentId, fieldType)
+**Scope**: inner function of [Layout](#module_Layout)  
+<a name="module_Layout.._addLayoutComponent"></a>
+##Layout~_addLayoutComponent(parentId, layoutComponentType)
 Add a workspce field to the Workspace.
 
 **Params**
 
-- parentId `String` - ID of the WorkspaceField we're adding the new component to.  
-- fieldType `String` - Type of field we're adding.  
+- parentId `String` - ID of the LayoutComponent we're adding the new LayoutComponent to.  
+- layoutComponentType `String` - Type of LayoutComponent we're adding.  
 
-**Scope**: inner function of [Workspace](#module_Workspace)  
-**Returns**: `String` - ID of the new WorkspaceField.  
-<a name="module_Workspace.._fieldIsRoot"></a>
-##Workspace~_fieldIsRoot(id)
-Determine if a WorkspaceField is the root component.
+**Scope**: inner function of [Layout](#module_Layout)  
+**Returns**: `String` - ID of the new LayoutComponent.  
+<a name="module_Layout.._layoutComponentIsRoot"></a>
+##Layout~_layoutComponentIsRoot(id)
+Determine if a LayoutComponent is the root component.
 
 **Params**
 
-- id `String` - The id of the field we're checking.  
+- id `String` - The id of the LayoutComponent we're checking.  
 
-**Scope**: inner function of [Workspace](#module_Workspace)  
+**Scope**: inner function of [Layout](#module_Layout)  
 **Returns**: `Boolean`  
-<a name="module_WorkspaceField"></a>
-#WorkspaceField
+<a name="module_LayoutComponent"></a>
+#LayoutComponent
 The core component used to create layouts.
 
 **Members**
 
-* [WorkspaceField](#module_WorkspaceField)
-  * [WorkspaceField~_canEdit()](#module_WorkspaceField.._canEdit)
-  * [WorkspaceField~_canRemove()](#module_WorkspaceField.._canRemove)
-  * [WorkspaceField~_createChildFields()](#module_WorkspaceField.._createChildFields)
-  * [WorkspaceField~_allowDrop()](#module_WorkspaceField.._allowDrop)
-  * [WorkspaceField~_nodeBelongsToField(node)](#module_WorkspaceField.._nodeBelongsToField)
-  * [WorkspaceField~_handleDragStart()](#module_WorkspaceField.._handleDragStart)
-  * [WorkspaceField~_hasAncestor(id)](#module_WorkspaceField.._hasAncestor)
-  * [WorkspaceField~_handleDrop()](#module_WorkspaceField.._handleDrop)
+* [LayoutComponent](#module_LayoutComponent)
+  * [LayoutComponent~_canEdit()](#module_LayoutComponent.._canEdit)
+  * [LayoutComponent~_canRemove()](#module_LayoutComponent.._canRemove)
+  * [LayoutComponent~_createChildLayoutComponents()](#module_LayoutComponent.._createChildLayoutComponents)
+  * [LayoutComponent~_allowDrop()](#module_LayoutComponent.._allowDrop)
+  * [LayoutComponent~_nodeBelongsToLayoutComponent(node)](#module_LayoutComponent.._nodeBelongsToLayoutComponent)
+  * [LayoutComponent~_handleDragStart()](#module_LayoutComponent.._handleDragStart)
+  * [LayoutComponent~_hasAncestor(id)](#module_LayoutComponent.._hasAncestor)
+  * [LayoutComponent~_handleDrop()](#module_LayoutComponent.._handleDrop)
+  * [LayoutComponent~_getLayoutComponentSchema()](#module_LayoutComponent.._getLayoutComponentSchema)
 
-<a name="module_WorkspaceField.._canEdit"></a>
-##WorkspaceField~_canEdit()
+<a name="module_LayoutComponent.._canEdit"></a>
+##LayoutComponent~_canEdit()
 Returns true if the user is able to edit the field.
 
-**Scope**: inner function of [WorkspaceField](#module_WorkspaceField)  
+**Scope**: inner function of [LayoutComponent](#module_LayoutComponent)  
 **Returns**: `Boolean`  
-<a name="module_WorkspaceField.._canRemove"></a>
-##WorkspaceField~_canRemove()
-Returns true if the user is able to remove the field from the workspace.
+<a name="module_LayoutComponent.._canRemove"></a>
+##LayoutComponent~_canRemove()
+Returns true if the user is able to remove the LayoutComponent from the Layout.
 
-**Scope**: inner function of [WorkspaceField](#module_WorkspaceField)  
+**Scope**: inner function of [LayoutComponent](#module_LayoutComponent)  
 **Returns**: `Boolean`  
-<a name="module_WorkspaceField.._createChildFields"></a>
-##WorkspaceField~_createChildFields()
+<a name="module_LayoutComponent.._createChildLayoutComponents"></a>
+##LayoutComponent~_createChildLayoutComponents()
 Create the child components for the current WorkspaceField.
 
-**Scope**: inner function of [WorkspaceField](#module_WorkspaceField)  
+**Scope**: inner function of [LayoutComponent](#module_LayoutComponent)  
 **Returns**: `Array` - Child layout fields of the current WorkspaceField.  
-<a name="module_WorkspaceField.._allowDrop"></a>
-##WorkspaceField~_allowDrop()
+<a name="module_LayoutComponent.._allowDrop"></a>
+##LayoutComponent~_allowDrop()
 By default, data/elements cannot be dropped in other elements. To allow a drop, we must prevent the default handling of the element.
 
-**Scope**: inner function of [WorkspaceField](#module_WorkspaceField)  
-<a name="module_WorkspaceField.._nodeBelongsToField"></a>
-##WorkspaceField~_nodeBelongsToField(node)
+**Scope**: inner function of [LayoutComponent](#module_LayoutComponent)  
+<a name="module_LayoutComponent.._nodeBelongsToLayoutComponent"></a>
+##LayoutComponent~_nodeBelongsToLayoutComponent(node)
 Check if a DOM node is part of a WorkspaceField.
 
 **Params**
 
 - node `Object` - A DOM node  
 
-**Scope**: inner function of [WorkspaceField](#module_WorkspaceField)  
+**Scope**: inner function of [LayoutComponent](#module_LayoutComponent)  
 **Returns**: `Boolean`  
-<a name="module_WorkspaceField.._handleDragStart"></a>
-##WorkspaceField~_handleDragStart()
-Handle the drag event on WorkspaceField's
+<a name="module_LayoutComponent.._handleDragStart"></a>
+##LayoutComponent~_handleDragStart()
+Handle the drag event on a LayoutComponent
 
-**Scope**: inner function of [WorkspaceField](#module_WorkspaceField)  
-<a name="module_WorkspaceField.._hasAncestor"></a>
-##WorkspaceField~_hasAncestor(id)
-Check if the current WorkspaceField has an ancestor matching a WorkspaceField ID.
+**Scope**: inner function of [LayoutComponent](#module_LayoutComponent)  
+<a name="module_LayoutComponent.._hasAncestor"></a>
+##LayoutComponent~_hasAncestor(id)
+Check if the current LayoutComponent has an ancestor matching an ID.
 
 **Params**
 
 - id `String`  
 
-**Scope**: inner function of [WorkspaceField](#module_WorkspaceField)  
-<a name="module_WorkspaceField.._handleDrop"></a>
-##WorkspaceField~_handleDrop()
-Handle the drop event on a WorkspaceField. Handles dropping of PaletteField's and other WorkspaceField's.
+**Scope**: inner function of [LayoutComponent](#module_LayoutComponent)  
+<a name="module_LayoutComponent.._handleDrop"></a>
+##LayoutComponent~_handleDrop()
+Handle the drop event of a LayoutComponent.
 
-**Scope**: inner function of [WorkspaceField](#module_WorkspaceField)  
+**Scope**: inner function of [LayoutComponent](#module_LayoutComponent)  
+<a name="module_LayoutComponent.._getLayoutComponentSchema"></a>
+##LayoutComponent~_getLayoutComponentSchema()
+Get the schema for the LayoutComponent.
+
+**Scope**: inner function of [LayoutComponent](#module_LayoutComponent)  
+**Returns**: `Array` - The schemas relating to a LayoutComponent.  
+<a name="module_Palette"></a>
+#Palette
+Wrapper component for the available fields.
+
+<a name="module_PaletteComponent"></a>
+#PaletteComponent
+A PalettleComponent can be dragged onto a Layout, creating a LayoutComponent.
+
+<a name="module_PaletteComponent.._handleDragStart"></a>
+##PaletteComponent~_handleDragStart()
+Handle the drag event on PaletteField's
+
+**Scope**: inner function of [PaletteComponent](#module_PaletteComponent)  
+<a name="module_Workspace"></a>
+#Workspace
+Workspace is the base component of NeoLayout.
+

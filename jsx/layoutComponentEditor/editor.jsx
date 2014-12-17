@@ -1,20 +1,21 @@
 /**
- * @file Enables editing of a WorkspaceField.
- * @module FieldEditor
+ * @file Enables editing of a LayoutComponent.
+ * @module LayoutComponentEditor
  */
 
 'use strict';
 
 var React = require('react'),
-    FieldEditorForm = require('./fieldEditorForm');
+    EditorForm = require('./editorForm');
 
-var FieldEditor = React.createClass({
+var LayoutComponentEditor = React.createClass({
 
     propTypes: {
-        data: React.PropTypes.object.isRequired,
+        layoutdata: React.PropTypes.object.isRequired,
         metadata: React.PropTypes.object.isRequired,
-        updateFieldData: React.PropTypes.func.isRequired,
-        removeFieldFromWorkspace: React.PropTypes.func.isRequired,
+        updateLayoutComponentData: React.PropTypes.func.isRequired,
+        removeLayoutComponentFromLayout: React.PropTypes.func.isRequired,
+        getLayoutComponentSchema: React.PropTypes.func.isRequired,
         canEdit: React.PropTypes.func.isRequired,
         canRemove: React.PropTypes.func.isRequired
     },
@@ -29,7 +30,7 @@ var FieldEditor = React.createClass({
      * @func _getCssClasses
      * @param {String} requiredClasses CSS classes that are required for the element.
      * @return {String} Includes the required class and the 'hide' class if the condition is met.
-     * @desc If the FieldEditor is not currently in use, the hide class will be added to the element.
+     * @desc If the LayoutComponentEditor is not currently in use, the hide class will be added to the element.
      */
     _getCssClasses: function (requiredClasses) {
         return this.state.editing === true ? requiredClasses : requiredClasses + ' hide';
@@ -43,8 +44,8 @@ var FieldEditor = React.createClass({
         this.setState({ editing: !this.state.editing });
     },
 
-    _removeFieldFromWorkspace: function () {
-        this.props.removeFieldFromWorkspace(this.props.data.id);
+    _removeLayoutComponentFromLayout: function () {
+        this.props.removeLayoutComponentFromLayout(this.props.layoutdata.id);
     },
 
     /**
@@ -61,7 +62,7 @@ var FieldEditor = React.createClass({
         }
 
         if (this.props.canRemove()) {
-            removeButton = <button type="button" onClick={this._removeFieldFromWorkspace}>Remove</button>;
+            removeButton = <button type="button" onClick={this._removeLayoutComponentFromLayout}>Remove</button>;
         }
 
         return (
@@ -79,12 +80,13 @@ var FieldEditor = React.createClass({
             <div className="nl-field-editor">
                 {editorButtons}
                 <div className={this._getCssClasses('nl-modal-editor')}>
-                    <h3>{this.props.data.ClassName}</h3>
-                    <FieldEditorForm
-                        data={this.props.data}
+                    <h3>{this.props.layoutdata.ClassName}</h3>
+                    <EditorForm
+                        layoutdata={this.props.layoutdata}
                         metadata={this.props.metadata}
                         toggleModalEditor={this._toggleModalEditor}
-                        updateFieldData={this.props.updateFieldData} />
+                        updateLayoutComponentData={this.props.updateLayoutComponentData}
+                        getLayoutComponentSchema={this.props.getLayoutComponentSchema} />
                 </div>
                 <div className={this._getCssClasses('nl-modal-mask')}></div>
             </div>
@@ -92,4 +94,4 @@ var FieldEditor = React.createClass({
     }
 });
 
-module.exports = FieldEditor;
+module.exports = LayoutComponentEditor;

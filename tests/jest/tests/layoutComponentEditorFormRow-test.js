@@ -1,15 +1,15 @@
 'use strict';
 
-jest.dontMock('../../../jsx/fieldEditorFormRow.jsx');
+jest.dontMock('../../../jsx/layoutComponentEditor/editorFormRow.jsx');
 
 var React = require('react/addons'),
     TestUtils = React.addons.TestUtils,
-    FieldEditorFormRow = require('../../../jsx/fieldEditorFormRow.jsx');
+    EditorFormRow = require('../../../jsx/layoutComponentEditor/editorFormRow.jsx');
 
-describe('FieldEditorFormRow', function () {
-    var fieldEditorFormRow,
+describe('EditorFormRow', function () {
+    var editorFormRow,
         metadata = require('../fixtures/metadata.json'),
-        workspaceData = require('../fixtures/workspacedata.json'),
+        layoutdata = require('../fixtures/layoutdata.json'),
         schemaData = {
             name: metadata.components[2].properties.Text.name,
             types: metadata.components[2].properties.Text.type,
@@ -17,9 +17,9 @@ describe('FieldEditorFormRow', function () {
         };
 
     beforeEach(function () {
-        fieldEditorFormRow = TestUtils.renderIntoDocument(
-            <FieldEditorFormRow
-                binding={workspaceData.children[1].bindings}
+        editorFormRow = TestUtils.renderIntoDocument(
+            <EditorFormRow
+                binding={layoutdata.children[1].bindings}
                 schema={schemaData}
                 contextMetadata={metadata.context} />
         );
@@ -27,7 +27,7 @@ describe('FieldEditorFormRow', function () {
 
     // _getContextOptions
     it('should get the context options', function () {
-        var options = fieldEditorFormRow._getContextOptions();
+        var options = editorFormRow._getContextOptions();
 
         expect(options.length).toEqual(3);
     });

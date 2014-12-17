@@ -6,21 +6,23 @@
 'use strict';
 
 var React = require('react'),
-    PaletteField = require('./paletteField');
+    PaletteComponent = require('./paletteComponent');
 
 var Palette = React.createClass({
+
     propTypes: {
         metadata: React.PropTypes.object.isRequired
     },
+
     render: function () {
         var availableFields = this.props.metadata.components.map(function (field, i) {
             return (
-                <PaletteField data={field} key={i} />
+                <PaletteComponent className="nl-palette-component" data={field} key={i} />
             );
         });
 
         return (
-            <div className="nl-pallete">
+            <div className="nl-palette">
                 {availableFields}
             </div>
         );

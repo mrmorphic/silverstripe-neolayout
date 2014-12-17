@@ -1,13 +1,13 @@
 /**
- * @file A sub-component of FieldEditorForm. Each row represents a field binding.
- * @module FieldEditorFormRow
+ * @file A sub-component of EditorForm. An EditorFormRow represents a LayoutComponent binding.
+ * @module EditorFormRow
  */
 
 'use strict';
 
 var React = require('react');
 
-var FieldEditorFormRow = React.createClass({
+var EditorFormRow = React.createClass({
 
     propTypes: {
         binding: React.PropTypes.object.isRequired,
@@ -16,6 +16,7 @@ var FieldEditorFormRow = React.createClass({
     },
 
     getInitialState: function () {
+        // Create a new object so unsaved changes don't trigger a re-render.
         return JSON.parse(JSON.stringify(this.props.binding));
     },
 
@@ -133,4 +134,4 @@ var FieldEditorFormRow = React.createClass({
     }
 });
 
-module.exports = FieldEditorFormRow;
+module.exports = EditorFormRow;
