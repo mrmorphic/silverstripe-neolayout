@@ -22,7 +22,8 @@
   },
   "scripts": {
     "build": "gulp",
-    "docs": "gulp js:debug && jsdoc2md ./javascript/build/*.js > docs/client_app_reference.md && gulp clean:js",
+    "build:debug": "gulp js:debug",
+    "docs": "gulp js:debug && jsdoc2md ./javascript/build/**/*.js > docs/client_app_reference.md && gulp clean:js",
     "postinstall": "npm run build",
     "test": "jest"
   },

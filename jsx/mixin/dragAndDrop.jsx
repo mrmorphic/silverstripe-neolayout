@@ -4,9 +4,9 @@
 
 'use strict';
 
-// Private function used to component specific conditionals.
+// Private function used for component specific conditionals.
 function isPaletteComponent(self) {
-    return typeof self.props.layoutdata.id === 'undefined';
+    return self.props.layoutdata.id === void 0;
 }
 
 /**
