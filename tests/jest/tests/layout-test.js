@@ -1,6 +1,7 @@
 'use strict';
 
 jest.dontMock('../../../jsx/component/layout.jsx');
+jest.dontMock('../../../jsx/mixin/componentUtils.jsx');
 
 var React = require('react/addons'),
     TestUtils = React.addons.TestUtils,

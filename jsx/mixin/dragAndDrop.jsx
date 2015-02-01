@@ -16,6 +16,19 @@ function isPaletteComponent(self) {
  */
 var dragAndDropHandlers = {
     /**
+     * @func _nodeBelongsToLayoutComponent
+     * @param {Object} node A DOM node
+     * @return {Boolean}
+     * @desc Check if a DOM node is part of a WorkspaceField.
+     */
+    _nodeBelongsToLayoutComponent: function (node) {
+        var $node = $(node);
+
+        return $node.data('uuid') === this.props.layoutdata.id ||
+            $node.closest('.nl-layout-component').data('uuid') === this.props.layoutdata.id;
+    },
+
+    /**
      * @func _handleDragStart
      * @desc Handle the drag event on components.
      */

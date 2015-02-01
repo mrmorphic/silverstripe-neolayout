@@ -3,6 +3,7 @@
  * @module Layout
  * @requires module:react
  * @requires module:node-uuid
+ * @requires module:../mixin/componentUtils
  * @requires module:./layoutComponent
  */
 
@@ -10,9 +11,12 @@
 
 var React = require('react'),
     uuid = require('node-uuid'),
+    componentUtilsMixin = require('../mixin/componentUtils'),
     LayoutComponent = require('./layoutComponent');
 
 var Layout = React.createClass({
+
+    mixins: [componentUtilsMixin],
 
     propTypes: {
         metadata: React.PropTypes.object.isRequired
@@ -29,7 +33,7 @@ var Layout = React.createClass({
 
         layoutComponent.id = layoutComponent.id || uuid.v4();
 
-        if (typeof layoutComponent.children !== 'undefined' && layoutComponent.children.length > 0) {
+        if (this._componentHasChildren(layoutComponent)) {
             for (i; i < layoutComponent.children.length; i += 1) {
                 layoutComponent.children[i] = this._allocateIds(layoutComponent.children[i]);
             }
@@ -53,12 +57,12 @@ var Layout = React.createClass({
         var i = 0,
             layoutComponent = null;
 
-        if (typeof parent === 'undefined') {
+        if (parent === void 0) {
             parent = this.state.layoutdata;
         }
 
         if (id !== parent.id) {
-            if (typeof parent.children !== 'undefined' && parent.children.length > 0) {
+            if (this._componentHasChildren(parent)) {
                 for (i; i < parent.children.length; i += 1) {
                     layoutComponent = this._getLayoutComponentById(id, parent.children[i]);
 
@@ -99,14 +103,14 @@ var Layout = React.createClass({
         var i = 0;
 
         // If there's no parent, we're dealing with the root element, so use the state.
-        if (typeof parent === 'undefined') {
+        if (parent === void 0) {
             parent = this.state.layoutdata;
             layoutComponent = this.state.layoutdata;
         }
 
         if (layoutComponent.id !== id) {
-            // The id's don't match, so try the children.
-            if (typeof layoutComponent.children !== 'undefined' && layoutComponent.children.length > 0) {
+            // The id's don't match, so try the children, if there are any.
+            if (this._componentHasChildren(layoutComponent)) {
                 for (i; i < layoutComponent.children.length; i += 1) {
                     this._removeLayoutComponentFromLayout(id, layoutComponent.children[i], layoutComponent);
                 }

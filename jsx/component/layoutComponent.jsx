@@ -4,7 +4,7 @@
  * @requires module:react
  * @requires module:./layoutComponentEditor/editor
  * @requires mixin:../mixin/dragAndDrop
- * @requires mixin:../mixin/util
+ * @requires mixin:../mixin/componentUtils
  */
 
 'use strict';
@@ -12,11 +12,11 @@
 var React = require('react'),
     LayoutComponentEditor = require('./layoutComponentEditor/editor'),
     dragAndDropMixin = require('../mixin/dragAndDrop'),
-    utilMixin = require('../mixin/util');
+    componentUtilsMixin = require('../mixin/componentUtils');
 
 var LayoutComponent = React.createClass({
 
-    mixins: [dragAndDropMixin, utilMixin],
+    mixins: [dragAndDropMixin, componentUtilsMixin],
 
     propTypes: {
         layoutdata: React.PropTypes.object.isRequired,
