@@ -1,10 +1,10 @@
 'use strict';
 
-jest.dontMock('../../../jsx/layoutComponentEditor/editorForm.jsx');
+jest.dontMock('../../../jsx/component/layoutComponentEditor/editorForm.jsx');
 
 var React = require('react/addons'),
     TestUtils = React.addons.TestUtils,
-    EditorForm = require('../../../jsx/layoutComponentEditor/editorForm.jsx');
+    EditorForm = require('../../../jsx/component/layoutComponentEditor/editorForm.jsx');
 
 describe('EditorForm', function () {
     var editorForm,

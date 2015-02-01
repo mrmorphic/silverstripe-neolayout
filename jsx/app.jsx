@@ -5,7 +5,7 @@
 'use strict';
 
 var React = require('react'),
-    Workspace = require('./workspace');
+    Workspace = require('./component/workspace');
 
 window.jQuery('#neolayout').entwine({
     onmatch: function () {

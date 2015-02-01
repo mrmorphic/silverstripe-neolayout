@@ -1,6 +1,8 @@
 /**
  * @file A sub-component of FieldEditor, responsible for saving and canceling changes.
  * @module FieldEditorForm
+ * @requires module:react
+ * @requires module:./editorFormRow
  */
 
 'use strict';

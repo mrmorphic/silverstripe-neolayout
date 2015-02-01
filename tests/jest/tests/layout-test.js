@@ -1,10 +1,10 @@
 'use strict';
 
-jest.dontMock('../../../jsx/layout.jsx');
+jest.dontMock('../../../jsx/component/layout.jsx');
 
 var React = require('react/addons'),
     TestUtils = React.addons.TestUtils,
-    Layout = require('../../../jsx/layout.jsx');
+    Layout = require('../../../jsx/component/layout.jsx');
 
 describe('Layout', function () {
     var layout,

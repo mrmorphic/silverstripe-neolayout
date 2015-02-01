@@ -1,6 +1,8 @@
 /**
  * @file Enables editing of a LayoutComponent.
  * @module LayoutComponentEditor
+ * @requires module:react
+ * @requires module:./editorForm
  */
 
 'use strict';

@@ -1,6 +1,7 @@
 /**
  * @file A sub-component of EditorForm. An EditorFormRow represents a LayoutComponent binding.
  * @module EditorFormRow
+ * @requires module:react
  */
 
 'use strict';

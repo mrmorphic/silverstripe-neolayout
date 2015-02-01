@@ -1,17 +1,17 @@
 'use strict';
 
-jest.dontMock('../../../jsx/paletteComponent.jsx');
+jest.dontMock('../../../jsx/component/paletteComponent.jsx');
 
 var React = require('react/addons'),
     TestUtils = React.addons.TestUtils,
-    PaletteComponent = require('../../../jsx/paletteComponent.jsx');
+    PaletteComponent = require('../../../jsx/component/paletteComponent.jsx');
 
 describe('PaletteComponent', function () {
     var metadata = require('../fixtures/metadata.json');
 
     it('should display values from metadata', function () {
         var paletteComponent = TestUtils.renderIntoDocument(
-            <PaletteComponent data={metadata.components[0]} />
+            <PaletteComponent layoutdata={metadata.components[0]} />
         );
 
         var name = TestUtils.findRenderedDOMComponentWithClass(paletteComponent, 'name');

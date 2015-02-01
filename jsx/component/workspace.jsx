@@ -1,6 +1,9 @@
 /**
  * @file Workspace is the base component of NeoLayout.
  * @module Workspace
+ * @requires module:react
+ * @requires module:./palette
+ * @requires module:./layout
  */
 
 'use strict';

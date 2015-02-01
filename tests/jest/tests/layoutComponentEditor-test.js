@@ -1,10 +1,10 @@
 'use strict';
 
-jest.dontMock('../../../jsx/layoutComponentEditor/editor.jsx');
+jest.dontMock('../../../jsx/component/layoutComponentEditor/editor.jsx');
 
 var React = require('react/addons'),
     TestUtils = React.addons.TestUtils,
-    LayoutComponentEditor = require('../../../jsx/layoutComponentEditor/editor.jsx');
+    LayoutComponentEditor = require('../../../jsx/component/layoutComponentEditor/editor.jsx');
 
 describe('LayoutComponentEditor', function () {
     var layoutComponentEditor,

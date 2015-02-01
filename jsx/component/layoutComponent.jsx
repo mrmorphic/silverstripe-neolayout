@@ -1,15 +1,22 @@
 /**
  * @file The core component used to create layouts.
  * @module LayoutComponent
+ * @requires module:react
+ * @requires module:./layoutComponentEditor/editor
+ * @requires mixin:../mixin/dragAndDrop
+ * @requires mixin:../mixin/util
  */
 
 'use strict';
 
-var $ = require('jquery'),
-    React = require('react'),
-    LayoutComponentEditor = require('./layoutComponentEditor/editor');
+var React = require('react'),
+    LayoutComponentEditor = require('./layoutComponentEditor/editor'),
+    dragAndDropMixin = require('../mixin/dragAndDrop'),
+    utilMixin = require('../mixin/util');
 
 var LayoutComponent = React.createClass({
+
+    mixins: [dragAndDropMixin, utilMixin],
 
     propTypes: {
         layoutdata: React.PropTypes.object.isRequired,
@@ -70,74 +77,6 @@ var LayoutComponent = React.createClass({
     },
 
     /**
-     * @func _allowDrop
-     * @desc By default, data/elements cannot be dropped in other elements. To allow a drop, we must prevent the default handling of the element.
-     */
-    _allowDrop: function (event) {
-        event.preventDefault();
-    },
-
-    /**
-     * @func _nodeBelongsToLayoutComponent
-     * @param {Object} node A DOM node
-     * @return {Boolean}
-     * @desc Check if a DOM node is part of a WorkspaceField.
-     */
-    _nodeBelongsToLayoutComponent: function (node) {
-        var $node = $(node);
-
-        return $node.data('uuid') === this.props.layoutdata.id ||
-            $node.closest('.nl-layout-component').data('uuid') === this.props.layoutdata.id;
-    },
-
-    /**
-     * @func _handleDragStart
-     * @desc Handle the drag event on a LayoutComponent
-     */
-    _handleDragStart: function (event) {
-        var data = {
-            componentType: "LayoutComponent",
-            componentData: this.props.layoutdata
-        };
-
-        if (this._nodeBelongsToLayoutComponent(event.target) || this.getDOMNode() === event.target) {
-            event.dataTransfer.setData('text', JSON.stringify(data));
-        }
-    },
-
-    /**
-     * @func _hasAncestor
-     * @param {String} id
-     * @desc Check if the current LayoutComponent has an ancestor matching an ID.
-     * @todo Do this via React rather than DOM.
-     */
-    _hasAncestor: function (id) {
-        return ($.contains($('[data-uuid="' + id + '"]')[0], this.getDOMNode()));
-    },
-
-    /**
-     * @func _handleDrop
-     * @desc Handle the drop event of a LayoutComponent.
-     */
-    _handleDrop: function (event) {
-        var data;
-
-        if (this._nodeBelongsToLayoutComponent(event.target) || this.getDOMNode() === event.target) {
-            data = JSON.parse(event.dataTransfer.getData('text'));
-
-            // Check the type of component being dropped.
-            if (data.componentType === "PaletteComponent") {
-                this.props.addLayoutComponent(this.props.layoutdata.id, data.componentData.componentType);
-            } else if (data.componentType === "LayoutComponent") {
-                // Don't allow dropping parents onto children.
-                if (!this._hasAncestor(data.componentData.id)) {
-                    this.props.moveLayoutComponent(data.componentData.id, this.props.layoutdata.id);
-                }
-            }
-        }
-    },
-
-    /**
      * @func _getLayoutComponentSchema
      * @return {Array} The schemas relating to a LayoutComponent.
      * @desc Get the schema for the LayoutComponent.
@@ -166,7 +105,7 @@ var LayoutComponent = React.createClass({
                 draggable="true"
                 onDragStart={this._handleDragStart}
                 onDrop={this._handleDrop}
-                onDragOver={this._allowDrop}>
+                onDragOver={this._handleDragOver}>
 
                 <h3>{this.props.layoutdata.ClassName}</h3>
 

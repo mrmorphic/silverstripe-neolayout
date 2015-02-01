@@ -1,6 +1,9 @@
 /**
  * @file A Layout is made up of one or more LayoutComponents.
  * @module Layout
+ * @requires module:react
+ * @requires module:node-uuid
+ * @requires module:./layoutComponent
  */
 
 'use strict';
