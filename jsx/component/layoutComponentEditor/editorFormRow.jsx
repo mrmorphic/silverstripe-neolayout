@@ -51,20 +51,20 @@ var EditorFormRow = React.createClass({
     },
 
     /**
-     * @func handleValueChange
+     * @func _handleValueChange
      * @param {Object} event
      * @desc Event handler for changes triggered by the value input.
      */
-    handleValueChange: function (event) {
+    _handleValueChange: function (event) {
         this.setState({ value: event.target.value });
     },
 
     /**
-     * @func getInputTypes
+     * @func _getInputTypes
      * @return {Object}
      * @desc Generates the input field bound to the state's `value` property.
      */
-    getTypeInputs: function () {
+    _getTypeInputs: function () {
         var typeInput = null,
             contextOptions = null,
             contextValue = null,
@@ -72,7 +72,7 @@ var EditorFormRow = React.createClass({
 
         if (this.state.type === 'context' && contextOptions[0].length > 0) {
             typeInput = (
-                <select className="field-editor-field" onChange={this.handleValueChange} value={this.state.value}>
+                <select className="field-editor-field" onChange={this._handleValueChange} value={this.state.value}>
                     {contextOptions}
                 </select>
             );
@@ -80,7 +80,7 @@ var EditorFormRow = React.createClass({
             typeInput = (
                 <input
                     className="field-editor-field"
-                    type="text" onChange={this.handleValueChange}
+                    type="text" onChange={this._handleValueChange}
                     value={this.state.value} />
             );
         }
@@ -89,11 +89,11 @@ var EditorFormRow = React.createClass({
     },
 
     /**
-     * @func handleTypeChange
+     * @func _handleTypeChange
      * @param {Object} event
      * @desc Event handler for changes triggered by the type dropdown. Switching between context and embedded.
      */
-    handleTypeChange: function (event) {
+    _handleTypeChange: function (event) {
         var newType = event.target.value.toLowerCase(),
             newValue = '',
             contextOptions = this._getContextOptions();
@@ -120,12 +120,12 @@ var EditorFormRow = React.createClass({
     },
 
     render: function () {
-        var typeInputs = this.getTypeInputs();
+        var typeInputs = this._getTypeInputs();
 
         return (
             <div className="field-editor-row" data-type={this.props.schema.key}>
                 <label>{this.props.schema.name}</label>
-                <select className="field-editor-field" onChange={this.handleTypeChange} value={this.state.type}>
+                <select className="field-editor-field" onChange={this._handleTypeChange} value={this.state.type}>
                     <option value="context">Context</option>
                     <option value="embedded">Embedded</option>
                 </select>

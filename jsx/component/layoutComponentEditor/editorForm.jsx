@@ -16,8 +16,8 @@ var EditorForm = React.createClass({
         layoutdata: React.PropTypes.object.isRequired,
         metadata: React.PropTypes.object.isRequired,
         toggleModalEditor: React.PropTypes.func.isRequired,
-        updateLayoutComponentData: React.PropTypes.func.isRequired,
-        getLayoutComponentSchema: React.PropTypes.func.isRequired
+        updateComponent: React.PropTypes.func.isRequired,
+        getComponentSchema: React.PropTypes.func.isRequired
     },
 
     /**
@@ -25,7 +25,7 @@ var EditorForm = React.createClass({
      * @param {Object} schema
      * @param {Object} contextMetadata
      * @return A list of FieldEditorRow's.
-     * @desc Create a FieldEditorRow for each binding type relating to the WorkspaceField.
+     * @desc Create a FieldEditorRow for each binding type relating to the LayoutComponent.
      */
     _createFormRows: function (schema, contextMetadata) {
         var rows = [],
@@ -41,7 +41,7 @@ var EditorForm = React.createClass({
 
                 // Check if the LayoutComponent has a binding relating to the current row.
                 // Do this by checking if the schema's key exists in the binding.
-                if (typeof this.props.layoutdata.bindings[key] !== 'undefined') {
+                if (this.props.layoutdata.bindings[key] !== void 0) {
                     binding = this.props.layoutdata.bindings[key];
                 } else {
                     binding = { type: 'embedded', value: '' };
@@ -88,11 +88,11 @@ var EditorForm = React.createClass({
     },
 
     /**
-     * @func handleSave
+     * @func _handleSaveButtonClick
      * @desc Handle saving updates to a LayoutComponent.
      * @todo Only save one binding (row).
      */
-    handleSave: function () {
+    _handleSaveButtonClick: function () {
         var i = 0,
             rows = this._getRows(),
             binding = {};
@@ -102,15 +102,15 @@ var EditorForm = React.createClass({
             binding[rows[i].getDOMNode().getAttribute('data-type')] = rows[i].state;
         }
 
-        this.props.updateLayoutComponentData(this.props.layoutdata.id, binding);
+        this.props.updateComponent(this.props.layoutdata.id, binding);
         this.props.toggleModalEditor();
     },
 
     /**
-     * @func handleCancel
+     * @func _handleCancelButtonClick
      * @desc Handle canceling changes made in the editor.
      */
-    handleCancel: function () {
+    _handleCancelButtonClick: function () {
         var i = 0,
             rows = this._getRows();
 
@@ -124,7 +124,7 @@ var EditorForm = React.createClass({
     },
 
     render: function () {
-        var formRows = this._createFormRows(this.props.getLayoutComponentSchema(), this.props.metadata.context);
+        var formRows = this._createFormRows(this.props.getComponentSchema(), this.props.metadata.context);
 
         return (
             <div className="field-editor-form">
@@ -132,8 +132,8 @@ var EditorForm = React.createClass({
                     {formRows}
                 </div>
                 <div className="field-editor-actions">
-                    <button className="field-editor-action save" onClick={this.handleSave}>Save</button>
-                    <button className="field-editor-action cancel" onClick={this.handleCancel}>Cancel</button>
+                    <button className="field-editor-action save" onClick={this._handleSaveButtonClick}>Save</button>
+                    <button className="field-editor-action cancel" onClick={this._handleCancelButtonClick}>Cancel</button>
                 </div>
             </div>
         );

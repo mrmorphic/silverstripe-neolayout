@@ -16,9 +16,9 @@ describe('LayoutComponentEditor', function () {
             <LayoutComponentEditor
                 layoutdata={layoutdata.children[1]}
                 metadata={metadata}
-                updateLayoutComponentData={jest.genMockFunction()}
-                removeLayoutComponentFromLayout={jest.genMockFunction()}
-                getLayoutComponentSchema={jest.genMockFunction()}
+                updateComponent={jest.genMockFunction()}
+                removeComponent={jest.genMockFunction()}
+                getComponentSchema={jest.genMockFunction()}
                 canEdit={jest.genMockFunction()}
                 canRemove={jest.genMockFunction()} />
         );

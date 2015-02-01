@@ -16,19 +16,6 @@ function isPaletteComponent(self) {
  */
 var dragAndDropHandlers = {
     /**
-     * @func _nodeBelongsToLayoutComponent
-     * @param {Object} node A DOM node
-     * @return {Boolean}
-     * @desc Check if a DOM node is part of a WorkspaceField.
-     */
-    _nodeBelongsToLayoutComponent: function (node) {
-        var $node = $(node);
-
-        return $node.data('uuid') === this.props.layoutdata.id ||
-            $node.closest('.nl-layout-component').data('uuid') === this.props.layoutdata.id;
-    },
-
-    /**
      * @func _handleDragStart
      * @desc Handle the drag event on components.
      */
@@ -39,7 +26,7 @@ var dragAndDropHandlers = {
         };
 
         if (isPaletteComponent(this) ||
-            this._nodeBelongsToLayoutComponent(event.target) ||
+            this._nodeBelongsToComponent(event.target) ||
             this.getDOMNode() === event.target) {
             event.dataTransfer.setData('text', JSON.stringify(data));
         }
@@ -62,16 +49,16 @@ var dragAndDropHandlers = {
     _handleDrop: function (event) {
         var data;
 
-        if (this._nodeBelongsToLayoutComponent(event.target) || this.getDOMNode() === event.target) {
+        if (this._nodeBelongsToComponent(event.target) || this.getDOMNode() === event.target) {
             data = JSON.parse(event.dataTransfer.getData('text'));
 
             // Check the type of component being dropped.
             if (data.componentType === "PaletteComponent") {
-                this.props.addLayoutComponent(this.props.layoutdata.id, data.componentData.componentType);
+                this.props.addComponent(this.props.layoutdata.id, data.componentData.componentType);
             } else if (data.componentType === "LayoutComponent") {
                 // Don't allow dropping parents onto children.
                 if (!this._hasAncestor(data.componentData.id)) {
-                    this.props.moveLayoutComponent(data.componentData.id, this.props.layoutdata.id);
+                    this.props.moveComponent(data.componentData.id, this.props.layoutdata.id);
                 }
             }
         }

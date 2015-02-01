@@ -16,11 +16,11 @@ describe('LayoutComponent', function () {
             <LayoutComponent
                 layoutdata={layoutdata.children[1]}
                 metadata={metadata}
-                updateLayoutComponentData={jest.genMockFunction()}
-                removeLayoutComponentFromLayout={jest.genMockFunction()}
-                layoutComponentIsRoot={jest.genMockFunction()}
-                addLayoutComponent={jest.genMockFunction()}
-                moveLayoutComponent={jest.genMockFunction()} />
+                updateComponent={jest.genMockFunction()}
+                removeComponent={jest.genMockFunction()}
+                componentIsRoot={jest.genMockFunction()}
+                addComponent={jest.genMockFunction()}
+                moveComponent={jest.genMockFunction()} />
         );
     });
 
@@ -30,19 +30,19 @@ describe('LayoutComponent', function () {
         expect(layoutComponent._canEdit()).toEqual(true);
     });
 
-    // _createChildLayoutComponents
+    // _createChildComponents
     it('should create a LayoutComponent for each child of the current LayoutComponent', function () {
-        var childComponents = layoutComponent._createChildLayoutComponents();
+        var childComponents = layoutComponent._createChildComponents();
 
         expect(childComponents.length).toEqual(1);
 
         expect(childComponents[0].type.displayName).toEqual('LayoutComponent');
     });
 
-    // _getLayoutComponentSchema
+    // _getComponentSchema
     it('should get the schema for the LayoutComponent', function () {
         var fieldSchema = metadata.components[2],
-            result = layoutComponent._getLayoutComponentSchema();
+            result = layoutComponent._getComponentSchema();
 
         expect(JSON.stringify(result)).toEqual(JSON.stringify(fieldSchema));
     });

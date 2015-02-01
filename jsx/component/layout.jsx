@@ -29,13 +29,13 @@ var Layout = React.createClass({
     },
 
     /**
-     * @func _getLayoutComponentById
+     * @func _getComponentById
      * @param {String} id The id of the LayoutComponent you're looking for
      * @param {Object} parent The LayoutComponent to check against (if undefined, starts from root)
      */
-    _getLayoutComponentById: function (id, parent) {
+    _getComponentById: function (id, parent) {
         var i = 0,
-            layoutComponent = null;
+            component = null;
 
         if (parent === void 0) {
             parent = this.state.layoutdata;
@@ -44,30 +44,30 @@ var Layout = React.createClass({
         if (id !== parent.id) {
             if (this._componentHasChildren(parent)) {
                 for (i; i < parent.children.length; i += 1) {
-                    layoutComponent = this._getLayoutComponentById(id, parent.children[i]);
+                    component = this._getComponentById(id, parent.children[i]);
 
-                    if (layoutComponent !== null) {
+                    if (component !== null) {
                         break;
                     }
                 }
             }
         } else {
-            layoutComponent = parent;
+            component = parent;
         }
 
-        return layoutComponent;
+        return component;
     },
 
     /**
-     * @func _updateLayoutComponentData
+     * @func _updateComponent
      * @param {String} id The id of the LayoutComponent you want to update.
      * @param {Object} binding The new value of the LayoutComponent.
      * @desc Update the Layout's state with new LayoutComponent data.
      */
-    _updateLayoutComponentData: function (id, binding) {
-        var workspaceField = this._getLayoutComponentById(id);
+    _updateComponent: function (id, binding) {
+        var component = this._getComponentById(id);
 
-        workspaceField.bindings = binding;
+        component.bindings = binding;
 
         this.forceUpdate();
 
@@ -75,36 +75,36 @@ var Layout = React.createClass({
     },
 
     /**
-     * @func _removeLayoutComponentFromLayout
+     * @func _removeComponent
      * @param {String} id The ID of the LayoutComponent to remove.
      * @desc Revomes a LayoutComponent and all of it's children from the Layout.
      */
-    _removeLayoutComponentFromLayout: function (id, layoutComponent, parent) {
+    _removeComponent: function (id, component, parent) {
         var i = 0;
 
         // If there's no parent, we're dealing with the root element, so use the state.
         if (parent === void 0) {
             parent = this.state.layoutdata;
-            layoutComponent = this.state.layoutdata;
+            component = this.state.layoutdata;
         }
 
-        if (layoutComponent.id !== id) {
+        if (component.id !== id) {
             // The id's don't match, so try the children, if there are any.
-            if (this._componentHasChildren(layoutComponent)) {
-                for (i; i < layoutComponent.children.length; i += 1) {
-                    this._removeLayoutComponentFromLayout(id, layoutComponent.children[i], layoutComponent);
+            if (this._componentHasChildren(component)) {
+                for (i; i < component.children.length; i += 1) {
+                    this._removeComponent(id, component.children[i], component);
                 }
             }
         } else {
             // Remove the matching LayoutComponent from its parent.
 
             // If we're at the root level, set the state to an empty object.
-            if (layoutComponent === parent) {
+            if (component === parent) {
                 this.setState({ layoutData: {} });
             }
 
-            parent.children = parent.children.filter(function (childLayoutComponent) {
-                return childLayoutComponent !== layoutComponent;
+            parent.children = parent.children.filter(function (childComponent) {
+                return childComponent !== component;
             });
 
             this.forceUpdate();
@@ -114,21 +114,21 @@ var Layout = React.createClass({
     },
 
     /**
-     * @func _moveLayoutComponent
+     * @func _moveComponent
      * @param {String} id The ID of the LayoutComponent that's getting moved.
      * @param {String} toId Parent we're moving the LayoutComponent to.
      * @desc Move a LayoutComponent to a new parent.
      */
-    _moveLayoutComponent: function (id, toId) {
-        var layoutComponent = this._getLayoutComponentById(id),
-            newParent = this._getLayoutComponentById(toId);
+    _moveComponent: function (id, toId) {
+        var component = this._getComponentById(id),
+            newParent = this._getComponentById(toId);
 
-        // Remove the LayoutComponent from its current location
-        this._removeLayoutComponentFromLayout(layoutComponent.id);
+        // Remove the component from its current location
+        this._removeComponent(component.id);
 
-        // Add the LayoutComponent to its new location.
+        // Add the component to its new location.
         newParent.children = newParent.children || [];
-        newParent.children.push(layoutComponent);
+        newParent.children.push(component);
 
         this.forceUpdate();
 
@@ -136,20 +136,20 @@ var Layout = React.createClass({
     },
 
     /**
-     * @func _addLayoutComponent
+     * @func _addComponent
      * @param {String} parentId ID of the LayoutComponent we're adding the new LayoutComponent to.
-     * @param {String} layoutComponentType Type of LayoutComponent we're adding.
+     * @param {String} componentType Type of LayoutComponent we're adding.
      * @return {String} ID of the new LayoutComponent.
      * @desc Add a workspce field to the Workspace.
      */
-    _addLayoutComponent: function (parentId, layoutComponentType) {
-        var parentField = this._getLayoutComponentById(parentId),
+    _addComponent: function (parentId, componentType) {
+        var parentField = this._getComponentById(parentId),
             newId = uuid.v4();
 
         parentField.children = parentField.children || [];
 
         parentField.children.push({
-            ClassName: layoutComponentType,
+            ClassName: componentType,
             bindings: {},
             id: newId
         });
@@ -162,12 +162,12 @@ var Layout = React.createClass({
     },
 
     /**
-     * @func _layoutComponentIsRoot
+     * @func _componentIsRoot
      * @param {String} id The id of the LayoutComponent we're checking.
      * @return {Boolean}
      * @desc Determine if a LayoutComponent is the root component.
      */
-    _layoutComponentIsRoot: function (id) {
+    _componentIsRoot: function (id) {
         var isRoot = false;
 
         if (id === this.state.layoutdata.id) {
@@ -190,11 +190,11 @@ var Layout = React.createClass({
                 <LayoutComponent
                     layoutdata={this.state.layoutdata}
                     metadata={this.props.metadata}
-                    updateLayoutComponentData={this._updateLayoutComponentData}
-                    removeLayoutComponentFromLayout={this._removeLayoutComponentFromLayout}
-                    layoutComponentIsRoot={this._layoutComponentIsRoot}
-                    addLayoutComponent={this._addLayoutComponent}
-                    moveLayoutComponent={this._moveLayoutComponent} />
+                    updateComponent={this._updateComponent}
+                    removeComponent={this._removeComponent}
+                    componentIsRoot={this._componentIsRoot}
+                    addComponent={this._addComponent}
+                    moveComponent={this._moveComponent} />
             </div>
         );
     }

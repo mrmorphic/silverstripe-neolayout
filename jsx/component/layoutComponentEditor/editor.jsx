@@ -15,9 +15,9 @@ var LayoutComponentEditor = React.createClass({
     propTypes: {
         layoutdata: React.PropTypes.object.isRequired,
         metadata: React.PropTypes.object.isRequired,
-        updateLayoutComponentData: React.PropTypes.func.isRequired,
-        removeLayoutComponentFromLayout: React.PropTypes.func.isRequired,
-        getLayoutComponentSchema: React.PropTypes.func.isRequired,
+        updateComponent: React.PropTypes.func.isRequired,
+        removeComponent: React.PropTypes.func.isRequired,
+        getComponentSchema: React.PropTypes.func.isRequired,
         canEdit: React.PropTypes.func.isRequired,
         canRemove: React.PropTypes.func.isRequired
     },
@@ -46,8 +46,8 @@ var LayoutComponentEditor = React.createClass({
         this.setState({ editing: !this.state.editing });
     },
 
-    _removeLayoutComponentFromLayout: function () {
-        this.props.removeLayoutComponentFromLayout(this.props.layoutdata.id);
+    _handleRemoveButtonClick: function () {
+        this.props.removeComponent(this.props.layoutdata.id);
     },
 
     /**
@@ -64,7 +64,7 @@ var LayoutComponentEditor = React.createClass({
         }
 
         if (this.props.canRemove()) {
-            removeButton = <button type="button" onClick={this._removeLayoutComponentFromLayout}>Remove</button>;
+            removeButton = <button type="button" onClick={this._handleRemoveButtonClick}>Remove</button>;
         }
 
         return (
@@ -87,8 +87,8 @@ var LayoutComponentEditor = React.createClass({
                         layoutdata={this.props.layoutdata}
                         metadata={this.props.metadata}
                         toggleModalEditor={this._toggleModalEditor}
-                        updateLayoutComponentData={this.props.updateLayoutComponentData}
-                        getLayoutComponentSchema={this.props.getLayoutComponentSchema} />
+                        updateComponent={this.props.updateComponent}
+                        getComponentSchema={this.props.getComponentSchema} />
                 </div>
                 <div className={this._getCssClasses('nl-modal-mask')}></div>
             </div>

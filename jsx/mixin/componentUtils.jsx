@@ -14,6 +14,19 @@ var $ = require('jquery');
  */
 var util = {
     /**
+     * @func _nodeBelongsToComponent
+     * @param {Object} node A DOM node
+     * @return {Boolean}
+     * @desc Check if a DOM node is part of a WorkspaceField.
+     */
+    _nodeBelongsToComponent: function (node) {
+        var $node = $(node);
+
+        return $node.data('uuid') === this.props.layoutdata.id ||
+            $node.closest('.nl-layout-component').data('uuid') === this.props.layoutdata.id;
+    },
+
+    /**
      * @func _hasAncestor
      * @param {String} id
      * @desc Check if the current LayoutComponent has an ancestor matching an ID.

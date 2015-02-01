@@ -21,11 +21,11 @@ var LayoutComponent = React.createClass({
     propTypes: {
         layoutdata: React.PropTypes.object.isRequired,
         metadata: React.PropTypes.object.isRequired,
-        updateLayoutComponentData: React.PropTypes.func.isRequired,
-        removeLayoutComponentFromLayout: React.PropTypes.func.isRequired,
-        layoutComponentIsRoot: React.PropTypes.func.isRequired,
-        addLayoutComponent: React.PropTypes.func.isRequired,
-        moveLayoutComponent: React.PropTypes.func.isRequired
+        updateComponent: React.PropTypes.func.isRequired,
+        removeComponent: React.PropTypes.func.isRequired,
+        componentIsRoot: React.PropTypes.func.isRequired,
+        addComponent: React.PropTypes.func.isRequired,
+        moveComponent: React.PropTypes.func.isRequired
     },
 
     /**
@@ -43,45 +43,45 @@ var LayoutComponent = React.createClass({
      * @desc Returns true if the user is able to remove the LayoutComponent from the Layout.
      */
     _canRemove: function () {
-        return this.props.layoutComponentIsRoot(this.props.layoutdata.id) === false;
+        return this.props.componentIsRoot(this.props.layoutdata.id) === false;
     },
 
     /**
-     * @func _createChildLayoutComponents
+     * @func _createChildComponents
      * @return {Array} Child layout fields of the current WorkspaceField.
      * @desc Create the child components for the current WorkspaceField.
      */
-    _createChildLayoutComponents: function () {
-        var childLayoutComponents = null,
+    _createChildComponents: function () {
+        var childComponents = null,
             i = 0;
 
-        if (typeof this.props.layoutdata.children !== 'undefined') {
-            childLayoutComponents = [];
+        if (this.props.layoutdata.children !== void 0) {
+            childComponents = [];
 
             for (i; i < this.props.layoutdata.children.length; i +=1) {
-                childLayoutComponents.push(
+                childComponents.push(
                     <LayoutComponent
                         key={i}
                         layoutdata={this.props.layoutdata.children[i]}
                         metadata={this.props.metadata}
-                        updateLayoutComponentData={this.props.updateLayoutComponentData}
-                        removeLayoutComponentFromLayout={this.props.removeLayoutComponentFromLayout}
-                        layoutComponentIsRoot={this.props.layoutComponentIsRoot}
-                        addLayoutComponent={this.props.addLayoutComponent}
-                        moveLayoutComponent={this.props.moveLayoutComponent} />
+                        updateComponent={this.props.updateComponent}
+                        removeComponent={this.props.removeComponent}
+                        componentIsRoot={this.props.componentIsRoot}
+                        addComponent={this.props.addComponent}
+                        moveComponent={this.props.moveComponent} />
                 );
             };
         }
 
-        return childLayoutComponents;
+        return childComponents;
     },
 
     /**
-     * @func _getLayoutComponentSchema
+     * @func _getComponentSchema
      * @return {Array} The schemas relating to a LayoutComponent.
      * @desc Get the schema for the LayoutComponent.
      */
-    _getLayoutComponentSchema: function () {
+    _getComponentSchema: function () {
         var schema = null,
             i = 0;
 
@@ -96,7 +96,7 @@ var LayoutComponent = React.createClass({
     },
 
     render: function () {
-        var childLayoutComponents = this._createChildLayoutComponents();
+        var childLayoutComponents = this._createChildComponents();
 
         return (
             <div
@@ -112,9 +112,9 @@ var LayoutComponent = React.createClass({
                 <LayoutComponentEditor
                     layoutdata={this.props.layoutdata}
                     metadata={this.props.metadata}
-                    updateLayoutComponentData={this.props.updateLayoutComponentData}
-                    removeLayoutComponentFromLayout={this.props.removeLayoutComponentFromLayout}
-                    getLayoutComponentSchema={this._getLayoutComponentSchema}
+                    updateComponent={this.props.updateComponent}
+                    removeComponent={this.props.removeComponent}
+                    getComponentSchema={this._getComponentSchema}
                     canEdit={this._canEdit}
                     canRemove={this._canRemove} />
 

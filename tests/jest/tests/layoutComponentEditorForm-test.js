@@ -17,14 +17,14 @@ describe('EditorForm', function () {
                 layoutdata={layoutdata.children[1]}
                 metadata={metadata}
                 toggleModalEditor={jest.genMockFunction()}
-                updateLayoutComponentData={jest.genMockFunction()}
-                getLayoutComponentSchema={function () { return metadata.components[2]; }} />
+                updateComponent={jest.genMockFunction()}
+                getComponentSchema={function () { return metadata.components[2]; }} />
         );
     });
 
     // _createFormRows
     it('should create a row for each binding type relating to the component', function () {
-        var rows = editorForm._createFormRows(editorForm.props.getLayoutComponentSchema(), editorForm.props.metadata.context);
+        var rows = editorForm._createFormRows(editorForm.props.getComponentSchema(), editorForm.props.metadata.context);
 
         expect(rows.length).toEqual(1);
 
