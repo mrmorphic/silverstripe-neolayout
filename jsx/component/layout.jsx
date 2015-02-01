@@ -22,26 +22,6 @@ var Layout = React.createClass({
         metadata: React.PropTypes.object.isRequired
     },
 
-    /**
-     * @func _allocateIds
-     * @param {Object} layoutComponent The field you wish to assign an id to.
-     * @return {Object} The updated LayoutComponent.
-     * @desc Recursivly allocate id's to a LayoutComponent. LayoutComponents with an existing id are ignored.
-     */
-    _allocateIds: function (layoutComponent) {
-        var i = 0;
-
-        layoutComponent.id = layoutComponent.id || uuid.v4();
-
-        if (this._componentHasChildren(layoutComponent)) {
-            for (i; i < layoutComponent.children.length; i += 1) {
-                layoutComponent.children[i] = this._allocateIds(layoutComponent.children[i]);
-            }
-        }
-
-        return layoutComponent;
-    },
-
     getInitialState: function () {
         return {
             layoutdata: JSON.parse(document.getElementById('Form_EditForm_EditableLayout').value)

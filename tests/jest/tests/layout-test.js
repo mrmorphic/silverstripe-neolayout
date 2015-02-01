@@ -108,25 +108,4 @@ describe('Layout', function () {
         expect(layout._layoutComponentIsRoot(childId)).toEqual(false);
         expect(layout._layoutComponentIsRoot(grandChildId)).toEqual(false);
     });
-
-    // _allocateIds()
-    it('should allocate a version 4 uuid to LayoutComponents with no id', function () {
-        var layoutComponentWithId = {
-                "ClassName":"NLImageComponent",
-                "bindings":{},
-                "id":"bbeb59f5-8e0e-46c8-b85d-6e412ec4a984",
-                "children":[]
-            },
-            layoutComponentWithoutId = {
-                "ClassName":"NLImageComponent",
-                "bindings":{},
-                "children":[]
-            };
-
-        // The LayoutComponents ID should not be altered if an ID already exists
-        expect(layout._allocateIds(layoutComponentWithId).id).toEqual('bbeb59f5-8e0e-46c8-b85d-6e412ec4a984');
-
-        // A valid version 4 uuid should be allocated to the LayoutField
-        expect(layout._allocateIds(layoutComponentWithoutId).id.match(/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i)).not.toBeNull();
-    });
 });
