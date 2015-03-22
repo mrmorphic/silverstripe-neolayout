@@ -96,11 +96,14 @@ var LayoutComponent = React.createClass({
     },
 
     render: function () {
-        var childLayoutComponents = this._createChildComponents();
+        var childLayoutComponents = this._createChildComponents(),
+            classes = "nl-component nl-layout-component " + this.props.layoutdata.ClassName,
+            childrenLength = childLayoutComponents === null ? 0 : childLayoutComponents.length,
+            childClasses = "child-components children-" + childrenLength;
 
         return (
             <div
-                className="nl-component nl-layout-component"
+                className={classes}
                 data-uuid={this.props.layoutdata.id}
                 draggable="true"
                 onDragStart={this._handleDragStart}
@@ -118,7 +121,9 @@ var LayoutComponent = React.createClass({
                     canEdit={this._canEdit}
                     canRemove={this._canRemove} />
 
-                {childLayoutComponents}
+                <div className={childClasses}>
+                    {childLayoutComponents}
+                </div>
             </div>
         );
     }

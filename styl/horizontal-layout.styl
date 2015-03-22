@@ -1,0 +1,21 @@
+@require 'component'
+
+$cols = 1 2 3 4 5 6 7 8 9 10 11 12
+$gutter = 1%
+
+$getWidth(col)
+    floor((100 / col)) - (unit($gutter, '') * (col - 1)) + '%'
+
+.NLHorizontalBoxLayout
+    for col in $cols
+        .children-{col}
+            .nl-layout-component
+                display inline-block
+                margin 0 $gutter 1em
+                width $getWidth(col)
+
+                &:first-child
+                    margin-left 0
+
+                &:last-child
+                    margin-right 0
