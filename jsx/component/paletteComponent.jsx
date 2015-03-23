@@ -19,10 +19,22 @@ var PaletteComponent = React.createClass({
     mixins: [dragAndDropMixin],
 
     render: function () {
+        var iconClass;
+
+        if (this.props.layoutdata.name === void 0) {
+            iconClass = '';
+        } else {
+            iconClass = 'component-icon icon-' + this.props.layoutdata.name.replace(/ /g,'');
+        }
+
         return (
-            <div className="nl-component nl-palette-component" draggable="true" onDragStart={this._handleDragStart}>
-                <p className="name">{this.props.layoutdata.name}</p>
-                <p className="description">{this.props.layoutdata.description}</p>
+            <div
+                className="nl-component nl-palette-component"
+                draggable="true"
+                onDragStart={this._handleDragStart}
+                title={this.props.layoutdata.description}>
+
+                <span className={iconClass}></span>
             </div>
         );
     }

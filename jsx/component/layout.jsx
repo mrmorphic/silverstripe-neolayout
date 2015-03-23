@@ -187,6 +187,7 @@ var Layout = React.createClass({
 
         return (
             <div className="nl-layout">
+                <h2>Layout</h2>
                 <LayoutComponent
                     layoutdata={this.state.layoutdata}
                     metadata={this.props.metadata}

@@ -25,6 +25,7 @@ var Palette = React.createClass({
 
         return (
             <div className="nl-palette">
+                <h2>Palette</h2>
                 {availableFields}
             </div>
         );

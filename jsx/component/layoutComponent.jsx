@@ -99,7 +99,8 @@ var LayoutComponent = React.createClass({
         var childLayoutComponents = this._createChildComponents(),
             classes = "nl-component nl-layout-component " + this.props.layoutdata.ClassName,
             childrenLength = childLayoutComponents === null ? 0 : childLayoutComponents.length,
-            childClasses = "child-components children-" + childrenLength;
+            childClasses = "child-components children-" + childrenLength,
+            iconClass = 'component-icon icon-' + this.props.layoutdata.ClassName;
 
         return (
             <div
@@ -110,7 +111,7 @@ var LayoutComponent = React.createClass({
                 onDrop={this._handleDrop}
                 onDragOver={this._handleDragOver}>
 
-                <h3>{this.props.layoutdata.ClassName}</h3>
+                <span className={iconClass}></span>
 
                 <LayoutComponentEditor
                     layoutdata={this.props.layoutdata}

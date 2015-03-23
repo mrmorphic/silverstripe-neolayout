@@ -60,11 +60,11 @@ var LayoutComponentEditor = React.createClass({
             removeButton = null;
 
         if (this.props.canEdit()) {
-            editButton = <button type="button" onClick={this._toggleModalEditor}>Edit</button>;
+            editButton = <a className="icon-pencil" href="javascript:void(0)" onClick={this._toggleModalEditor}></a>;
         }
 
         if (this.props.canRemove()) {
-            removeButton = <button type="button" onClick={this._handleRemoveButtonClick}>Remove</button>;
+            removeButton = <a className="icon-bin" href="javascript:void(0)" onClick={this._handleRemoveButtonClick}></a>;
         }
 
         return (
