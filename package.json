@@ -1,7 +1,32 @@
 {
-  "name": "neolayout",
+  "name": "silverstripe-neolayout",
   "private": true,
   "version": "0.0.0",
+  "description": "Client application silverstripe-neolayout.",
+  "main": "javascript/app.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:mrmorphic/silverstripe-neolayout.git"
+  },
+  "keywords": [
+    "SilverStripe",
+    "Layout",
+    "Block editing"
+  ],
+  "contributors": [
+    {
+      "name": "Mark Stephens",
+      "email": "mr.morphic@gmail.com"
+    },
+    {
+      "name": "David Craig",
+      "email": "david@silverstripe.com"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/mrmorphic/silverstripe-neolayout/issues"
+  },
+  "homepage": "https://github.com/mrmorphic/silverstripe-neolayout",
   "dependencies": {
     "jquery": "2.1.1",
     "node-uuid": "1.4.1",
@@ -9,22 +34,20 @@
   },
   "devDependencies": {
     "browserify": "7.0.0",
-    "del": "0.1.3",
-    "gulp": "3.8.10",
-    "gulp-react": "2.0.0",
-    "gulp-stylus": "1.3.4",
-    "gulp-uglify": "1.0.1",
-    "jest-cli": "0.2.0",
-    "jquery-simulate-ext": "1.3.0",
+    "jest-cli": "0.4.0",
     "jsdoc-to-markdown": "0.5.9",
-    "react-tools": "0.12.1",
-    "vinyl-transform": "1.0.0"
+    "react-tools": "0.13.1",
+    "stylus": "0.50.0",
+    "uglifyjs": "2.4.10"
   },
   "scripts": {
-    "build": "gulp",
-    "build:debug": "gulp js:debug",
-    "docs": "gulp js:debug && jsdoc2md ./javascript/build/**/*.js > docs/client_app_reference.md && gulp clean:js",
-    "postinstall": "npm run build",
+    "build:css:dev": "stylus styl/main.styl --out css/main.css",
+    "build:css:prod": "stylus styl/main.styl --compress --out css/main.css",
+    "build:js:dev": "jsx --extension jsx --no-cache-dir jsx javascript/tmp && browserify javascript/tmp/app.js > javascript/app.js && rm -rf javascript/tmp",
+    "build:js:prod": "jsx --extension jsx --no-cache-dir jsx javascript/tmp && browserify javascript/tmp/app.js | uglifyjs --mangle --output javascript/app.js && rm -rf javascript/tmp",
+    "build:all:dev": "npm run build:css:dev && npm run build:js:dev",
+    "build:all:prod": "npm run build:css:prod && npm run build:js:prod",
+    "docs": "jsx --extension jsx --no-cache-dir jsx javascript/tmp && jsdoc2md ./javascript/tmp/**/*.js > docs/client_app_reference.md && rm -rf javascript/tmp",
     "test": "jest"
   },
   "jest": {
