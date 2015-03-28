@@ -11,13 +11,19 @@ class NLView extends Controller {
 	// 	'EditForm'
 	// );
 
+	/*
+	 * @config
+	 */
+	private static $layout_manager_class = null;
+
 	protected $layout = null;
 	protected $rawComponents;
 	protected $context;
+	protected $layoutManager;
 
 	static $default_view_contents_proper =
 		'{
-			"ClassName": "NLVerticalBoxLayout",
+			"ClassName": "NLLayoutContainer",
 			"children": [
 				{
 					"ClassName": "NLTextComponent",
@@ -34,9 +40,9 @@ class NLView extends Controller {
 		}';
 
 	// This should really be in the test suite.
-	static $default_view_contents =
+	static $default_view_contents_alt =
 		'{
-			"ClassName": "NLVerticalBoxLayout",
+			"ClassName": "NLLayoutContainer",
 			"children": [
 				{
 					"ClassName": "NLTextComponent",
@@ -74,6 +80,84 @@ class NLView extends Controller {
 							"type": "context",
 							"value": "GetFoo"
 						}
+					}
+				}
+			],
+			"bindings": {
+			}
+		}';
+
+	// This should really be in the test suite.
+	static $default_view_contents =
+		'{
+			"ClassName": "NLLayoutContainer",
+			"children": [
+				{
+					"ClassName": "NLVerticalBoxLayout",
+					"children": [
+						{
+							"ClassName": "NLHorizontalBoxLayout",
+							"children": [
+								{
+									"ClassName": "NLLinkComponent",
+									"bindings": {
+										"ExternalURL": {
+											"type": "embedded",
+											"value": "http://disney.com"
+										}
+									},
+									"layout": {
+										"classes": [ "col-md-4" ]
+									},
+									"children": [
+										{
+											"ClassName": "NLImageComponent",
+											"bindings": {
+												"InternalImage": {
+													"type": "embedded",
+													"value": "Image:1"
+												},
+												"ResizingOption": {
+													"type": "embedded",
+													"value": "Resized"
+												},
+												"Width": {
+													"type": "embedded",
+													"value": "60"
+												},
+												"Height": {
+													"type": "embedded",
+													"value": "40"
+												}
+											}
+										}
+									]
+								},
+								{
+									"ClassName": "NLTextComponent",
+									"bindings": {
+										"Text": {
+											"type": "embedded",
+											"value": "This is some embedded text that should appear to the right of the image."
+										}
+									},
+									"layout": {
+										"classes": [ "col-md-8" ]
+									}
+								}
+							]
+						},
+						{
+							"ClassName": "NLTextComponent",
+							"bindings": {
+								"Text": {
+									"type": "embedded",
+									"value": "Here is some text that should be displayed below the image and other text"
+								}
+							}
+						}
+					],
+					"bindings": {
 					}
 				}
 			],
@@ -183,13 +267,23 @@ class NLView extends Controller {
 	 * @param $context Object - an object that provides context for bindings of view components, which lets
 	 *							components get data from their hosting environment.
 	 */
-	public function __construct($parentController, $viewName, $serialised, $context) {
+	public function __construct($parentController, $viewName, $serialised, $context, $layoutManager = null) {
 		parent::__construct();
 		$serialised = self::normalise_serialised($serialised);
 		$this->parentController = $parentController;
 		$this->viewName = $viewName;
 		$this->rawComponents = json_decode($serialised);
 		$this->context = $context;
+
+		if ($layoutManager) {
+			$this->layoutManager = $layoutManager;
+		} else {
+			$klass = Config::inst()->get('NLView', 'layout_manager_class');
+			if (!$klass) {
+				throw new Exception("NLView needs a layout manager. Either pass one in, or set it up in config. See module documentation");
+			}
+			$this->layoutManager = Injector::inst()->create($klass);
+		}
 	}
 
 	/**
@@ -203,6 +297,10 @@ class NLView extends Controller {
 			$this->layout = NLComponent::factory($this->rawComponents, $this);
 		}
 		return $this->layout;
+	}
+
+	public function getLayoutManager() {
+		return $this->layoutManager;
 	}
 
 	/**

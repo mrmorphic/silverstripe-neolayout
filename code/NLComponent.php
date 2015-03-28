@@ -272,6 +272,14 @@ abstract class NLComponent extends ViewableData {
 	 * @return string
 	 */
 	function render($context, $extras = null) {
+		$lm = $this->view->getLayoutManager();
+		$r = $lm->render($this, $this->view, $context, $extras);
+		if ($r !== FALSE) {
+			return $r;
+		}
+
+		$extras = $lm->augmentExtras($this, $this->context, $extras);
+
 		// Determine the CSS classes of the container.
 		$classes = $this->containerClasses($context);
 		if (isset($extras["classes"])) {
