@@ -13,7 +13,7 @@ var React = require('react'),
 var PaletteComponent = React.createClass({
 
     propTypes: {
-        layoutdata: React.PropTypes.object.isRequired
+        componentdata: React.PropTypes.object.isRequired
     },
 
     mixins: [dragAndDropMixin],
@@ -21,10 +21,10 @@ var PaletteComponent = React.createClass({
     render: function () {
         var iconClass;
 
-        if (this.props.layoutdata.name === void 0) {
+        if (this.props.componentdata.name === void 0) {
             iconClass = '';
         } else {
-            iconClass = 'component-icon icon-' + this.props.layoutdata.name.replace(/ /g,'');
+            iconClass = 'component-icon icon-' + this.props.componentdata.name.replace(/ /g,'');
         }
 
         return (
@@ -32,7 +32,7 @@ var PaletteComponent = React.createClass({
                 className="nl-component nl-palette-component"
                 draggable="true"
                 onDragStart={this._handleDragStart}
-                title={this.props.layoutdata.description}>
+                title={this.props.componentdata.description}>
 
                 <span className={iconClass}></span>
             </div>

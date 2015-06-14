@@ -27,41 +27,31 @@
     "url": "https://github.com/mrmorphic/silverstripe-neolayout/issues"
   },
   "homepage": "https://github.com/mrmorphic/silverstripe-neolayout",
-  "dependencies": {
-    "jquery": "2.1.1",
-    "node-uuid": "1.4.1",
-    "react": "0.12.1"
-  },
   "devDependencies": {
-    "browserify": "7.0.0",
-    "jest-cli": "0.4.0",
-    "jsdoc-to-markdown": "0.5.9",
-    "react-tools": "0.13.1",
-    "stylus": "0.50.0",
-    "uglifyjs": "2.4.10"
+    "browserify": "^7.0.0",
+    "es6-promise": "^2.3.0",
+    "flux": "^2.0.3",
+    "jest-cli": "^0.4.0",
+    "jsdoc-to-markdown": "^0.5.9",
+    "node-uuid": "^1.4.1",
+    "object-assign": "^3.0.0",
+    "react": "^0.12.1",
+    "react-tools": "^0.13.3",
+    "reactify": "^1.1.1",
+    "stylus": "^0.50.0",
+    "uglifyjs": "^2.4.10"
   },
   "scripts": {
-    "build:css:dev": "stylus styl/main.styl --out css/main.css",
-    "build:css:prod": "stylus styl/main.styl --compress --out css/main.css",
-    "build:js:dev": "jsx --extension jsx --no-cache-dir jsx javascript/tmp && browserify javascript/tmp/app.js > javascript/app.js && rm -rf javascript/tmp",
-    "build:js:prod": "jsx --extension jsx --no-cache-dir jsx javascript/tmp && browserify javascript/tmp/app.js | uglifyjs --mangle --output javascript/app.js && rm -rf javascript/tmp",
+    "build:css:dev": "stylus ./css/src/main.styl --out ./css/dist/main.css",
+    "build:css:prod": "stylus ./css/src/main.styl --compress --out ./css/dist/main.css",
+    "build:js:dev": "browserify -t reactify ./javascript/src/app.js > ./javascript/dist/app.js",
+    "build:js:prod": "browserify -t reactify ./javascript/src/app.js | uglifyjs --mangle --output javascript/dist/app.js",
     "build:all:dev": "npm run build:css:dev && npm run build:js:dev",
     "build:all:prod": "npm run build:css:prod && npm run build:js:prod",
-    "docs": "jsx --extension jsx --no-cache-dir jsx javascript/tmp && jsdoc2md ./javascript/tmp/**/*.js > docs/client_app_reference.md && rm -rf javascript/tmp",
+    "docs": "jsx --no-cache-dir ./javascript/src ./tmp && jsdoc2md ./tmp/**/*.js > docs/client_app_reference.md && rm -rf ./tmp",
     "test": "jest"
   },
   "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "jsx",
-      "json"
-    ],
-    "scriptPreprocessor": "./tests/jest/preprocessor.js",
-    "testDirectoryName": "tests/jest/tests",
-    "unmockedModulePathPatterns": [
-      "./node_modules/react",
-      "./node_modules/node-uuid",
-      "./tests/jest/fixtures"
-    ]
+    "rootDir": "./javascript/src"
   }
 }
