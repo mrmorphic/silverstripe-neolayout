@@ -19,7 +19,7 @@ var Palette = React.createClass({
     render: function () {
         var availableFields = this.props.metadata.components.map(function (field, i) {
             return (
-                <PaletteComponent className="nl-palette-component" layoutdata={field} key={i} />
+                <PaletteComponent className="nl-palette-component" componentdata={field} key={i} />
             );
         });
 

@@ -8,7 +8,7 @@ var React = require('react'),
     Workspace = require('./component/workspace');
 
 window.jQuery('#neolayout').entwine({
-    onmatch: function () {
+    onadd: function () {
         React.render(
             <Workspace />,
             document.getElementById('workspace')

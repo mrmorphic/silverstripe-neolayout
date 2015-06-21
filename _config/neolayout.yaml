@@ -4,7 +4,7 @@ after: '*'
 ---
 LeftAndMain:
   extra_requirements_javascript:
-    - neolayout/javascript/app.js
+    - neolayout/javascript/dist/app.js
 
   extra_requirements_css:
-    - neolayout/css/main.css
+    - neolayout/css/dist/main.css
