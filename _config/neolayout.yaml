@@ -1,6 +1,6 @@
 ---
 name: neolayout
-after: '*'
+#after: '*'
 ---
 LeftAndMain:
   extra_requirements_javascript:
