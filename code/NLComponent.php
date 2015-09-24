@@ -264,20 +264,26 @@ abstract class NLComponent extends ViewableData {
 	 * extra properties that affect the containment.
 	 * @param $context		Context for binding.
 	 * @param $extras		Map that can contain the following keys:
-	 * 						- "classes" - maps to an array of CSS class names to be added.
-	 * 						- "styles" - maps to a map of style definitions that are aggregated into the style attribute
+	 * 						- "classes" - an array of CSS class names to be added.
+	 * 						- "styles" - a map of style definitions that are aggregated into the style attribute
 	 * 								of the container.
-	 * 						- "attrs" - maps to a map of additional attributes to add to the containment tag. This
+	 * 						- "attrs" - a map of additional attributes to add to the containment tag. This
 	 * 								shouldn't include "class" or "style" keys. Values should not be quoted.
 	 * @return string
 	 */
 	function render($context, $extras = null) {
 		$lm = $this->view->getLayoutManager();
+
+		// Give the layout manager the first opportunity to render. If it handles this component,
+		// it is expected to handle the entire component render. This is not the normal case, it's
+		// just a hook.
 		$r = $lm->render($this, $this->view, $context, $extras);
 		if ($r !== FALSE) {
 			return $r;
 		}
 
+		// This is a more common case, where the layout manager is given the opportunity to
+		// provide extra classes or attributes for this component.
 		$extras = $lm->augmentExtras($this, $this->context, $extras);
 
 		// Determine the CSS classes of the container.
@@ -333,7 +339,7 @@ abstract class NLComponent extends ViewableData {
 	 * of the parent. The classes are made unique before being rendered.
 	 * @return array	An array of CSS class names to add to the container. Can be empty.
 	 */
-	function containerClasses($context) {
+	protected function containerClasses($context) {
 		return array();
 	}
 
@@ -425,7 +431,6 @@ class NLBindingDefinition {
 		$type = $this->getBaseType($this->propertyDef['type']);
 		$inst = Object::create_from_string($type, $this->propertyName);
 		$inst->setValue($this->value);
-
 		switch ($this->type) {
 			case NLBindingDefinition::BIND_EMBEDDED:
 				$value = $inst->getValue();
