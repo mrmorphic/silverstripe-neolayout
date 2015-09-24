@@ -9,8 +9,8 @@ class NLLayoutContainer extends NLLayoutComponent {
 
 	static public function get_metadata() {
 		return array(
-			"name" => "Vertical Box layout",
-			"description" => "Lets you group other items, and arrange them vertically",
+			"name" => "Layout container",
+			"description" => "Top-level container for a layout area",
 			"imageURL" => null
 		);
 	}
