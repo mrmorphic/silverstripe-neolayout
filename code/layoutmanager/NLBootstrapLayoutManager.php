@@ -1,130 +1,93 @@
 <?php
 
-/** Layout manager for bootstrap. Designed to work with bootstrap 3. It assumes that
+/**
+ * Layout manager for bootstrap. Designed to work with bootstrap 3. It assumes that
  * bootstrap 3 has been added to the parent project.
+ *
+ * This uses each component's 'layout' property to define bootstrap behaviour, as indicated below.
+ * It is the responsibility of the layout editor in the CMS to set these values appropriately.
+ *	-	a child of a horizontal box (which will be a column in bootstrap) can contain a 'columns'
+ *		sub-property:
+ *			layout: {
+ *				bootstrap: {
+ *					columns: {
+ *						md: {
+ *							width: 3,  // e.g. col-md-3
+ *							offset: 1, // e.g. col-md-offset-1
+ *							push: 0,
+ *							pull: 0
+ *						}
+ *					}
+ *				}
+ *			}
  */
 class NLBootstrapLayoutManager extends ViewableData implements NLLayoutManager {
 	// The hook which enables the layout manager to override default behaviour for components it knows about.
 	// Returns markup if it's a case it understands, or FALSE by default to indicate that the component
 	// should be rendered normally.
 	public function render($component, $view, $context, $extras) {
-		if (is_a($component, "NLHorizontalBoxLayout")) {
-			return $this->renderHorizontalBoxLayout($component, $view, $context, $extras);
-		} else if (is_a($component, "NLVerticalBoxLayout")) {
-			return $this->renderVerticalBoxLayout($component, $view, $context, $extras);
-		}
-
+		// we don't override a while component render.
 		return FALSE;
 	}
 
 	// Add any required bootstrap classes to $extras. This is particularly relevant to columns,
 	// which are stored in $component->layoutValues.
 	public function augmentExtras($component, $context, $extras) {
-		if ($component->layoutValues && property_exists($component->layoutValues, "classes")) {
-			if (!$extras) {
-				$extras = array();
-			}
-			if (!isset($extras["classes"])) {
-				$extras["classes"] = array();
-			}
-			$extras["classes"] = $component->layoutValues->classes;
+		if (!$extras) {
+			$extras = array();
+		}
+		if (!isset($extras['classes'])) {
+			$extras['classes'] = array();
+		}
+
+		$c = get_class($component);
+		switch ($c) {
+			case 'NLHorizontalBoxLayout':
+				$extras['classes'][] = 'row';
+				break;
+			default:
+		}
+
+		return $this->calcLayoutClasses($component, $context, $extras);
+	}
+
+	// If the component has layout.bootstrap set, augment $extras with additional
+	// classes and attributes accordingly.
+	protected function calcLayoutClasses($component, $context, $extras) {
+		if (!$component->layout || !$component->layout->bootstrap) {
+			// nothing to see here
 			return $extras;
 		}
 
+		if ($component->layout->bootstrap->columns) {
+			$cols = $component->layout->bootstrap->columns;
+			$sizes = array('xs', 'sm', 'md', 'lg');
+			foreach ($sizes as $size) {
+				if ($cols->$size) {
+					$d = $cols->$size;
+					// process a size structure:
+					//	md: {
+					//		width: 3,  // e.g. col-md-3
+					//		offset: 1, // e.g. col-md-offset-1
+					//		push: 0,
+					//		pull: 0
+					//	}
+					if ($d->width) {
+						$extras['classes'][] = 'col-' . $size . '-' . $d->width;
+					}
+					if ($d->offset) {
+						$extras['classes'][] = 'col-' . $size . '-offset-' . $d->offset;
+					}
+					if ($d->push) {
+						$extras['classes'][] = 'col-' . $size . '-push-' . $d->push;
+					}
+					if ($d->pull) {
+						$extras['classes'][] = 'col-' . $size . '-pull-' . $d->pull;
+					}
+				}
+			}
+		}
+
 		return $extras;
-	}
-
-	// A horizontal box in bootstrap , withis a dev with children rendered using "col-*" classes.
-	protected function renderHorizontalBoxLayout($component, $view, $context, $extras) {
-		// Determine the CSS classes of the container.
-		$classes = $component->containerClasses($context);
-		if (isset($extras["classes"])) {
-			$classes = array_merge($classes, $extras["classes"]);
-		}
-		$cssClasses = implode(" ", array_unique($classes));
-
-		// Determine the styles of the container.
-		$styles = array();
-		if (isset($extras["styles"])) {
-			foreach ($extras["styles"] as $name => $value) {
-				$styles[] = $name . ":" . $value;
-			}
-		}
-		$styles = implode(";", $styles);
-
-		// Determine the attributes of the container.
-		$attrs = array();
-		if (isset($extras["attrs"])) {
-			foreach ($extras["attrs"] as $name => $value) {
-				$attrs[] = $name . "=\"" . Convert::raw2htmlatt($value) . "\"";
-			}
-		}
-		$attrs = implode(" ", $attrs);
-
-		$componentTag = ($component->getMetadataValue("display") == "block") ? "div" : "span";
-
-		return $component->customise(
-			new ArrayData(array(
-				"Tag" => $componentTag,
-				"Content" => $component->renderContent($context),
-				"ClassName" => get_class($component),
-				"ExtraClasses" => $cssClasses,
-				"ExtraStyles" => $styles,
-				"ExtraAttrs" => $attrs
-			))
-		)->renderWith("NLComponentContainment");
-	}
-
-	// A vertical box in bootstrap is a div, with children rendered using "row" classes.
-	protected function renderVerticalBoxLayout($component, $view, $context, $extras) {
-		// Determine the CSS classes of the container.
-		$classes = $component->containerClasses($context);
-		if (isset($extras["classes"])) {
-			$classes = array_merge($classes, $extras["classes"]);
-		}
-		$cssClasses = implode(" ", array_unique($classes));
-
-		// Determine the styles of the container.
-		$styles = array();
-		if (isset($extras["styles"])) {
-			foreach ($extras["styles"] as $name => $value) {
-				$styles[] = $name . ":" . $value;
-			}
-		}
-		$styles = implode(";", $styles);
-
-		// Determine the attributes of the container.
-		$attrs = array();
-		if (isset($extras["attrs"])) {
-			foreach ($extras["attrs"] as $name => $value) {
-				$attrs[] = $name . "=\"" . Convert::raw2htmlatt($value) . "\"";
-			}
-		}
-		$attrs = implode(" ", $attrs);
-
-		$componentTag = ($component->getMetadataValue("display") == "block") ? "div" : "span";
-
-		return $component->customise(
-			new ArrayData(array(
-				"Tag" => $componentTag,
-				"Content" => $this->renderChildren($component, $context),
-				"ClassName" => get_class($component),
-				"ExtraClasses" => $cssClasses,
-				"ExtraStyles" => $styles,
-				"ExtraAttrs" => $attrs
-			))
-		)->renderWith("NLComponentContainment");
-	}
-
-	// Render the children of the component using the context. Here we call render
-	// on the children, but injecting the "row" class.
-	function renderChildren($component, $context) {
-		$content = "";
-		if ($component->children) {
-			foreach ($component->children as $child) {
-				$content .= $child->render($context, array("classes" => array("row")));
-			}
-		}
-		return $content;
 	}
 }
