@@ -1,0 +1,19 @@
+{
+    "name": "silverstripe/neolayout",
+    "description": "Dynamic layout using components",
+    "license": "MIT",
+    "type": "silverstripe-module",
+    "keywords": ["silverstripe", "layout", "component"],
+    "authors": [{
+            "name": "Mark Stephens",
+            "email": "mr.morphic@gmail.com"
+        },
+        {
+            "name": "David Craig",
+            "email": "david@silverstripe.com"
+        }
+    ],
+    "require": {
+        "silverstripe/framework": ">=3.0.0"
+    }
+}
