@@ -21,7 +21,7 @@ class NLView extends Controller {
 	protected $context;
 	protected $layoutManager;
 
-	static $default_view_contents_proper =
+	static $default_view_contents =
 		'{
 			"ClassName": "NLLayoutContainer",
 			"children": [
@@ -88,7 +88,7 @@ class NLView extends Controller {
 		}';
 
 	// This should really be in the test suite.
-	static $default_view_contents =
+	static $default_view_contents_alt2 =
 		'{
 			"ClassName": "NLLayoutContainer",
 			"children": [
@@ -330,6 +330,7 @@ class NLView extends Controller {
 		$subclasses = ClassInfo::subclassesFor("NLComponent");
 
 		// Remove abstracts
+		// @todo do this programmatically
 		unset($subclasses["NLComponent"]);
 		unset($subclasses["NLLayoutComponent"]);
 
