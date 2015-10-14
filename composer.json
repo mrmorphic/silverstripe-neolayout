@@ -1,5 +1,5 @@
 {
-    "name": "silverstripe/neolayout",
+    "name": "mrmorphic/neolayout",
     "description": "Dynamic layout using components",
     "license": "MIT",
     "type": "silverstripe-module",
@@ -15,5 +15,8 @@
     ],
     "require": {
         "silverstripe/framework": ">=3.0.0"
+    },
+    "extra": {
+        "installer-name": "neolayout"
     }
 }
