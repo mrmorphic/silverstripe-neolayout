@@ -98,7 +98,7 @@ var Workspace = React.createClass({
             }
         }
 
-        return JSON.stringify(component);
+        return component;
     },
 
     /**
@@ -111,7 +111,7 @@ var Workspace = React.createClass({
         var rootComponent = JSON.parse(JSON.stringify(ComponentStore.getRootComponent()));
 
         // Format and convert the Workspace's state to JSON, ready for writing to the DOM.
-        var json = this._transformComponentsForSave(rootComponent);
+        var json = JSON.stringify(this._transformComponentsForSave(rootComponent));
 
         document.getElementById('Form_EditForm_EditableLayout').value = json;
     }
