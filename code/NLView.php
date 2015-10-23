@@ -25,15 +25,6 @@ class NLView extends Controller {
 		'{
 			"ClassName": "NLLayoutContainer",
 			"children": [
-				{
-					"ClassName": "NLTextComponent",
-					"bindings": {
-						"Text": {
-							"type": "embedded",
-							"value": "<br/><br/>This page has yet to have some content defined.<br/><br/><br/>"
-						}
-					}
-				}
 			],
 			"bindings": {
 			}
