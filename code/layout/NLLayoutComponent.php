@@ -3,15 +3,18 @@
 /**
  * Base class for layout components.
  */
-abstract class NLLayoutComponent extends NLComponent {
+abstract class NLLayoutComponent extends NLComponent
+{
 
-	function maxChildren() {
-		return "*";
-	}
+    public function maxChildren()
+    {
+        return "*";
+    }
 
-	function containerClasses($context) {
-		$a = parent::containerClasses($context);
-		$a[] = "layout-container";
-		return $a;
-	}
+    public function containerClasses($context)
+    {
+        $a = parent::containerClasses($context);
+        $a[] = "layout-container";
+        return $a;
+    }
 }
