@@ -1,0 +1,30 @@
+title NL rendering
+
+participant Controller as c
+participant NLView as v
+participant Layout as layout
+participant Component as comp
+participant LayoutManager as lm
+participant Context as ctx
+participant stored layout as storedlayout
+
+c->+v: render w/ context
+storedlayout-->v: deserialise
+v->+comp: instantiate layout
+comp-->-v:
+v->+layout: render
+
+layout->+comp: render
+comp->+ctx:
+ctx-->-comp: bound values
+comp->comp: generate inner markup
+comp->comp: generate children
+comp->+lm: augment for layout
+lm-->-comp: augments markup
+comp-->-layout: markup
+
+layout-->-v: markup
+v-->-c: markup
+
+
+note right of layout: Bob thinks about it
