@@ -41,7 +41,7 @@ var dragAndDropHandlers = {
      */
     _handleDragStart: function (event) {
         var data = {
-            componentType: isPaletteComponent(this) ? 'PaletteComponent' : 'LayoutComponent',
+            componentKind: isPaletteComponent(this) ? 'PaletteComponent' : 'LayoutComponent',
             componentData: this.props.componentdata
         };
 
@@ -70,11 +70,13 @@ var dragAndDropHandlers = {
 
         event.stopPropagation(); // Don't trigger the event on ancestor components.
 
-        switch(dragData.componentType) {
+        switch(dragData.componentKind) {
             case 'PaletteComponent':
                 ComponentActions.create({
                     parent: dropId,
-                    ClassName: dragData.componentData.componentType
+                    ClassName: dragData.componentData.ClassName,
+                    bindings: dragData.componentData.bindings,  
+                    layout: dragData.componentData.layout
                 });
                 break;
             case 'LayoutComponent':

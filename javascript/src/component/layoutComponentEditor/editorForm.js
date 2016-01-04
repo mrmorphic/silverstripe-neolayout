@@ -10,18 +10,19 @@
 
 var React = require('react'),
     EditorFormRow = require('./editorFormRow'),
-    ComponentActions = require('../../action/ComponentActions');
+    ComponentActions = require('../../action/ComponentActions'),
+    MetadataStore = require('../../store/MetadataStore');
 
 var EditorForm = React.createClass({
 
     propTypes: {
         componentdata: React.PropTypes.object.isRequired,
-        metadata: React.PropTypes.object.isRequired,
+        contextMetadata: React.PropTypes.object.isRequired,
         toggleModalEditor: React.PropTypes.func.isRequired
     },
 
     render: function () {
-        var formRows = this._createFormRows(this._getComponentSchema(), this.props.metadata.context);
+        var formRows = this._createFormRows(this._getComponentSchema(), this.props.contextMetadata);
 
         return (
             <div className="field-editor-form">
@@ -92,11 +93,12 @@ var EditorForm = React.createClass({
      */
     _getComponentSchema: function () {
         var schema = null,
-            i = 0;
+            i = 0,
+            componentTypes = MetadataStore.getComponentTypes();
 
-        for (i; i < this.props.metadata.components.length; i += 1) {
-            if (this.props.metadata.components[i].componentType === this.props.componentdata.ClassName) {
-                schema = this.props.metadata.components[i];
+        for (i; i < componentTypes.length; i += 1) {
+            if (componentTypes[i].componentType === this.props.componentdata.ClassName) {
+                schema = componentTypes[i];
                 break;
             }
         }

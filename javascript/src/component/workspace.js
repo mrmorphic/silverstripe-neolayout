@@ -11,9 +11,11 @@
 'use strict';
 
 var React = require('react'),
-    Palette = require('./palette'),
+    Palette = require('./palette/palette'),
     Layout = require('./layout'),
     ComponentStore = require('../store/ComponentStore'),
+    MetadataStore = require('../store/MetadataStore'),
+    MetadataActions = require('../action/MetadataActions'),
     ComponentActions = require('../action/ComponentActions');
 
 /**
@@ -31,36 +33,42 @@ function getComponentState() {
 var Workspace = React.createClass({
 
     getInitialState: function () {
-        this._populateStore();
+        this._populateComponentStore();
+        this._populateMetadataStore();
 
         return getComponentState()
     },
 
     componentDidMount: function () {
         ComponentStore.addChangeListener(this._onChange);
+        MetadataStore.addChangeListener(this._onChange);
     },
 
     componentDidUnmount: function () {
         ComponentStore.removeChangeListener(this._onChange);
+        MetadataStore.removeChangeListener(this._onChange);
     },
 
     render: function () {
-        var metadata = JSON.parse(document.getElementById('neolayout-data').getAttribute('data-metadata'));
+        var palette = MetadataStore.getPalette(),
+            contextMetadata = MetadataStore.getContext();
 
         return (
             <div>
-                <Palette metadata={metadata} />
-                <Layout metadata={metadata} components={this.state.components} />
+                <Palette palette={palette}/>
+                <Layout contextMetadata={contextMetadata} components={this.state.components} />
             </div>
         );
     },
 
     /**
      * @func _onChange
-     * @desc Called when the ComponentStore is modified.
+     * @desc Called when the ComponentStore or MetadataStore is modified. It updates the internal
+     *      component state, and triggers rendering.
      */
     _onChange: function () {
         this.setState(getComponentState());
+        // this.forceUpdate();
         this._save();
     },
 
@@ -68,16 +76,21 @@ var Workspace = React.createClass({
      * @func _populateStore
      * @desc Populates the ComponentStore with data from the database.
      */
-    _populateStore: function () {
+    _populateComponentStore: function() {
         var data = JSON.parse(document.getElementById('Form_EditForm_EditableLayout').value);
 
         ComponentActions.create({
             id: data.id,
             parent: null,
-            type: data.ClassName,
+            ClassName: data.ClassName,
             bindings: data.bindings,
             children: data.children
         });
+    },
+
+    _populateMetadataStore: function() {
+        var metadata = JSON.parse(document.getElementById('neolayout-data').getAttribute('data-metadata'));
+        MetadataActions.setContextMetadata(metadata);
     },
 
     /**

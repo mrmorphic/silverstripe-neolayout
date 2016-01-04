@@ -18,7 +18,7 @@ var LayoutComponentEditor = React.createClass({
 
     propTypes: {
         componentdata: React.PropTypes.object.isRequired,
-        metadata: React.PropTypes.object.isRequired
+        contextMetadata: React.PropTypes.object.isRequired
     },
 
     getInitialState: function () {
@@ -37,7 +37,7 @@ var LayoutComponentEditor = React.createClass({
                     <h3>{this.props.componentdata.ClassName}</h3>
                     <EditorForm
                         componentdata={this.props.componentdata}
-                        metadata={this.props.metadata}
+                        contextMetadata={this.props.contextMetadata}
                         toggleModalEditor={this._toggleModalEditor} />
                 </div>
                 <div className={this._getCssClasses('nl-modal-mask')}></div>

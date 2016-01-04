@@ -20,7 +20,6 @@ class NLEditableLayoutPage extends Page {
 		);
 
 		$layoutEditor->setViewControllerURL($this->Link("DisplayView"));
-		$layoutEditor->setContext($this);
 
 		return $fields;
 	}

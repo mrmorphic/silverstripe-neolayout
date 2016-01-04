@@ -15,7 +15,7 @@ var React = require('react'),
 var Layout = React.createClass({
 
     propTypes: {
-        metadata: React.PropTypes.object.isRequired,
+        contextMetadata: React.PropTypes.object.isRequired,
         components: React.PropTypes.object.isRequired
     },
 
@@ -51,7 +51,7 @@ var Layout = React.createClass({
             <LayoutComponent
                 key={rootComponent.id}
                 componentdata={rootComponent}
-                metadata={this.props.metadata} />
+                contextMetadata={this.props.contextMetadata} />
         );
     }
 });

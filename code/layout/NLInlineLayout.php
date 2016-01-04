@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * InlineLayout renders it's children without putting structure around them, and letting the browser
+ * flow them normally.
+ */
 class NLInlineLayout extends NLLayoutComponent {
 
 	static public function get_metadata() {

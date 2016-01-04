@@ -22,6 +22,8 @@ Concepts
  *  When a layout is rendered, it is within a context, usually a page.
     Properties of components can be bound to methods or properties of the
     containing context.
+ *  The NLView uses a layout manager which maps the logical layout concepts
+    to an implementation. The module contains a manager for bootstrap.
 
 Requirements
 ============

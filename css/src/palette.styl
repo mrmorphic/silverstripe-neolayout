@@ -3,3 +3,23 @@
 
     .NLEditor.modal-open &
         @extend .blur
+
+    .nl-palette-tab
+    	background #eee
+    	border 1px solid #ccc
+    	float left
+    	padding 10px
+    	font-size 120%
+
+    	&.selected
+    		background-color #fff
+
+    	&:hover
+    		text-decoration underline
+
+    .nl-palette-container
+    	clear left
+
+    	> div.hidden
+    		display none
+    		visibility hidden

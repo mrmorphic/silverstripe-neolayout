@@ -10,10 +10,17 @@ class NLCMSLayoutEditorField extends HiddenField {
 	protected $viewControllerURL;
 
 	// If provided, this is used to derive what information the context can provide.
-	protected $contextInstance = NULL;
+	protected $contextInstance = null;
 
-	function __construct($name, $title = null, $value = '') {
-		parent::__construct($name, $title, $value);
+	private static $allowed_actions = array(
+		'imageSearch'
+	);
+
+	// Constructor is normal. The owning context should be passed in as the value; it's not really the value,
+	// as we'll ask the context for details about what should be presented to for the given user.
+	function __construct($name, $title = null, $context = null) {
+		$this->contextInstance = $context;
+		parent::__construct($name, $title, $context);
 	}
 
 	function EditorID() {
@@ -29,6 +36,7 @@ class NLCMSLayoutEditorField extends HiddenField {
 	}
 
 	function Field($properties = array()) {
+		// die($this->getName() . ": " . print_r($this->getValue(), true));
 		return '<input id="' . $this->ID() . '" name="' . $this->getName() . '" type="hidden" value="' . $this->getValue() . '" />';
 	}
 
@@ -44,17 +52,133 @@ class NLCMSLayoutEditorField extends HiddenField {
 		return $this->viewControllerURL;
 	}
 
+	// Return a json object containing metadata that is useful to the editor. It's made up of 3 parts,
+	// the palette of largely pre-rendered components, the component type info itself which the property
+	// editor needs, and the properties available in the context.
 	public function EditorMetadata()  {
-		$s = '{ "components": ' . $this->ComponentTypeMetadata() . ',' .
-			'"context": ' . $this->ContextMetadata() . '}';
-		return Convert::raw2xml($s);
+		$components = $this->ComponentTypeMetadata();
+
+		$obj = array();
+		$obj['palette'] = $this->Palette($components);
+		$obj['componentTypes'] = $components;
+		$obj['context'] = $this->ContextMetadata();
+
+		return Convert::raw2xml(json_encode($obj));
+	}
+
+	// Return a json string that contains all information for the palette. This is an ordered list of objects,
+	// where the objects represent the tabs of the palette.
+	// Each palette tab is an object of the form:
+	// 		{
+	//			type: 'type, below',
+	//			name: 'display name of palette tab'
+	//			items: [
+	//				(paletteItem objects, below)
+	//			]
+	//		}
+	// The 'type' property determines what palette component is used to display the items. The types initially supported
+	// include:
+	//		- 'files': uses a file browser component
+	//      - 'generic': displays items only component
+	protected function Palette($components) {
+		$palette = $this->scaffoldPalette($components);
+
+		// Ask the context if it wants to change the palette. It may remove some items,
+		// or add new items.
+		if ($this->contextInstance->hasMethod('updateLayoutPalette')) {
+			$palette = $this->contextInstance->updateLayoutPalette($palette);
+		}
+
+		return $palette;
+	}
+
+	static protected function isLayoutComponent($component) {
+		$inst = Object::create($component['componentType']);
+		return $inst instanceof NLLayoutComponent;
+	}
+
+	// Generate what we think the palette is
+	protected function scaffoldPalette($components) {
+		$result = array();
+
+		$result[] = $this->scaffoldPaletteFields();
+		$result[] = $this->scaffoldPaletteImages();
+		$result[] = $this->scaffoldPaletteComponents($components, 'Layout', function($component) {
+			return self::isLayoutComponent($component);
+		});
+		$result[] = $this->scaffoldPaletteComponents($components, 'Components', function($component) {
+			return !self::isLayoutComponent($component);
+		});
+
+		return $result;
+	}
+
+	protected function scaffoldPaletteFields() {
+		$result = array(
+			'title' => 'Fields',
+			'type' => 'generic'
+		);
+
+		$fields = $this->deriveContextMetadata();
+		foreach ($fields as $name => $def) {
+			// Only add text field variations. Other fields are still available for binding, but the fields on the fields
+			// tab are just conveniences.
+			if ($def != 'Text' && substr($def, 0, 7) != 'Varchar' && substr($def, 0, 8) != 'HTMLText') {
+				continue;
+			}
+
+			$proto = array(
+				'title' => self::split_camel_word($name),
+				'ClassName' => 'NLTextComponent',
+				'bindings' => array(
+					'Text' => array(
+						'type' => 'context',
+						'value' => $name
+					)
+				)
+			);
+
+			$result['items'][] = $proto;
+		}
+
+
+		return $result;
+	}
+
+	protected function scaffoldPaletteImages() {
+		return array(
+			'title' => 'Images',
+			'type' => 'images'
+		);
+	}
+
+	protected function scaffoldPaletteComponents($components, $title, $filter) {
+		$result = array(
+			'title' => $title,
+			'type' => 'generic'
+		);
+
+		foreach ($components as $c) {
+			if (!$filter($c)) {
+				continue;
+			}
+
+			// Add a component prototype that only has ClassName, and no bindings.
+			// @todo consider if defaulted. If so, this should probably be in a component construction helper.
+			$result['items'][] = array(
+				'title' => $c['name'],
+				'ClassName' => $c['componentType']
+			);
+		}
+
+		return $result;
 	}
 
 	// Inject a javascript variable that contains the definition of the components.
 	function ComponentTypeMetadata() {
-		$js = "[\n";
-
 		$classes = ClassInfo::subclassesFor("NLComponent");
+
+		$result = array();
 
 		foreach ($classes as $class) {
 			if (in_array($class, array("NLComponent"))) {
@@ -75,22 +199,18 @@ class NLCMSLayoutEditorField extends HiddenField {
 
 			$metadata["componentType"] = $class;
 
-			$js .= json_encode($metadata) . ",";
+			$result[] = $metadata;
 		}
 
-		$js .= "{}\n";
-
-		$js .= "]\n";
-
-		return $js;
+		return $result;
 	}
 
 	// Compute a JSON structure that tells the editor what is available in the context.
 	function ContextMetadata() {
 		// Get a map of field names mapping to metadata about the property
 		$contextMetadata = $this->deriveContextMetadata();
-
-		return json_encode($contextMetadata);
+		return $contextMetadata;
+		// return json_encode($contextMetadata);
 	}
 
 	// Generate a (possible empty) map of field names to field metadata that can be used by the editor to know
@@ -119,6 +239,11 @@ class NLCMSLayoutEditorField extends HiddenField {
 		$fields = $this->contextInstance->db();
 
 		foreach ($fields as $key => $value) {
+			// Don't add the dynamic layout field we're editing.
+			if ($key == $this->ID()) {
+				continue;
+			}
+
 			// Certain types need manipulation, especially lengths, which we don't care about.
 			if (substr($value, 0, 8) == 'Varchar(') {
 				$value = 'Varchar';
@@ -128,4 +253,55 @@ class NLCMSLayoutEditorField extends HiddenField {
 
 		return $result;
 	}
+
+	// Split a camel cased word into space-separated words. Handles acronyms.
+	// from http://stackoverflow.com/questions/4519739/split-camelcase-word-into-words-with-php-preg-match-regular-expression
+	public static function split_camel_word($s) {
+		$re = '/(?#! splitCamelCase Rev:20140412)
+		    # Split camelCase "words". Two global alternatives. Either g1of2:
+		      (?<=[a-z])      # Position is after a lowercase,
+		      (?=[A-Z])       # and before an uppercase letter.
+		    | (?<=[A-Z])      # Or g2of2; Position is after uppercase,
+		      (?=[A-Z][a-z])  # and before upper-then-lower case.
+		    /x';
+		$a = preg_split($re, $s);
+		return implode(' ', $a);
+	}
+
+	public function imageSearch() {
+		if (isset($_REQUEST['title'])) {
+			$title = $_REQUEST['title'];
+		} else {
+			$title = '';
+		}
+
+		$images = Image::get()->filter('Title:PartialMatch', $title)->limit(50);
+
+		$r = array();
+		foreach ($images as $image) {
+			$resized = $image->SetRatioSize(100,100);
+			$r[] = array(
+				'ID' => $image->ID,
+				'Title' => $image->Title,
+				'PreviewURL' => $resized->Link()
+			);
+		}
+
+		$result = array(
+			'items' => $r
+		);
+
+		return json_encode($result);
+	}
+
+	// protected function getSuccessfulResponse($data = null) {
+	// 	if (!$data) {
+	// 		$data = array();
+	// 	}
+	// 	$this->response->addHeader('Content-Type', 'application/json');
+	// 	$this->response->setStatusCode(200);
+	// 	$data["status"] = "ok";
+	// 	return $data;
+	// }
+
 }

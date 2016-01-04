@@ -1,8 +1,4 @@
 .nl-component
-    background #fff
-    border 1px solid #ddd
-    border-radius 3px
-    box-sizing border-box
     color #666
     margin-bottom 1em
     padding 1em
@@ -11,6 +7,16 @@
     &:last-child
         margin-bottom 0
 
+.nl-icon-container
+    border 1px solid #ddd
+    border-radius 3px
+    box-sizing border-box
+    background #fff
+    display inline-block
+
+    &:hover
+        border 1px dashed #ddd
+
 .component-icon
     border 1px solid transparent
     display inline-block
@@ -18,7 +24,6 @@
     padding .5em
 
     &:hover
-        border 1px dashed #ddd
         border-radius 3px
         cursor move
 
@@ -27,3 +32,12 @@
     
     &.children-0
         padding-top 0
+
+.nl-layout
+    .nl-component
+        border 1px solid #ddd
+        border-radius 3px
+        box-sizing border-box
+        background #fff
+    .nl-icon-container
+        border none

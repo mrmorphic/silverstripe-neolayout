@@ -49,6 +49,8 @@ abstract class NLComponent extends ViewableData {
 
 	protected $rawBindings = null;
 
+	protected $id = '';
+
 	/**
 	 * This holds the binding definitions that are stored in the component. i.e. it identifies the source
 	 * of values per property, but not the actual value.
@@ -79,7 +81,8 @@ abstract class NLComponent extends ViewableData {
 	 * Given an NLComponent object hierarchy, generate the actual NLComponent instances. The object passed in
 	 * is an object structure that is a deserialised json object, so the objects are untyped. We use the ClassName
 	 * property in each to determine the actual type. Bindings are done lazily; the component only interprets the
-	 * binding definitions in $object later if it needs to.
+	 * binding definitions in $object later if it needs to. Note that this function is selective about what properties
+	 * it copies, so only supported properties are initialised.
 	 * @static
 	 * @param $object
 	 * @param $context
@@ -92,6 +95,10 @@ abstract class NLComponent extends ViewableData {
 
 		$className = $object->ClassName;
 		$real = new $className($object);
+
+		if (isset($object->id)) {
+			$real->id = $object->id;
+		}
 
 		// Store the raw bindings for later, only interpret this on demand.
 		$real->rawBindings = null;

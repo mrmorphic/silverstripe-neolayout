@@ -12,7 +12,8 @@
 var React = require('react'),
     LayoutComponentEditor = require('./layoutComponentEditor/editor'),
     dragAndDropMixin = require('../mixin/dragAndDrop'),
-    ComponentStore = require('../store/ComponentStore');
+    ComponentStore = require('../store/ComponentStore'),
+    MetadataStore = require('../store/MetadataStore');
 
 var LayoutComponent = React.createClass({
 
@@ -20,7 +21,7 @@ var LayoutComponent = React.createClass({
 
     propTypes: {
         componentdata: React.PropTypes.object.isRequired,
-        metadata: React.PropTypes.object.isRequired
+        contextMetadata: React.PropTypes.object.isRequired
     },
 
     render: function () {
@@ -29,6 +30,9 @@ var LayoutComponent = React.createClass({
             childrenLength = childLayoutComponents === null ? 0 : childLayoutComponents.length,
             childClasses = "child-components children-" + childrenLength,
             iconClass = 'component-icon icon-' + this.props.componentdata.ClassName;
+
+        // Get the component type metadata
+        var componentMetadata = MetadataStore.getComponentByType(this.props.componentdata.ClassName);
 
         return (
             <div
@@ -39,11 +43,13 @@ var LayoutComponent = React.createClass({
                 onDragOver={this._handleDragOver}
                 data-componentid={this.props.componentdata.id}>
 
-                <span className={iconClass}></span>
+                <div className="nl-icon-container">
+                    <span className={iconClass}></span>{componentMetadata.name}
+                </div>
 
                 <LayoutComponentEditor
                     componentdata={this.props.componentdata}
-                    metadata={this.props.metadata} />
+                    contextMetadata={this.props.contextMetadata} />
 
                 <div className={childClasses}>
                     {childLayoutComponents}
@@ -71,7 +77,7 @@ var LayoutComponent = React.createClass({
                 <LayoutComponent
                     key={children[i].id}
                     componentdata={children[i]}
-                    metadata={this.props.metadata} />
+                    contextMetadata={this.props.contextMetadata} />
             );
         };
 
