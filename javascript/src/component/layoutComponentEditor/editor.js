@@ -34,7 +34,7 @@ var LayoutComponentEditor = React.createClass({
             <div className="nl-field-editor">
                 {editorButtons}
                 <div className={this._getCssClasses('nl-modal-editor')}>
-                    <h3>{this.props.componentdata.ClassName}</h3>
+                    <h3>{this.props.componentdata.componentType}</h3>
                     <EditorForm
                         componentdata={this.props.componentdata}
                         contextMetadata={this.props.contextMetadata}

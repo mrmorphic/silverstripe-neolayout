@@ -26,13 +26,13 @@ var LayoutComponent = React.createClass({
 
     render: function () {
         var childLayoutComponents = this._createChildComponents(),
-            classes = "nl-component nl-layout-component " + this.props.componentdata.ClassName,
+            classes = "nl-component nl-layout-component " + this.props.componentdata.componentType,
             childrenLength = childLayoutComponents === null ? 0 : childLayoutComponents.length,
             childClasses = "child-components children-" + childrenLength,
-            iconClass = 'component-icon icon-' + this.props.componentdata.ClassName;
+            iconClass = 'component-icon icon-' + this.props.componentdata.componentType;
 
         // Get the component type metadata
-        var componentMetadata = MetadataStore.getComponentByType(this.props.componentdata.ClassName);
+        var componentMetadata = MetadataStore.getComponentByType(this.props.componentdata.componentType);
 
         return (
             <div

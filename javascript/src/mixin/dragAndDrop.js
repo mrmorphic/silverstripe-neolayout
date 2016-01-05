@@ -73,15 +73,15 @@ var dragAndDropHandlers = {
         switch(dragData.componentKind) {
             case 'PaletteComponent':
                 ComponentActions.create({
-                    parent: dropId,
-                    ClassName: dragData.componentData.ClassName,
+                    _parent: dropId,
+                    componentType: dragData.componentData.componentType,
                     bindings: dragData.componentData.bindings,  
                     layout: dragData.componentData.layout
                 });
                 break;
             case 'LayoutComponent':
                 if (validDrop(dropId, dragData.componentData.id)) {
-                    ComponentActions.update(dragData.componentData.id, 'parent', dropId);
+                    ComponentActions.update(dragData.componentData.id, '_parent', dropId);
                 }
                 break;
         }

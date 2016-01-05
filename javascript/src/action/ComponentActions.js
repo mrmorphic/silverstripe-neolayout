@@ -13,8 +13,8 @@ var ComponentActions = {
      * @func create
      * @param {object} data
      * @param {string} [data.id]
-     * @param {string} [data.parent] - The ID of the parent component.
-     * @param {string} data.ClassName
+     * @param {string} [data._parent] - The ID of the _parent component.
+     * @param {string} data.componentType
      * @param {object} [data.bindings]
      * @param {array} [data.children]
      */
@@ -23,8 +23,8 @@ var ComponentActions = {
             action: ComponentConstants.COMPONENT_CREATE,
             data: {
                 id: data.id,
-                parent: data.parent,
-                ClassName: data.ClassName,
+                _parent: data._parent,
+                componentType: data.componentType,
                 bindings: data.bindings,
                 children: data.children
             }

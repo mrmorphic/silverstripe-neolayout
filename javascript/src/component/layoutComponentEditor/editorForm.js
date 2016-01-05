@@ -97,7 +97,7 @@ var EditorForm = React.createClass({
             componentTypes = MetadataStore.getComponentTypes();
 
         for (i; i < componentTypes.length; i += 1) {
-            if (componentTypes[i].componentType === this.props.componentdata.ClassName) {
+            if (componentTypes[i].componentType === this.props.componentdata.componentType) {
                 schema = componentTypes[i];
                 break;
             }

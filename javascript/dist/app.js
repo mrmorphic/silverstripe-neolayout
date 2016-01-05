@@ -14,8 +14,8 @@ var ComponentActions = {
      * @func create
      * @param {object} data
      * @param {string} [data.id]
-     * @param {string} [data.parent] - The ID of the parent component.
-     * @param {string} data.ClassName
+     * @param {string} [data._parent] - The ID of the _parent component.
+     * @param {string} data.componentType
      * @param {object} [data.bindings]
      * @param {array} [data.children]
      */
@@ -24,8 +24,8 @@ var ComponentActions = {
             action: ComponentConstants.COMPONENT_CREATE,
             data: {
                 id: data.id,
-                parent: data.parent,
-                ClassName: data.ClassName,
+                _parent: data._parent,
+                componentType: data.componentType,
                 bindings: data.bindings,
                 children: data.children
             }
@@ -209,13 +209,13 @@ var LayoutComponent = React.createClass({displayName: "LayoutComponent",
 
     render: function () {
         var childLayoutComponents = this._createChildComponents(),
-            classes = "nl-component nl-layout-component " + this.props.componentdata.ClassName,
+            classes = "nl-component nl-layout-component " + this.props.componentdata.componentType,
             childrenLength = childLayoutComponents === null ? 0 : childLayoutComponents.length,
             childClasses = "child-components children-" + childrenLength,
-            iconClass = 'component-icon icon-' + this.props.componentdata.ClassName;
+            iconClass = 'component-icon icon-' + this.props.componentdata.componentType;
 
         // Get the component type metadata
-        var componentMetadata = MetadataStore.getComponentByType(this.props.componentdata.ClassName);
+        var componentMetadata = MetadataStore.getComponentByType(this.props.componentdata.componentType);
 
         return (
             React.createElement("div", {
@@ -308,7 +308,7 @@ var LayoutComponentEditor = React.createClass({displayName: "LayoutComponentEdit
             React.createElement("div", {className: "nl-field-editor"}, 
                 editorButtons, 
                 React.createElement("div", {className: this._getCssClasses('nl-modal-editor')}, 
-                    React.createElement("h3", null, this.props.componentdata.ClassName), 
+                    React.createElement("h3", null, this.props.componentdata.componentType), 
                     React.createElement(EditorForm, {
                         componentdata: this.props.componentdata, 
                         contextMetadata: this.props.contextMetadata, 
@@ -470,7 +470,7 @@ var EditorForm = React.createClass({displayName: "EditorForm",
             componentTypes = MetadataStore.getComponentTypes();
 
         for (i; i < componentTypes.length; i += 1) {
-            if (componentTypes[i].componentType === this.props.componentdata.ClassName) {
+            if (componentTypes[i].componentType === this.props.componentdata.componentType) {
                 schema = componentTypes[i];
                 break;
             }
@@ -783,7 +783,7 @@ var PaletteComponent = React.createClass({displayName: "PaletteComponent",
     render: function () {
         // we're passed the component prototype object, we also look up metadata for the component.
         var componentPrototype = this.props.componentdata,
-            componentMetadata = MetadataStore.getComponentByType(componentPrototype.ClassName);
+            componentMetadata = MetadataStore.getComponentByType(componentPrototype.componentType);
 
         var iconClass,
             title;
@@ -794,8 +794,8 @@ var PaletteComponent = React.createClass({displayName: "PaletteComponent",
             iconClass = 'component-icon icon-' + componentMetadata.name.replace(/ /g,'');
         }
 
-        if (componentPrototype.title) {
-            title = componentPrototype.title;
+        if (componentPrototype._title) {
+            title = componentPrototype._title;
         } else {
             title = componentMetadata.name;
         }
@@ -984,8 +984,8 @@ var PaletteTabImagesSearch = React.createClass({displayName: "PaletteTabImagesSe
             for (var i = 0; i < searchResults.items.length; i++) {
                 var item = searchResults.items[i],
                     component = {
-                        'title': item.Title,
-                        'ClassName': 'NLImageComponent',
+                        '_title': item.Title,
+                        'componentType': 'NLImageComponent',
                         'bindings': {
                             'InternalImage': {
                                 "type": "embedded",
@@ -1141,13 +1141,32 @@ var Workspace = React.createClass({displayName: "Workspace",
     _populateComponentStore: function() {
         var data = JSON.parse(document.getElementById('Form_EditForm_EditableLayout').value);
 
+        this._normalise(data);
+
         ComponentActions.create({
             id: data.id,
-            parent: null,
-            ClassName: data.ClassName,
+            _parent: null,
+            componentType: data.componentType,
             bindings: data.bindings,
             children: data.children
         });
+    },
+
+    // Given a component, perform any normalisation. This basically exists in order to correct for
+    // old 
+    _normalise: function(component) {
+        // old format used ClassName instead of componentType.
+        if (!component.componentType && component.ClassName) {
+            component.componentType = component.ClassName;
+            delete component.ClassName;
+        }
+
+        // normalise children.
+        if (component.children) {
+            for (var i = 0; i < component.children.length; i++) {
+                this._normalise(component.children[i]);
+            }
+        }
     },
 
     _populateMetadataStore: function() {
@@ -1293,15 +1312,15 @@ var dragAndDropHandlers = {
         switch(dragData.componentKind) {
             case 'PaletteComponent':
                 ComponentActions.create({
-                    parent: dropId,
-                    ClassName: dragData.componentData.ClassName,
+                    _parent: dropId,
+                    componentType: dragData.componentData.componentType,
                     bindings: dragData.componentData.bindings,  
                     layout: dragData.componentData.layout
                 });
                 break;
             case 'LayoutComponent':
                 if (validDrop(dropId, dragData.componentData.id)) {
-                    ComponentActions.update(dragData.componentData.id, 'parent', dropId);
+                    ComponentActions.update(dragData.componentData.id, '_parent', dropId);
                 }
                 break;
         }
@@ -1391,8 +1410,8 @@ var _components = {}; // collection of components
  * @func create
  * @param {object} data - The data to populate the component with.
  * @param {string} [data.id] - ID of the component. If undefined an ID will be generated.
- * @param {string} data.parent - ID of the LayoutComponent we're adding the new LayoutComponent to.
- * @param {string} data.ClassName - Type of LayoutComponent we're adding.
+ * @param {string} data._parent - ID of the LayoutComponent we're adding the new LayoutComponent to.
+ * @param {string} data.componentType - Type of LayoutComponent we're adding.
  * @param {object} data.bindings
  * @param {array} [data.children] - Child components.
  * @desc Add a component and its children to the store.
@@ -1409,15 +1428,15 @@ function create(data) {
     // Note we don't store children on the component.
     _components[id] = {
         id: id,
-        parent: data.parent,
-        ClassName: data.ClassName,
+        _parent: data._parent,
+        componentType: data.componentType,
         bindings: bindings
     };
 
     // Create child components
     if (data.children !== void 0 && data.children.length > 0) {
         for (i; i < data.children.length; i +=1) {
-            data.children[i].parent = id;
+            data.children[i]._parent = id;
             create(data.children[i]);
         }
     }
@@ -1467,7 +1486,7 @@ var ComponentStore = assign({}, EventEmitter.prototype, {
     getRootComponent: function () {
         for (var prop in _components) {
             if (_components.hasOwnProperty(prop)) {
-                if (_components[prop].parent === null) {
+                if (_components[prop]._parent === null) {
                     return _components[prop];
                 }
             }
@@ -1496,7 +1515,7 @@ var ComponentStore = assign({}, EventEmitter.prototype, {
 
         for (var prop in _components) {
             if (_components.hasOwnProperty(prop)) {
-                if (_components[prop].parent === id) {
+                if (_components[prop]._parent === id) {
                     children.push(_components[prop]);
                 }
             }
@@ -1516,8 +1535,8 @@ var ComponentStore = assign({}, EventEmitter.prototype, {
 
         if (component === void 0) {
             hasAncestor = false;
-        } else if (component.parent !== ancestorId) {
-            hasAncestor = this.hasAncestor(component.parent, ancestorId);
+        } else if (component._parent !== ancestorId) {
+            hasAncestor = this.hasAncestor(component._parent, ancestorId);
         }
 
         return hasAncestor;
@@ -1530,7 +1549,7 @@ var ComponentStore = assign({}, EventEmitter.prototype, {
      * @desc Determine if a LayoutComponent is the root component.
      */
     isRoot: function (id) {
-        return _components[id] !== void 0 && _components[id].parent === null;
+        return _components[id] !== void 0 && _components[id]._parent === null;
     },
 
     /**
@@ -1641,10 +1660,10 @@ var MetadataStore = assign({}, EventEmitter.prototype, {
         return _imageSearchResults;
     },
 
-    // Helper function to return a component from _componentTypes given it's ClassName
-    getComponentByType: function(className) {
+    // Helper function to return a component from _componentTypes given it's componentType
+    getComponentByType: function(componentType) {
         for (var i = 0; i < _componentTypes.length; i++) {
-            if (_componentTypes[i].componentType == className) {
+            if (_componentTypes[i].componentType == componentType) {
                 return _componentTypes[i];
             }
         }

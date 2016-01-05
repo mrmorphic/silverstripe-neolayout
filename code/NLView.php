@@ -23,7 +23,7 @@ class NLView extends Controller {
 
 	static $default_view_contents =
 		'{
-			"ClassName": "NLLayoutContainer",
+			"componentType": "NLLayoutContainer",
 			"children": [
 			],
 			"bindings": {
@@ -33,10 +33,10 @@ class NLView extends Controller {
 	// This should really be in the test suite.
 	static $default_view_contents_alt =
 		'{
-			"ClassName": "NLLayoutContainer",
+			"componentType": "NLLayoutContainer",
 			"children": [
 				{
-					"ClassName": "NLTextComponent",
+					"componentType": "NLTextComponent",
 					"bindings": {
 						"Text": {
 							"type": "embedded",
@@ -45,7 +45,7 @@ class NLView extends Controller {
 					}
 				},
 				{
-					"ClassName": "NLLinkComponent",
+					"componentType": "NLLinkComponent",
 					"bindings": {
 						"ExternalURL": {
 							"type": "embedded",
@@ -54,7 +54,7 @@ class NLView extends Controller {
 					},
 					"children": [
 						{
-							"ClassName": "NLTextComponent",
+							"componentType": "NLTextComponent",
 							"bindings": {
 								"Text": {
 									"type": "embedded",
@@ -65,7 +65,7 @@ class NLView extends Controller {
 					]
 				},
 				{
-					"ClassName": "NLTextComponent",
+					"componentType": "NLTextComponent",
 					"bindings": {
 						"Text": {
 							"type": "context",
@@ -81,16 +81,16 @@ class NLView extends Controller {
 	// This should really be in the test suite.
 	static $default_view_contents_alt2 =
 		'{
-			"ClassName": "NLLayoutContainer",
+			"componentType": "NLLayoutContainer",
 			"children": [
 				{
-					"ClassName": "NLVerticalBoxLayout",
+					"componentType": "NLVerticalBoxLayout",
 					"children": [
 						{
-							"ClassName": "NLHorizontalBoxLayout",
+							"componentType": "NLHorizontalBoxLayout",
 							"children": [
 								{
-									"ClassName": "NLLinkComponent",
+									"componentType": "NLLinkComponent",
 									"bindings": {
 										"ExternalURL": {
 											"type": "embedded",
@@ -102,7 +102,7 @@ class NLView extends Controller {
 									},
 									"children": [
 										{
-											"ClassName": "NLImageComponent",
+											"componentType": "NLImageComponent",
 											"bindings": {
 												"InternalImage": {
 													"type": "embedded",
@@ -125,7 +125,7 @@ class NLView extends Controller {
 									]
 								},
 								{
-									"ClassName": "NLTextComponent",
+									"componentType": "NLTextComponent",
 									"bindings": {
 										"Text": {
 											"type": "embedded",
@@ -139,7 +139,7 @@ class NLView extends Controller {
 							]
 						},
 						{
-							"ClassName": "NLTextComponent",
+							"componentType": "NLTextComponent",
 							"bindings": {
 								"Text": {
 									"type": "embedded",
@@ -158,10 +158,10 @@ class NLView extends Controller {
 
 	static $default_view_contents_old =
 		'{
-			"ClassName": "NLVerticalBoxLayout",
+			"componentType": "NLVerticalBoxLayout",
 			"children": [
 				{
-					"ClassName": "NLTextComponent",
+					"componentType": "NLTextComponent",
 					"bindings": {
 						"Text": {
 							"type": "embedded",
@@ -170,7 +170,7 @@ class NLView extends Controller {
 					}
 				},
 				{
-					"ClassName": "NLLinkComponent",
+					"componentType": "NLLinkComponent",
 					"bindings": {
 						"ExternalURL": {
 							"type": "embedded",
@@ -179,7 +179,7 @@ class NLView extends Controller {
 					},
 					"children": [
 						{
-							"ClassName": "NLTextComponent",
+							"componentType": "NLTextComponent",
 							"bindings": {
 								"Text": {
 									"type": "embedded",
@@ -190,7 +190,7 @@ class NLView extends Controller {
 					]
 				},
 				{
-					"ClassName": "NLLinkComponent",
+					"componentType": "NLLinkComponent",
 					"bindings": {
 						"InternalPage": {
 							"type": "embedded",
@@ -199,7 +199,7 @@ class NLView extends Controller {
 					},
 					"children": [
 						{
-							"ClassName": "NLTextComponent",
+							"componentType": "NLTextComponent",
 							"bindings": {
 								"Text": {
 									"type": "embedded",
@@ -210,10 +210,10 @@ class NLView extends Controller {
 					]
 				},
 				{
-					"ClassName": "NLCanvasLayout",
+					"componentType": "NLCanvasLayout",
 					"children":[
 						{
-							"ClassName": "NLTextComponent",
+							"componentType": "NLTextComponent",
 							"bindings": {
 								"Text": {
 									"type": "embedded",
@@ -223,7 +223,7 @@ class NLView extends Controller {
 							"layout": { "top":"10px", "height":"15px", "width":"20px" }
 						},
 						{
-							"ClassName": "NLTextComponent",
+							"componentType": "NLTextComponent",
 							"bindings": {
 								"Text": {
 									"type": "embedded",

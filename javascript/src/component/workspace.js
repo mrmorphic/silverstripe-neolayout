@@ -79,13 +79,32 @@ var Workspace = React.createClass({
     _populateComponentStore: function() {
         var data = JSON.parse(document.getElementById('Form_EditForm_EditableLayout').value);
 
+        this._normalise(data);
+
         ComponentActions.create({
             id: data.id,
-            parent: null,
-            ClassName: data.ClassName,
+            _parent: null,
+            componentType: data.componentType,
             bindings: data.bindings,
             children: data.children
         });
+    },
+
+    // Given a component, perform any normalisation. This basically exists in order to correct for
+    // old 
+    _normalise: function(component) {
+        // old format used ClassName instead of componentType.
+        if (!component.componentType && component.ClassName) {
+            component.componentType = component.ClassName;
+            delete component.ClassName;
+        }
+
+        // normalise children.
+        if (component.children) {
+            for (var i = 0; i < component.children.length; i++) {
+                this._normalise(component.children[i]);
+            }
+        }
     },
 
     _populateMetadataStore: function() {

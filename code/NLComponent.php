@@ -7,9 +7,9 @@
  *
  * The serialised form of a component tree is represented as a json expression. e.g.:
  * {
- *     "ClassName": "NLVerticalBoxLayout",
+ *     "componentType": "NLVerticalBoxLayout",
  *     "children": [
- *         { "ClassName": "NLTextComponent", "Text": "Some text" }
+ *         { "componentType": "NLTextComponent", "Text": "Some text" }
  *     ],
  *     "bindings": {
  *         "myproperty": {}
@@ -79,7 +79,7 @@ abstract class NLComponent extends ViewableData {
 
 	/**
 	 * Given an NLComponent object hierarchy, generate the actual NLComponent instances. The object passed in
-	 * is an object structure that is a deserialised json object, so the objects are untyped. We use the ClassName
+	 * is an object structure that is a deserialised json object, so the objects are untyped. We use the componentType
 	 * property in each to determine the actual type. Bindings are done lazily; the component only interprets the
 	 * binding definitions in $object later if it needs to. Note that this function is selective about what properties
 	 * it copies, so only supported properties are initialised.
@@ -89,11 +89,11 @@ abstract class NLComponent extends ViewableData {
 	 * @return void
 	 */
 	public static function factory($object, $view) {
-		if (!isset($object->ClassName)) {
-			throw new Exception("NLComponent has no class information");
+		if (!isset($object->componentType)) {
+			throw new Exception("NLComponent has no componentType");
 		}
 
-		$className = $object->ClassName;
+		$className = $object->componentType;
 		$real = new $className($object);
 
 		if (isset($object->id)) {
@@ -324,7 +324,7 @@ abstract class NLComponent extends ViewableData {
 			new ArrayData(array(
 				"Tag" => $componentTag,
 				"Content" => $this->renderContent($context),
-				"ClassName" => get_class($this),
+				"ComponentType" => get_class($this),
 				"ExtraClasses" => $cssClasses,
 				"ExtraStyles" => $styles,
 				"ExtraAttrs" => $attrs

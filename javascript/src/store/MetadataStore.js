@@ -42,10 +42,10 @@ var MetadataStore = assign({}, EventEmitter.prototype, {
         return _imageSearchResults;
     },
 
-    // Helper function to return a component from _componentTypes given it's ClassName
-    getComponentByType: function(className) {
+    // Helper function to return a component from _componentTypes given it's componentType
+    getComponentByType: function(componentType) {
         for (var i = 0; i < _componentTypes.length; i++) {
-            if (_componentTypes[i].componentType == className) {
+            if (_componentTypes[i].componentType == componentType) {
                 return _componentTypes[i];
             }
         }

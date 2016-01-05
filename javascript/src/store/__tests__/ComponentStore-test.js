@@ -9,8 +9,8 @@ describe('ComponentStore', function () {
         action: ComponentConstants.COMPONENT_CREATE,
         data: {
             id: '1',
-            parent: null,
-            ClassName: 'SomeClass'
+            _parent: null,
+            componentType: 'SomeClass'
         }
     };
 
@@ -25,7 +25,7 @@ describe('ComponentStore', function () {
         action: ComponentConstants.COMPONENT_UPDATE,
         data: {
             id: '1',
-            key: 'ClassName',
+            key: 'componentType',
             value: 'OtherClass'
         }
     };
@@ -57,7 +57,7 @@ describe('ComponentStore', function () {
         keys = Object.keys(components);
 
         expect(keys.length).toBe(1);
-        expect(components[keys[0]].ClassName).toEqual('SomeClass');
+        expect(components[keys[0]].componentType).toEqual('SomeClass');
 
     });
 
@@ -72,7 +72,7 @@ describe('ComponentStore', function () {
         callback(actionUpdate);
 
         expect(keys.length).toBe(1);
-        expect(components[keys[0]].ClassName).toEqual('OtherClass');
+        expect(components[keys[0]].componentType).toEqual('OtherClass');
     });
 
     it('destroys a component', function () {

@@ -22,8 +22,8 @@ var _components = {}; // collection of components
  * @func create
  * @param {object} data - The data to populate the component with.
  * @param {string} [data.id] - ID of the component. If undefined an ID will be generated.
- * @param {string} data.parent - ID of the LayoutComponent we're adding the new LayoutComponent to.
- * @param {string} data.ClassName - Type of LayoutComponent we're adding.
+ * @param {string} data._parent - ID of the LayoutComponent we're adding the new LayoutComponent to.
+ * @param {string} data.componentType - Type of LayoutComponent we're adding.
  * @param {object} data.bindings
  * @param {array} [data.children] - Child components.
  * @desc Add a component and its children to the store.
@@ -40,15 +40,15 @@ function create(data) {
     // Note we don't store children on the component.
     _components[id] = {
         id: id,
-        parent: data.parent,
-        ClassName: data.ClassName,
+        _parent: data._parent,
+        componentType: data.componentType,
         bindings: bindings
     };
 
     // Create child components
     if (data.children !== void 0 && data.children.length > 0) {
         for (i; i < data.children.length; i +=1) {
-            data.children[i].parent = id;
+            data.children[i]._parent = id;
             create(data.children[i]);
         }
     }
@@ -98,7 +98,7 @@ var ComponentStore = assign({}, EventEmitter.prototype, {
     getRootComponent: function () {
         for (var prop in _components) {
             if (_components.hasOwnProperty(prop)) {
-                if (_components[prop].parent === null) {
+                if (_components[prop]._parent === null) {
                     return _components[prop];
                 }
             }
@@ -127,7 +127,7 @@ var ComponentStore = assign({}, EventEmitter.prototype, {
 
         for (var prop in _components) {
             if (_components.hasOwnProperty(prop)) {
-                if (_components[prop].parent === id) {
+                if (_components[prop]._parent === id) {
                     children.push(_components[prop]);
                 }
             }
@@ -147,8 +147,8 @@ var ComponentStore = assign({}, EventEmitter.prototype, {
 
         if (component === void 0) {
             hasAncestor = false;
-        } else if (component.parent !== ancestorId) {
-            hasAncestor = this.hasAncestor(component.parent, ancestorId);
+        } else if (component._parent !== ancestorId) {
+            hasAncestor = this.hasAncestor(component._parent, ancestorId);
         }
 
         return hasAncestor;
@@ -161,7 +161,7 @@ var ComponentStore = assign({}, EventEmitter.prototype, {
      * @desc Determine if a LayoutComponent is the root component.
      */
     isRoot: function (id) {
-        return _components[id] !== void 0 && _components[id].parent === null;
+        return _components[id] !== void 0 && _components[id]._parent === null;
     },
 
     /**
