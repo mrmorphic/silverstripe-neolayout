@@ -127,10 +127,11 @@
 .nl-palette .nl-palette-tab:hover {
   text-decoration: underline;
 }
-.nl-palette .nl-palette-container {
-  clear: left;
+.nl-palette-container {
+  clear: both;
+  padding-top: 15px;
 }
-.nl-palette .nl-palette-container > div.hidden {
+.nl-palette-container > div.hidden {
   display: none;
   visibility: hidden;
 }
