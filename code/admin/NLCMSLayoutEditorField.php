@@ -226,9 +226,7 @@ class NLCMSLayoutEditorField extends HiddenField {
 	// Compute a JSON structure that tells the editor what is available in the context.
 	function ContextMetadata() {
 		// Get a map of field names mapping to metadata about the property
-		$contextMetadata = $this->deriveContextMetadata();
-		return $contextMetadata;
-		// return json_encode($contextMetadata);
+		return $this->deriveContextMetadata();
 	}
 
 	// Generate a (possible empty) map of field names to field metadata that can be used by the editor to know
@@ -311,15 +309,4 @@ class NLCMSLayoutEditorField extends HiddenField {
 
 		return json_encode($result);
 	}
-
-	// protected function getSuccessfulResponse($data = null) {
-	// 	if (!$data) {
-	// 		$data = array();
-	// 	}
-	// 	$this->response->addHeader('Content-Type', 'application/json');
-	// 	$this->response->setStatusCode(200);
-	// 	$data["status"] = "ok";
-	// 	return $data;
-	// }
-
 }

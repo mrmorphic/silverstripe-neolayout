@@ -19,10 +19,10 @@ var MetadataActions = {
 
     // Invoked when there are updated image search results
     imageSearchResults: function(results) {
-    	AppDispatcher.dispatch({
-    		action: MetadataConstants.IMAGE_SEARCH_RESULTS,
-    		data: results
-    	})
+        AppDispatcher.dispatch({
+            action: MetadataConstants.IMAGE_SEARCH_RESULTS,
+            data: results
+        })
     }
 };
 

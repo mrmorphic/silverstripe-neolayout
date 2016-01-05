@@ -65,21 +65,6 @@ class NLImageComponent extends NLComponent {
 
 	// Render an image on the site. $imageRef is an image object, which we expect will be
 	function getInternalImage($image, $values) {
-		// Debug::show("image:" . print_r($imageRef, true));
-
-		// $parts = explode(":", $value);
-		// Debug::show("parts:" . print_r($parts, true));
-		// if (!is_array($parts) || count($parts) != 2 || !ClassInfo::exists($parts[0]) || !is_numeric($parts[1])) {
-		// 	// invalid reference
-		// 	return "";
-		// }
-
-		// // Get this object
-		// $image = DataObject::get_by_id($parts[0], $parts[1]);
-		// if (!$image) {
-		// 	return "";
-		// }
-
 		// Ensure this instance is an Image or a descendent. Should always be OK, ORM shouldn't
 		// return otherwise.
 		if (!($image instanceof Image)) {

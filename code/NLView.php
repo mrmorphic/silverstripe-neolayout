@@ -31,54 +31,6 @@ class NLView extends Controller {
 		}';
 
 	// This should really be in the test suite.
-	static $default_view_contents_alt =
-		'{
-			"componentType": "NLLayoutContainer",
-			"children": [
-				{
-					"componentType": "NLTextComponent",
-					"bindings": {
-						"Text": {
-							"type": "embedded",
-							"value": "This is some <em>HTML</em> text (embedded)."
-						}
-					}
-				},
-				{
-					"componentType": "NLLinkComponent",
-					"bindings": {
-						"ExternalURL": {
-							"type": "embedded",
-							"value": "http://disney.com"
-						}
-					},
-					"children": [
-						{
-							"componentType": "NLTextComponent",
-							"bindings": {
-								"Text": {
-									"type": "embedded",
-									"value": "an external link using embedded binding"
-								}
-							}
-						}
-					]
-				},
-				{
-					"componentType": "NLTextComponent",
-					"bindings": {
-						"Text": {
-							"type": "context",
-							"value": "GetFoo"
-						}
-					}
-				}
-			],
-			"bindings": {
-			}
-		}';
-
-	// This should really be in the test suite.
 	static $default_view_contents_alt2 =
 		'{
 			"componentType": "NLLayoutContainer",
@@ -150,89 +102,6 @@ class NLView extends Controller {
 					],
 					"bindings": {
 					}
-				}
-			],
-			"bindings": {
-			}
-		}';
-
-	static $default_view_contents_old =
-		'{
-			"componentType": "NLVerticalBoxLayout",
-			"children": [
-				{
-					"componentType": "NLTextComponent",
-					"bindings": {
-						"Text": {
-							"type": "embedded",
-							"value": "this is some text that is encoded for json and can contain HTML"
-						}
-					}
-				},
-				{
-					"componentType": "NLLinkComponent",
-					"bindings": {
-						"ExternalURL": {
-							"type": "embedded",
-							"value": "http://disney.com"
-						}
-					},
-					"children": [
-						{
-							"componentType": "NLTextComponent",
-							"bindings": {
-								"Text": {
-									"type": "embedded",
-									"value": "my favourite website (external)"
-								}
-							}
-						}
-					]
-				},
-				{
-					"componentType": "NLLinkComponent",
-					"bindings": {
-						"InternalPage": {
-							"type": "embedded",
-							"value": "SiteTree:2"
-						}
-					},
-					"children": [
-						{
-							"componentType": "NLTextComponent",
-							"bindings": {
-								"Text": {
-									"type": "embedded",
-									"value": "my favourite website (internal)"
-								}
-							}
-						}
-					]
-				},
-				{
-					"componentType": "NLCanvasLayout",
-					"children":[
-						{
-							"componentType": "NLTextComponent",
-							"bindings": {
-								"Text": {
-									"type": "embedded",
-									"value": "canvas child 1"
-								}
-							},
-							"layout": { "top":"10px", "height":"15px", "width":"20px" }
-						},
-						{
-							"componentType": "NLTextComponent",
-							"bindings": {
-								"Text": {
-									"type": "embedded",
-									"value": "canvas child 2"
-								}
-							}
-						}
-					],
-					"layout": { "height":"75px", "width":"150px" }
 				}
 			],
 			"bindings": {
@@ -358,23 +227,6 @@ class NLView extends Controller {
 	public function augmentForCMSEditor() {
 		$this->getLayout()->augmentForCMSEditor($this->context);
 	}
-
-	// // Return a form for a component that can be embedded in the modal editor dialog in the javascript. This is
-	// // requested asynchronously. The component type is identified on the URL; the editor is a for the type of component,
-	// // and is not populated from any specific component.generic form The fields shown on the form
-	// // are created from meta-data, but with no values populated. The values are populated in javascript, as it always
-	// // has the most recent edition of the layout structure, particular where a component is edited the second time without
-	// // saving.
-	// public function EditFormByType() {
-	// 	// Get the component class name
-
-	// 	$fields = new FieldList();
-	// 	$actions = new FieldList();
-
-	// 	$form = new Form($this, "EditForm", $fields, $actions);
-
-	// 	return $form;
-	// }
 }
 
 class NLViewAddableItem extends ViewableData {

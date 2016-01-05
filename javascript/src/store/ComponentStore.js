@@ -37,15 +37,6 @@ function create(data) {
         return;
     }
 
-    // Note we don't store children on the component, but we do want any CMS hint properties (start with
-    // underscores.)
-    // _components[id] = {
-    //     id: id,
-    //     _parent: data._parent,
-    //     componentType: data.componentType,
-    //     bindings: bindings,
-    // };
-
     var obj = {
         id: id
     };
