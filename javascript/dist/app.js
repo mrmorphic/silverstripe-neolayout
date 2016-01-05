@@ -22,13 +22,14 @@ var ComponentActions = {
     create: function (data) {
         AppDispatcher.dispatch({
             action: ComponentConstants.COMPONENT_CREATE,
-            data: {
-                id: data.id,
-                _parent: data._parent,
-                componentType: data.componentType,
-                bindings: data.bindings,
-                children: data.children
-            }
+            data: data
+            // data: {
+            //     id: data.id,
+            //     _parent: data._parent,
+            //     componentType: data.componentType,
+            //     bindings: data.bindings,
+            //     children: data.children
+            // }
         });
     },
 
@@ -217,6 +218,18 @@ var LayoutComponent = React.createClass({displayName: "LayoutComponent",
         // Get the component type metadata
         var componentMetadata = MetadataStore.getComponentByType(this.props.componentdata.componentType);
 
+        // determine preview
+        var preview = null;
+        if (this.props.componentdata._thumbnailUrl) {
+            preview = (
+                React.createElement("img", {src: this.props.componentdata._thumbnailUrl})
+            );
+        } else {
+            preview = (
+                React.createElement("span", {className: iconClass})
+            );
+        }
+
         return (
             React.createElement("div", {
                 className: classes, 
@@ -227,7 +240,7 @@ var LayoutComponent = React.createClass({displayName: "LayoutComponent",
                 "data-componentid": this.props.componentdata.id}, 
 
                 React.createElement("div", {className: "nl-icon-container"}, 
-                    React.createElement("span", {className: iconClass}), componentMetadata.name
+                    preview, componentMetadata.name
                 ), 
 
                 React.createElement(LayoutComponentEditor, {
@@ -786,7 +799,9 @@ var PaletteComponent = React.createClass({displayName: "PaletteComponent",
             componentMetadata = MetadataStore.getComponentByType(componentPrototype.componentType);
 
         var iconClass,
-            title;
+            title,
+            description,
+            icon;
 
         if (componentMetadata === void 0) {
             iconClass = '';
@@ -800,15 +815,31 @@ var PaletteComponent = React.createClass({displayName: "PaletteComponent",
             title = componentMetadata.name;
         }
 
+        if (componentPrototype._description) {
+            description = componentType._description;
+        } else {
+            description = componentMetadata.description;
+        }
+
+        if (componentPrototype._thumbnailUrl) {
+            icon = (
+                React.createElement("img", {src: componentPrototype._thumbnailUrl})
+            );
+        } else {
+            icon = (
+                React.createElement("span", {className: iconClass})
+            );
+        }
+
         return (
             React.createElement("div", {
                 className: "nl-component nl-palette-component", 
                 draggable: "true", 
                 onDragStart: this._handleDragStart, 
-                title: componentMetadata.description}, 
+                title: description}, 
 
                 React.createElement("div", {className: "nl-icon-container"}, 
-                    React.createElement("span", {className: iconClass})
+                    icon
                 ), 
                 React.createElement("div", {className: "nl-component-title"}, title)
             )
@@ -985,6 +1016,7 @@ var PaletteTabImagesSearch = React.createClass({displayName: "PaletteTabImagesSe
                 var item = searchResults.items[i],
                     component = {
                         '_title': item.Title,
+                        '_thumbnailUrl': item.ThumbnailURL,
                         'componentType': 'NLImageComponent',
                         'bindings': {
                             'InternalImage': {
@@ -1425,13 +1457,23 @@ function create(data) {
         return;
     }
 
-    // Note we don't store children on the component.
-    _components[id] = {
-        id: id,
-        _parent: data._parent,
-        componentType: data.componentType,
-        bindings: bindings
-    };
+    // Note we don't store children on the component, but we do want any CMS hint properties (start with
+    // underscores.)
+    // _components[id] = {
+    //     id: id,
+    //     _parent: data._parent,
+    //     componentType: data.componentType,
+    //     bindings: bindings,
+    // };
+
+    // Copy everything exception children.
+    var obj = {};
+    for (prop in data) {
+        if (prop != 'children') {
+            obj[prop] = data[prop];
+        }
+    }
+    _components[id] = obj;
 
     // Create child components
     if (data.children !== void 0 && data.children.length > 0) {

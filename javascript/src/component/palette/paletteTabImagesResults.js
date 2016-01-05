@@ -28,6 +28,7 @@ var PaletteTabImagesSearch = React.createClass({
                 var item = searchResults.items[i],
                     component = {
                         '_title': item.Title,
+                        '_thumbnailUrl': item.ThumbnailURL,
                         'componentType': 'NLImageComponent',
                         'bindings': {
                             'InternalImage': {

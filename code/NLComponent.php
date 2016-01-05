@@ -51,6 +51,11 @@ abstract class NLComponent extends ViewableData {
 
 	protected $id = '';
 
+	// This is a map of cms hints, which are mixed into raw representations of the component. Keys should always
+	// start with underscores. These are not persisted in the layout. They are used by a component only to provide
+	// augmented data to the CMS, so it can present components better (e.g. thumbnails or previews).
+	protected $cmsHints = array();
+
 	/**
 	 * This holds the binding definitions that are stored in the component. i.e. it identifies the source
 	 * of values per property, but not the actual value.
@@ -362,6 +367,40 @@ abstract class NLComponent extends ViewableData {
 	 */
 	function maxChildren() {
 		return 0;
+	}
+
+	public function augmentForCMSEditor($context) {
+		foreach ($this->children as $child) {
+			$child->augmentForCMSEditor($context);
+		}
+	}
+
+	// Add a CMS hint to the component. The property should start with an underscore.
+	public function addCMSHint($property, $value) {
+		if (substr($property, 0, 1) != '_') {
+			throw new Exception('CMS hint must start with underscore');
+		}
+
+		$this->cmsHints[$property] = $value;
+	}
+
+	// Convert the component into a raw PHP object with the properties of the internal raw representation. Calling
+	// json_encode on this object should give the normalised intermediate layout form.
+	public function toRaw() {
+		$result = new stdClass();
+		$result->componentType = get_class($this);
+		$result->id = $this->id;
+		$result->bindings = new stdClass();
+		$result->layout = new stdClass();
+		$result->children = array();
+		foreach ($this->cmsHints as $key => $value) {
+			$result->$key = $value;
+		}
+
+		foreach ($this->children as $child) {
+			$result->children[] = $child->toRaw();
+		}
+		return $result;
 	}
 }
 

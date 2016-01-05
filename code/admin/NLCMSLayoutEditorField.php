@@ -31,12 +31,24 @@ class NLCMSLayoutEditorField extends HiddenField {
 		return $this->renderWith(array("NLCMSLayoutEditorField"));
 	}
 
+	// When we present back to the CMS, we give components the chance to augment what they present back. This allows for
+	// things like component thumbnails that can be added to what the CMS sees, without actually storing these in the layout.
+	// We don't want to pollute the layout with CMS properties that rendering on the front end don't actually require.
 	function getValue() {
-		return Convert::raw2att(NLView::normalise_serialised($this->value));
+		// $this->value is the JSON representation in a string, so first parse it into the data structure.
+		// @todo is controller, form name required?
+		$view = new NLView(null, '', $this->value, $this->contextInstance);
+
+		// Apply normalisations across the component hierarchy.
+		$view->augmentForCMSEditor();
+
+		// Convert back into a JSON in a string.
+		$v = json_encode($view->getLayout()->toRaw());
+
+		return Convert::raw2att(NLView::normalise_serialised($v));
 	}
 
 	function Field($properties = array()) {
-		// die($this->getName() . ": " . print_r($this->getValue(), true));
 		return '<input id="' . $this->ID() . '" name="' . $this->getName() . '" type="hidden" value="' . $this->getValue() . '" />';
 	}
 
@@ -279,11 +291,11 @@ class NLCMSLayoutEditorField extends HiddenField {
 
 		$r = array();
 		foreach ($images as $image) {
-			$resized = $image->SetRatioSize(100,100);
+			$resized = $image->SetRatioSize(120,120);
 			$r[] = array(
 				'ID' => $image->ID,
 				'Title' => $image->Title,
-				'PreviewURL' => $resized->Link()
+				'ThumbnailURL' => $resized->Link()
 			);
 		}
 

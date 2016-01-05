@@ -37,13 +37,23 @@ function create(data) {
         return;
     }
 
-    // Note we don't store children on the component.
-    _components[id] = {
-        id: id,
-        _parent: data._parent,
-        componentType: data.componentType,
-        bindings: bindings
-    };
+    // Note we don't store children on the component, but we do want any CMS hint properties (start with
+    // underscores.)
+    // _components[id] = {
+    //     id: id,
+    //     _parent: data._parent,
+    //     componentType: data.componentType,
+    //     bindings: bindings,
+    // };
+
+    // Copy everything exception children.
+    var obj = {};
+    for (prop in data) {
+        if (prop != 'children') {
+            obj[prop] = data[prop];
+        }
+    }
+    _components[id] = obj;
 
     // Create child components
     if (data.children !== void 0 && data.children.length > 0) {

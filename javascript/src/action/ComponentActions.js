@@ -21,13 +21,14 @@ var ComponentActions = {
     create: function (data) {
         AppDispatcher.dispatch({
             action: ComponentConstants.COMPONENT_CREATE,
-            data: {
-                id: data.id,
-                _parent: data._parent,
-                componentType: data.componentType,
-                bindings: data.bindings,
-                children: data.children
-            }
+            data: data
+            // data: {
+            //     id: data.id,
+            //     _parent: data._parent,
+            //     componentType: data.componentType,
+            //     bindings: data.bindings,
+            //     children: data.children
+            // }
         });
     },
 

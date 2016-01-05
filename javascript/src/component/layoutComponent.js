@@ -34,6 +34,18 @@ var LayoutComponent = React.createClass({
         // Get the component type metadata
         var componentMetadata = MetadataStore.getComponentByType(this.props.componentdata.componentType);
 
+        // determine preview
+        var preview = null;
+        if (this.props.componentdata._thumbnailUrl) {
+            preview = (
+                <img src={this.props.componentdata._thumbnailUrl} />
+            );
+        } else {
+            preview = (
+                <span className={iconClass}></span>
+            );
+        }
+
         return (
             <div
                 className={classes}
@@ -44,7 +56,7 @@ var LayoutComponent = React.createClass({
                 data-componentid={this.props.componentdata.id}>
 
                 <div className="nl-icon-container">
-                    <span className={iconClass}></span>{componentMetadata.name}
+                    {preview}{componentMetadata.name}
                 </div>
 
                 <LayoutComponentEditor

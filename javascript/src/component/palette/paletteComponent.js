@@ -25,7 +25,9 @@ var PaletteComponent = React.createClass({
             componentMetadata = MetadataStore.getComponentByType(componentPrototype.componentType);
 
         var iconClass,
-            title;
+            title,
+            description,
+            icon;
 
         if (componentMetadata === void 0) {
             iconClass = '';
@@ -39,15 +41,31 @@ var PaletteComponent = React.createClass({
             title = componentMetadata.name;
         }
 
+        if (componentPrototype._description) {
+            description = componentType._description;
+        } else {
+            description = componentMetadata.description;
+        }
+
+        if (componentPrototype._thumbnailUrl) {
+            icon = (
+                <img src={componentPrototype._thumbnailUrl} />
+            );
+        } else {
+            icon = (
+                <span className={iconClass}></span>
+            );
+        }
+
         return (
             <div
                 className="nl-component nl-palette-component"
                 draggable="true"
                 onDragStart={this._handleDragStart}
-                title={componentMetadata.description}>
+                title={description}>
 
                 <div className="nl-icon-container">
-                    <span className={iconClass}></span>
+                    {icon}
                 </div>
                 <div className="nl-component-title">{title}</div>
             </div>

@@ -132,4 +132,18 @@ class NLImageComponent extends NLComponent {
 		// Generate the markup.
 		return $image->forTemplate();
 	}
+
+	public function augmentForCMSEditor($context) {
+		parent::augmentForCMSEditor($context);
+
+		$v = $this->getBindingValues($context);
+
+		// if there is an internal image, we'll generate a thumbnail of it for the CMS.
+		$image = $v->InternalImage;
+		if ($image) {
+			$image = $image->SetRatioSize(120, 120);
+			$this->addCMSHint('_thumbnailUrl', $image->Link());
+		}
+
+	}
 }

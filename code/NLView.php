@@ -281,7 +281,7 @@ class NLView extends Controller {
 	 * Return the top-level layout component for this view.
 	 * This assumes that the construction of the view always has a layout component at the root.
 	 */
-	protected function getLayout() {
+	public function getLayout() {
 		if (!$this->layout) {
 			// get the view definition. We give it the raw component hierarchy and let
 			// the factory component sort out what classes are actually required.
@@ -351,6 +351,12 @@ class NLView extends Controller {
 	}
 
 	protected function findComponentByIdParented($parent, $id) {
+	}
+
+	// Given a view whose layout is going to be edited, augment components as required for CMS presentation. This basically
+	// called augmentForCMSEditor on all the components of the layout.
+	public function augmentForCMSEditor() {
+		$this->getLayout()->augmentForCMSEditor($this->context);
 	}
 
 	// // Return a form for a component that can be embedded in the modal editor dialog in the javascript. This is
