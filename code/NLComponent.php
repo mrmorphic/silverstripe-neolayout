@@ -375,12 +375,8 @@ abstract class NLComponent extends ViewableData {
 		}
 	}
 
-	// Add a CMS hint to the component. The property should start with an underscore.
+	// Add a CMS hint to the component.
 	public function addCMSHint($property, $value) {
-		if (substr($property, 0, 1) != '_') {
-			throw new Exception('CMS hint must start with underscore');
-		}
-
 		$this->cmsHints[$property] = $value;
 	}
 
@@ -393,9 +389,13 @@ abstract class NLComponent extends ViewableData {
 		$result->bindings = new stdClass();
 		$result->layout = new stdClass();
 		$result->children = array();
-		foreach ($this->cmsHints as $key => $value) {
-			$result->$key = $value;
+
+		if (count($this->cmsHints) > 0) {
+			$result->_cmsHints = $this->cmsHints;
 		}
+		// foreach ($this->cmsHints as $key => $value) {
+		// 	$result->$key = $value;
+		// }
 
 		foreach ($this->children as $child) {
 			$result->children[] = $child->toRaw();

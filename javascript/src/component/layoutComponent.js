@@ -29,16 +29,17 @@ var LayoutComponent = React.createClass({
             classes = "nl-component nl-layout-component " + this.props.componentdata.componentType,
             childrenLength = childLayoutComponents === null ? 0 : childLayoutComponents.length,
             childClasses = "child-components children-" + childrenLength,
-            iconClass = 'component-icon icon-' + this.props.componentdata.componentType;
+            iconClass = 'component-icon icon-' + this.props.componentdata.componentType,
+            cmsHints = this.props.componentdata._cmsHints || {};
 
         // Get the component type metadata
         var componentMetadata = MetadataStore.getComponentByType(this.props.componentdata.componentType);
 
         // determine preview
         var preview = null;
-        if (this.props.componentdata._thumbnailUrl) {
+        if (cmsHints.thumbnailUrl) {
             preview = (
-                <img src={this.props.componentdata._thumbnailUrl} />
+                <img src={cmsHints.thumbnailUrl} />
             );
         } else {
             preview = (

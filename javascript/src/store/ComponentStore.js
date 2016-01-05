@@ -46,10 +46,12 @@ function create(data) {
     //     bindings: bindings,
     // };
 
-    // Copy everything exception children.
-    var obj = {};
+    var obj = {
+        id: id
+    };
+    // Copy everything from source except children and id.
     for (prop in data) {
-        if (prop != 'children') {
+        if (prop != 'children' && prop != 'id') {
             obj[prop] = data[prop];
         }
     }

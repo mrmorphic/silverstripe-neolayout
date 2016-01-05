@@ -22,7 +22,8 @@ var PaletteComponent = React.createClass({
     render: function () {
         // we're passed the component prototype object, we also look up metadata for the component.
         var componentPrototype = this.props.componentdata,
-            componentMetadata = MetadataStore.getComponentByType(componentPrototype.componentType);
+            componentMetadata = MetadataStore.getComponentByType(componentPrototype.componentType),
+            cmsHints = componentPrototype._cmsHints || {};
 
         var iconClass,
             title,
@@ -35,21 +36,21 @@ var PaletteComponent = React.createClass({
             iconClass = 'component-icon icon-' + componentMetadata.name.replace(/ /g,'');
         }
 
-        if (componentPrototype._title) {
-            title = componentPrototype._title;
+        if (cmsHints.title) {
+            title = cmsHints.title;
         } else {
             title = componentMetadata.name;
         }
 
-        if (componentPrototype._description) {
-            description = componentType._description;
+        if (cmsHints.description) {
+            description = cmsHints.description;
         } else {
             description = componentMetadata.description;
         }
 
-        if (componentPrototype._thumbnailUrl) {
+        if (cmsHints.thumbnailUrl) {
             icon = (
-                <img src={componentPrototype._thumbnailUrl} />
+                <img src={cmsHints.thumbnailUrl} />
             );
         } else {
             icon = (

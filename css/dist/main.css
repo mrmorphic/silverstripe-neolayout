@@ -127,6 +127,9 @@
 .nl-palette .nl-palette-tab:hover {
   text-decoration: underline;
 }
+.nl-palette .images-search-results {
+  padding-top: 15px;
+}
 .nl-palette-container {
   clear: both;
   padding-top: 15px;

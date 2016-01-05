@@ -139,14 +139,18 @@ class NLCMSLayoutEditorField extends HiddenField {
 				continue;
 			}
 
+			$title = self::split_camel_word($name);
 			$proto = array(
-				'_title' => self::split_camel_word($name),
 				'componentType' => 'NLTextComponent',
 				'bindings' => array(
 					'Text' => array(
 						'type' => 'context',
 						'value' => $name
 					)
+				),
+				'_cmsHints' => array(
+					'title' => self::split_camel_word($title),
+					'description' => $title . ' text field'
 				)
 			);
 
@@ -178,8 +182,10 @@ class NLCMSLayoutEditorField extends HiddenField {
 			// Add a component prototype that only has component type, and no bindings.
 			// @todo consider if defaulted. If so, this should probably be in a component construction helper.
 			$result['items'][] = array(
-				'_title' => $c['name'],
-				'componentType' => $c['componentType']
+				'componentType' => $c['componentType'],
+				'_cmsHints' => array(
+					'title' => $c['name'],
+				)
 			);
 		}
 

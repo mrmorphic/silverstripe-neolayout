@@ -142,7 +142,7 @@ class NLImageComponent extends NLComponent {
 		$image = $v->InternalImage;
 		if ($image) {
 			$image = $image->SetRatioSize(120, 120);
-			$this->addCMSHint('_thumbnailUrl', $image->Link());
+			$this->addCMSHint('thumbnailUrl', $image->Link());
 		}
 
 	}

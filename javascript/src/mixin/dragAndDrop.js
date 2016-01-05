@@ -76,7 +76,8 @@ var dragAndDropHandlers = {
                     _parent: dropId,
                     componentType: dragData.componentData.componentType,
                     bindings: dragData.componentData.bindings,  
-                    layout: dragData.componentData.layout
+                    layout: dragData.componentData.layout,
+                    _cmsHints: dragData.componentData._cmsHints
                 });
                 break;
             case 'LayoutComponent':

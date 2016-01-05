@@ -213,16 +213,17 @@ var LayoutComponent = React.createClass({displayName: "LayoutComponent",
             classes = "nl-component nl-layout-component " + this.props.componentdata.componentType,
             childrenLength = childLayoutComponents === null ? 0 : childLayoutComponents.length,
             childClasses = "child-components children-" + childrenLength,
-            iconClass = 'component-icon icon-' + this.props.componentdata.componentType;
+            iconClass = 'component-icon icon-' + this.props.componentdata.componentType,
+            cmsHints = this.props.componentdata._cmsHints || {};
 
         // Get the component type metadata
         var componentMetadata = MetadataStore.getComponentByType(this.props.componentdata.componentType);
 
         // determine preview
         var preview = null;
-        if (this.props.componentdata._thumbnailUrl) {
+        if (cmsHints.thumbnailUrl) {
             preview = (
-                React.createElement("img", {src: this.props.componentdata._thumbnailUrl})
+                React.createElement("img", {src: cmsHints.thumbnailUrl})
             );
         } else {
             preview = (
@@ -796,7 +797,8 @@ var PaletteComponent = React.createClass({displayName: "PaletteComponent",
     render: function () {
         // we're passed the component prototype object, we also look up metadata for the component.
         var componentPrototype = this.props.componentdata,
-            componentMetadata = MetadataStore.getComponentByType(componentPrototype.componentType);
+            componentMetadata = MetadataStore.getComponentByType(componentPrototype.componentType),
+            cmsHints = componentPrototype._cmsHints || {};
 
         var iconClass,
             title,
@@ -809,21 +811,21 @@ var PaletteComponent = React.createClass({displayName: "PaletteComponent",
             iconClass = 'component-icon icon-' + componentMetadata.name.replace(/ /g,'');
         }
 
-        if (componentPrototype._title) {
-            title = componentPrototype._title;
+        if (cmsHints.title) {
+            title = cmsHints.title;
         } else {
             title = componentMetadata.name;
         }
 
-        if (componentPrototype._description) {
-            description = componentType._description;
+        if (cmsHints.description) {
+            description = cmsHints.description;
         } else {
             description = componentMetadata.description;
         }
 
-        if (componentPrototype._thumbnailUrl) {
+        if (cmsHints.thumbnailUrl) {
             icon = (
-                React.createElement("img", {src: componentPrototype._thumbnailUrl})
+                React.createElement("img", {src: cmsHints.thumbnailUrl})
             );
         } else {
             icon = (
@@ -1015,8 +1017,10 @@ var PaletteTabImagesSearch = React.createClass({displayName: "PaletteTabImagesSe
             for (var i = 0; i < searchResults.items.length; i++) {
                 var item = searchResults.items[i],
                     component = {
-                        '_title': item.Title,
-                        '_thumbnailUrl': item.ThumbnailURL,
+                        '_cmsHints': {
+                            'title': item.Title,
+                            'thumbnailUrl': item.ThumbnailURL,
+                        },
                         'componentType': 'NLImageComponent',
                         'bindings': {
                             'InternalImage': {
@@ -1347,7 +1351,8 @@ var dragAndDropHandlers = {
                     _parent: dropId,
                     componentType: dragData.componentData.componentType,
                     bindings: dragData.componentData.bindings,  
-                    layout: dragData.componentData.layout
+                    layout: dragData.componentData.layout,
+                    _cmsHints: dragData.componentData._cmsHints
                 });
                 break;
             case 'LayoutComponent':
@@ -1466,10 +1471,12 @@ function create(data) {
     //     bindings: bindings,
     // };
 
-    // Copy everything exception children.
-    var obj = {};
+    var obj = {
+        id: id
+    };
+    // Copy everything from source except children and id.
     for (prop in data) {
-        if (prop != 'children') {
+        if (prop != 'children' && prop != 'id') {
             obj[prop] = data[prop];
         }
     }
