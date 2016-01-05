@@ -14,9 +14,9 @@ var _imageSearchResults = {};
 var UPDATED_EVENT = 'updated';
 
 function storeMetadata(data) {
-	_context = data.context;
-	_palette = data.palette;
-	_componentTypes = data.componentTypes;
+    _context = data.context;
+    _palette = data.palette;
+    _componentTypes = data.componentTypes;
 }
 
 function storeImageSearch(data) {
@@ -24,19 +24,19 @@ function storeImageSearch(data) {
 }
 
 var MetadataStore = assign({}, EventEmitter.prototype, {
-	// Get the palette of available options.
-	getPalette: function() {
-		return _palette;
-	},
+    // Get the palette of available options.
+    getPalette: function() {
+        return _palette;
+    },
 
-	// Get properties defined in the context.
-	getContext: function() {
-		return _context;
-	},
+    // Get properties defined in the context.
+    getContext: function() {
+        return _context;
+    },
 
-	getComponentTypes: function() {
-		return _componentTypes;
-	},
+    getComponentTypes: function() {
+        return _componentTypes;
+    },
 
     getImageSearchResults: function() {
         return _imageSearchResults;
@@ -75,7 +75,7 @@ var MetadataStore = assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function (payload) {
     switch(payload.action) {
         case MetadataConstants.SET_CONTEXT_METADATA:
-        	storeMetadata(payload.data);
+            storeMetadata(payload.data);
             MetadataStore.emitChange();
             break;
         case MetadataConstants.IMAGE_SEARCH_RESULTS:
