@@ -89,10 +89,10 @@ var MetadataActions = {
 
     // Invoked when there are updated image search results
     imageSearchResults: function(results) {
-    	AppDispatcher.dispatch({
-    		action: MetadataConstants.IMAGE_SEARCH_RESULTS,
-    		data: results
-    	})
+        AppDispatcher.dispatch({
+            action: MetadataConstants.IMAGE_SEARCH_RESULTS,
+            data: results
+        })
     }
 };
 
@@ -701,9 +701,9 @@ module.exports = EditorFormRow;
 'use strict';
 
 var React = require('react'),
-	PaletteTab = require('./paletteTab'),
-	PaletteTabGeneric = require('./paletteTabGeneric'),
-	PaletteTabImages = require('./paletteTabImages');
+    PaletteTab = require('./paletteTab'),
+    PaletteTabGeneric = require('./paletteTabGeneric'),
+    PaletteTabImages = require('./paletteTabImages');
 
 // Palette component is the top-level palette holder, which renders the palette tab components.
 var Palette = React.createClass({displayName: "Palette",
@@ -713,57 +713,57 @@ var Palette = React.createClass({displayName: "Palette",
     },
 
     getInitialState: function() {
-    	return {
-    		selectedTab: 0
-    	}
+        return {
+            selectedTab: 0
+        }
     },
 
     selectTab: function(tabIndex) {
-    	this.setState({
-    		selectedTab: tabIndex
-    	});
+        this.setState({
+            selectedTab: tabIndex
+        });
     },
 
     render: function () {
-    	var	paletteTabs = [],
-    		paletteTabContents = [];
+        var paletteTabs = [],
+            paletteTabContents = [];
 
-    	for (var i = 0; i < this.props.palette.length; i++) {
-    		var tab = this.props.palette[i],
-    			selected = false;
+        for (var i = 0; i < this.props.palette.length; i++) {
+            var tab = this.props.palette[i],
+                selected = false;
 
-    		if (i === this.state.selectedTab) {
-    			selected = true;
-    		}
+            if (i === this.state.selectedTab) {
+                selected = true;
+            }
 
-    		var boundClick = this.selectTab.bind(this, i);
+            var boundClick = this.selectTab.bind(this, i);
 
-    		paletteTabs.push(
-    			React.createElement(PaletteTab, {tabdef: tab, onClick: boundClick, selected: selected, key: i})
-    		);
-        	switch (tab.type) {
-        		case 'images':
-        			paletteTabContents.push(
-		                React.createElement(PaletteTabImages, {className: "nl-palette-tab", visible: selected, tabdef: tab, key: i})
-        			);
-        			break;
-        		default:
-        			paletteTabContents.push(
-		                React.createElement(PaletteTabGeneric, {className: "nl-palette-tab", visible: selected, tabdef: tab, key: i})
-        			);
-        			break;
-        	}
-    	}
+            paletteTabs.push(
+                React.createElement(PaletteTab, {tabdef: tab, onClick: boundClick, selected: selected, key: i})
+            );
+            switch (tab.type) {
+                case 'images':
+                    paletteTabContents.push(
+                        React.createElement(PaletteTabImages, {className: "nl-palette-tab", visible: selected, tabdef: tab, key: i})
+                    );
+                    break;
+                default:
+                    paletteTabContents.push(
+                        React.createElement(PaletteTabGeneric, {className: "nl-palette-tab", visible: selected, tabdef: tab, key: i})
+                    );
+                    break;
+            }
+        }
 
         return (
             React.createElement("div", {className: "nl-palette"}, 
                 React.createElement("h2", null, "Palette"), 
                 React.createElement("ul", null, 
-	                paletteTabs
-	            ), 
-	            React.createElement("div", {className: "nl-palette-container"}, 
-		            paletteTabContents
-		        )
+                    paletteTabs
+                ), 
+                React.createElement("div", {className: "nl-palette-container"}, 
+                    paletteTabContents
+                )
             )
         );
     }
@@ -1369,41 +1369,41 @@ module.exports = dragAndDropHandlers;
 
 },{"../action/ComponentActions":1,"../store/ComponentStore":22}],21:[function(require,module,exports){
 var MetadataActions = require('../action/MetadataActions'),
-	MetadataStore = require('../store/MetadataStore');
+    MetadataStore = require('../store/MetadataStore');
 
 // A service for image searches
 var AssetSearchService = {
 
-	// Given a query, find images that match. Query is an object of the following form:
-	//	{
-	//		title: value,
-	//		page: 2
-	//	}
-	// If page is not set, it defaults to 0, which is the first page of results. The service determines
-	// the number of items per page. This initiates the query, and invokes MetadataActions.imageSearchResults.
-	imageSearch: function(query) {
-		var url = this.getAPIBaseURL() + 'imageSearch';
+    // Given a query, find images that match. Query is an object of the following form:
+    //  {
+    //      title: value,
+    //      page: 2
+    //  }
+    // If page is not set, it defaults to 0, which is the first page of results. The service determines
+    // the number of items per page. This initiates the query, and invokes MetadataActions.imageSearchResults.
+    imageSearch: function(query) {
+        var url = this.getAPIBaseURL() + 'imageSearch';
 
-		if (!query.page) {
-			query.page = 0;
-		}
+        if (!query.page) {
+            query.page = 0;
+        }
 
-		jQuery.ajax(url, {
-			cache: false,
-			data: query,
-			error: function(jqXHR, textStatus, errorThrown) {
-				// MetadataActions.fetchError(errorThrown);
-			},
-			success: function(data, textStatus, jqXHR) {
-				MetadataActions.imageSearchResults(JSON.parse(data));
-			}
-		})
-	},
+        jQuery.ajax(url, {
+            cache: false,
+            data: query,
+            error: function(jqXHR, textStatus, errorThrown) {
+                // MetadataActions.fetchError(errorThrown);
+            },
+            success: function(data, textStatus, jqXHR) {
+                MetadataActions.imageSearchResults(JSON.parse(data));
+            }
+        })
+    },
 
-	getAPIBaseURL: function() {
-		// @todo fix this coupling. The service should not need to know about DOM structure. Perhaps a config store populated by workspace.
+    getAPIBaseURL: function() {
+        // @todo fix this coupling. The service should not need to know about DOM structure. Perhaps a config store populated by workspace.
         return document.getElementById('neolayout').getAttribute('data-api-base') + '/';
-	}
+    }
 };
 
 module.exports = AssetSearchService;
@@ -1461,15 +1461,6 @@ function create(data) {
     if (_components[id] !== void 0) {
         return;
     }
-
-    // Note we don't store children on the component, but we do want any CMS hint properties (start with
-    // underscores.)
-    // _components[id] = {
-    //     id: id,
-    //     _parent: data._parent,
-    //     componentType: data.componentType,
-    //     bindings: bindings,
-    // };
 
     var obj = {
         id: id
@@ -1681,9 +1672,9 @@ var _imageSearchResults = {};
 var UPDATED_EVENT = 'updated';
 
 function storeMetadata(data) {
-	_context = data.context;
-	_palette = data.palette;
-	_componentTypes = data.componentTypes;
+    _context = data.context;
+    _palette = data.palette;
+    _componentTypes = data.componentTypes;
 }
 
 function storeImageSearch(data) {
@@ -1691,19 +1682,19 @@ function storeImageSearch(data) {
 }
 
 var MetadataStore = assign({}, EventEmitter.prototype, {
-	// Get the palette of available options.
-	getPalette: function() {
-		return _palette;
-	},
+    // Get the palette of available options.
+    getPalette: function() {
+        return _palette;
+    },
 
-	// Get properties defined in the context.
-	getContext: function() {
-		return _context;
-	},
+    // Get properties defined in the context.
+    getContext: function() {
+        return _context;
+    },
 
-	getComponentTypes: function() {
-		return _componentTypes;
-	},
+    getComponentTypes: function() {
+        return _componentTypes;
+    },
 
     getImageSearchResults: function() {
         return _imageSearchResults;
@@ -1742,7 +1733,7 @@ var MetadataStore = assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function (payload) {
     switch(payload.action) {
         case MetadataConstants.SET_CONTEXT_METADATA:
-        	storeMetadata(payload.data);
+            storeMetadata(payload.data);
             MetadataStore.emitChange();
             break;
         case MetadataConstants.IMAGE_SEARCH_RESULTS:

@@ -183,6 +183,7 @@ class NLCMSLayoutEditorField extends HiddenField {
 			// @todo consider if defaulted. If so, this should probably be in a component construction helper.
 			$result['items'][] = array(
 				'componentType' => $c['componentType'],
+				'bindings' => array(),
 				'_cmsHints' => array(
 					'title' => $c['name'],
 				)
