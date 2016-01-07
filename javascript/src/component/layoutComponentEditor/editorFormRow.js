@@ -6,7 +6,52 @@
 
 'use strict';
 
-var React = require('react');
+var React = require('react'),
+    PropEditorText = require('./propEditorText'),
+    PropEditorNumeric = require('./propEditorNumeric'),
+    PropEditorDropdown = require('./propEditorDropdown'),
+    PropEditorCheckbox = require('./propEditorCheckbox');
+
+// An ordered list of property editor rules. Each rule consists of a matching function
+// an an object that determines what is to be created if the rule matches.
+var _editorRules = [
+    {
+        // Enum fields use a drop down
+        matches: function(type) {
+            return (type.types.indexOf('Enum(') >= 0);
+        },
+        editor: {
+            editorClass: PropEditorDropdown
+        }
+    },
+    {
+        // Integer uses a numeric field, which limits to numeric fields
+        matches: function(type) {
+            return (type.types == 'Int');
+        },
+        editor: {
+            editorClass: PropEditorNumeric
+        }
+    },
+    {
+        // Boolean uses a checkbox.
+        matches: function(type) {
+            return false;
+        },
+        editor: {
+            editorClass: PropEditorCheckbox
+        }
+    },
+    {
+        // Varchar
+        matches: function(type) {
+            return false;
+        },
+        editor: {
+            editorClass: PropEditorText
+        }
+    }
+];
 
 var EditorFormRow = React.createClass({
 
@@ -77,15 +122,44 @@ var EditorFormRow = React.createClass({
                 </select>
             );
         } else if (this.state.type === 'embedded') {
-            typeInput = (
-                <input
-                    className="field-editor-field"
-                    type="text" onChange={this._handleValueChange}
-                    value={this.state.value} />
-            );
+            typeInput = this._getEmbeddedEditor();
+            // typeInput = (
+            //     <input
+            //         className="field-editor-field"
+            //         type="text" onChange={this._handleValueChange}
+            //         value={this.state.value} />
+            // );
         }
 
         return typeInput;
+    },
+
+    // There are different editors available for embedded values, based generally on data type. This function
+    // returns one based on properties of the field. The default is a simple text editor. The idea longer term
+    // is that there is an extendable registry of editors, so that new modules can provide new data types and
+    // register the editor. While registration is not implemented yet, it should be easy to add, with the selection
+    // happening in this function. All we do here is use _editorRules
+    _getEmbeddedEditor: function() {
+        var editorClass = null;
+
+        for (var i = 0; i < _editorRules.length; i++) {
+            var rule = _editorRules[i];
+            if (rule.matches(this.props.schema)) {
+                console.log('found matching rule with ', this.props.schema);
+                editorClass = rule.editor.editorClass;
+            }
+        }
+
+        if (!editorClass) {
+            editorClass = PropEditorText;
+        }
+
+        return React.createElement(editorClass, {
+            className: 'field-editor-field',
+            onChange: this._handleValueChange,
+            value: this.state.value,
+            schema: this.props.schema
+        });
     },
 
     /**
@@ -126,8 +200,8 @@ var EditorFormRow = React.createClass({
             <div className="field-editor-row" data-type={this.props.schema.key}>
                 <label>{this.props.schema.name}</label>
                 <select className="field-editor-field" onChange={this._handleTypeChange} value={this.state.type}>
-                    <option value="context">Context</option>
-                    <option value="embedded">Embedded</option>
+                    <option value="context">From page</option>
+                    <option value="embedded">Entered value</option>
                 </select>
                 {typeInputs}
             </div>
