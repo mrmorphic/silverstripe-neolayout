@@ -13,7 +13,7 @@ var PropEditorDropdown = React.createClass({
     propTypes: {
         className: React.PropTypes.string.isRequired,
         onChange: React.PropTypes.func.isRequired,
-        value: React.PropTypes.object.isRequired,
+        value: React.PropTypes.string.isRequired,
         schema: React.PropTypes.object.isRequired
     },
 

@@ -108,7 +108,7 @@ var EditorComponentProperties = React.createClass({
 
         if (rows.length == 0) {
             rows.push(
-                <div class="no-editable-properties">This component has no editable settings</div>
+                <div key="0" className="no-editable-properties">This component has no editable settings</div>
             );
         }
 
