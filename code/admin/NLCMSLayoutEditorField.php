@@ -74,6 +74,7 @@ class NLCMSLayoutEditorField extends HiddenField {
 		$obj['palette'] = $this->Palette($components);
 		$obj['componentTypes'] = $components;
 		$obj['context'] = $this->ContextMetadata();
+		$obj['settings'] = $this->getGlobalSettings();
 
 		return Convert::raw2xml(json_encode($obj));
 	}
@@ -191,6 +192,13 @@ class NLCMSLayoutEditorField extends HiddenField {
 		}
 
 		return $result;
+	}
+
+	// Retrieve global settings that are not related to the specific layout
+	function getGlobalSettings() {
+		return array(
+			'layoutManager' => NLView::get_layout_manager_class()
+		);
 	}
 
 	// Inject a javascript variable that contains the definition of the components.

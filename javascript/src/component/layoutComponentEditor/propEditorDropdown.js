@@ -57,8 +57,6 @@ var PropEditorDropdown = React.createClass({
             },
             v = parts[0].split(',');
 
-console.log('parts:', parts);
-console.log('v:', v);
         for (var i=0; i < v.length; i++) {
             result.values.push(v[i].replace("'", ""));
         }
@@ -67,7 +65,6 @@ console.log('v:', v);
             result.defaultValue = parts[1].replace("'", "");
         }
 
-console.log('result:', result);
         return result;
     }
 });

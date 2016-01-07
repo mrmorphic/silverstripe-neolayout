@@ -163,6 +163,10 @@ class NLView extends Controller {
 		return $this->layoutManager;
 	}
 
+	public static function get_layout_manager_class() {
+		return Config::inst()->get('NLView', 'layout_manager_class');
+	}
+
 	/**
 	 * Render this view.
 	 * @return

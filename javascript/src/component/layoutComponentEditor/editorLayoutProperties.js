@@ -11,7 +11,8 @@
 var React = require('react'),
     EditorFormRow = require('./editorFormRow'),
     ComponentActions = require('../../action/ComponentActions'),
-    MetadataStore = require('../../store/MetadataStore');
+    MetadataStore = require('../../store/MetadataStore'),
+    LayoutManager = require('../layoutManager');
 
 var EditorLayoutProperties = React.createClass({
 
@@ -28,9 +29,11 @@ var EditorLayoutProperties = React.createClass({
             c += ' hidden';
         }
 
+        var editor = LayoutManager.getPropertyEditor(this.props.componentdata);
+
         return (
             <div className={c}>
-                layout properties
+                {editor}
             </div>
         );
     },
