@@ -9,7 +9,9 @@
 'use strict';
 
 var React = require('react'),
-    EditorFormRow = require('./editorFormRow'),
+    EditorTab = require('./editorTab'),
+    EditorComponentProperties = require('./editorComponentProperties'),
+    EditorLayoutProperties = require('./editorLayoutProperties'),
     ComponentActions = require('../../action/ComponentActions'),
     MetadataStore = require('../../store/MetadataStore');
 
@@ -21,13 +23,59 @@ var EditorForm = React.createClass({
         toggleModalEditor: React.PropTypes.func.isRequired
     },
 
+    getInitialState: function() {
+        return {
+            selectedTab: 0
+        }
+    },
+
+    selectTab: function(tabIndex) {
+        this.setState({
+            selectedTab: tabIndex
+        });
+    },
+
     render: function () {
-        var formRows = this._createFormRows(this._getComponentSchema(), this.props.contextMetadata);
+        var editorTabs = [],
+            editorTabsContent = [];
+
+        // @todo refactor this hacky mess
+
+        var boundClick0 = this.selectTab.bind(this, 0);
+        var boundClick1 = this.selectTab.bind(this, 1);
+        var selected0 = this.state.selectedTab==0;
+        var selected1 = this.state.selectedTab==1;
+
+        // Add a tab for the component settings.
+        editorTabs.push(
+            <EditorTab title="Component settings" onClick={boundClick0} selected={selected0} key="0" />
+        );
+        editorTabsContent.push(
+            <EditorComponentProperties ref="componentProperties"
+                                        componentdata={this.props.componentdata}
+                                        contextMetadata={this.props.contextMetadata}
+                                        visible={selected0}
+                                        key="0" />
+        );
+
+        // Add a tab for the layout settings.
+        editorTabs.push(
+            <EditorTab title="Layout settings" onClick={boundClick1} selected={selected1} key="1" />
+        );
+        editorTabsContent.push(
+            <EditorLayoutProperties ref="layoutProperties"
+                                    componentdata={this.props.componentdata}
+                                    visible={selected1}
+                                    key="1" />
+        );
 
         return (
             <div className="field-editor-form">
-                <div className="field-editor-rows">
-                    {formRows}
+                <ul className="field-editor-tabs">
+                    {editorTabs}
+                </ul>
+                <div className="field-editor-tab-contents">
+                    {editorTabsContent}
                 </div>
                 <div className="field-editor-actions">
                     <button className="field-editor-action save" onClick={this._handleSaveButtonClick}>Save</button>
@@ -37,92 +85,24 @@ var EditorForm = React.createClass({
         );
     },
 
-    /**
-     * @func _createFormRows
-     * @param {object} schema
-     * @param {object} contextMetadata
-     * @return {array} - A list of FieldEditorRow's.
-     * @desc Create a FieldEditorRow for each binding type relating to the LayoutComponent.
-     */
-    _createFormRows: function (schema, contextMetadata) {
-        var rows = [],
-            schemaData = {},
-            key = '',
-            refName = '',
-            i = 0,
-            binding = {};
 
-        for (key in schema.properties) {
-            if (schema.properties.hasOwnProperty(key)) {
-                refName = 'editorRow_' + i;
+    // /**
+    //  * @func _getRows
+    //  * @return {Array}
+    //  * @desc Gets the EditorFormRows belonging to the current EditorForm.
+    //  */
+    // _getRows: function () {
+    //     var key = '',
+    //         rows = [];
 
-                // Check if the LayoutComponent has a binding relating to the current row.
-                // Do this by checking if the schema's key exists in the binding.
-                if (this.props.componentdata.bindings[key] !== void 0) {
-                    binding = this.props.componentdata.bindings[key];
-                } else {
-                    binding = { type: 'embedded', value: '' };
-                }
+    //     for (key in this.refs) {
+    //         if (this.refs.hasOwnProperty(key) && key.indexOf('editorRow_') > -1) {
+    //             rows.push(this.refs[key]);
+    //         }
+    //     }
 
-                schemaData = {
-                    name: schema.properties[key].name,
-                    types: schema.properties[key].type,
-                    key: key
-                };
-
-                rows.push(
-                    <EditorFormRow
-                        binding={binding}
-                        schema={schemaData}
-                        contextMetadata={contextMetadata}
-                        key={i}
-                        ref={refName} />
-                );
-
-                i += 1;
-            }
-        }
-
-        return rows;
-    },
-
-    /**
-     * @func _getComponentSchema
-     * @return {Array} The schemas relating to a LayoutComponent.
-     * @desc Get the schema for the LayoutComponent.
-     */
-    _getComponentSchema: function () {
-        var schema = null,
-            i = 0,
-            componentTypes = MetadataStore.getComponentTypes();
-
-        for (i; i < componentTypes.length; i += 1) {
-            if (componentTypes[i].componentType === this.props.componentdata.componentType) {
-                schema = componentTypes[i];
-                break;
-            }
-        }
-
-        return schema;
-    },
-
-    /**
-     * @func _getRows
-     * @return {Array}
-     * @desc Gets the EditorFormRows belonging to the current EditorForm.
-     */
-    _getRows: function () {
-        var key = '',
-            rows = [];
-
-        for (key in this.refs) {
-            if (this.refs.hasOwnProperty(key) && key.indexOf('editorRow_') > -1) {
-                rows.push(this.refs[key]);
-            }
-        }
-
-        return rows;
-    },
+    //     return rows;
+    // },
 
     /**
      * @func _handleSaveButtonClick
@@ -130,17 +110,25 @@ var EditorForm = React.createClass({
      * @todo Only save one binding (row).
      */
     _handleSaveButtonClick: function () {
-        var i = 0,
-            rows = this._getRows(),
-            binding = {};
+        // var i = 0,
+        //     rows = this._getRows(),
+        //     binding = {};
 
-        // Extract row data and save it.
-        for (i; i < rows.length; i += 1) {
-            // TODO: Only extract values which have been updated.
-            binding[rows[i].getDOMNode().getAttribute('data-type')] = rows[i].state;
-        }
+        // // Extract row data and save it.
+        // for (i; i < rows.length; i += 1) {
+        //     // TODO: Only extract values which have been updated.
+        //     binding[rows[i].getDOMNode().getAttribute('data-type')] = rows[i].state;
+        // }
 
-        ComponentActions.update(this.props.componentdata.id, 'bindings', binding);
+        // ComponentActions.update(this.props.componentdata.id, 'bindings', binding);
+
+        // get the two sub-components to save their editing state. Each of these will trigger state changes as appropriate.
+        // @todo will this dual trigger cause 2 renders? Perhaps get these methods to return their delta, which we merge and trigger.
+        var componentProperties = this.refs.componentProperties,
+            layoutProperties = this.refs.layoutProperties;
+
+        componentProperties.saveChanges();
+        layoutProperties.saveChanges();
 
         this.props.toggleModalEditor();
     },
@@ -150,13 +138,20 @@ var EditorForm = React.createClass({
      * @desc Handle canceling changes made in the editor.
      */
     _handleCancelButtonClick: function () {
-        var i = 0,
-            rows = this._getRows();
+        // var i = 0,
+        //     rows = this._getRows();
 
-        // Reset each row's state
-        for (i; i < rows.length; i += 1) {
-            rows[i].replaceState(rows[i].getInitialState());
-        }
+        // // Reset each row's state
+        // for (i; i < rows.length; i += 1) {
+        //     rows[i].replaceState(rows[i].getInitialState());
+        // }
+
+        // get the two sub-components to cancel their editing state.
+        var componentProperties = this.refs.componentProperties,
+            layoutProperties = this.refs.layoutProperties;
+
+        componentProperties.cancelChanges();
+        layoutProperties.cancelChanges();
 
         // Close the modal
         this.props.toggleModalEditor();

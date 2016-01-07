@@ -191,6 +191,29 @@
 .nl-modal-editor .field-editor-field {
   margin-right: 1%;
 }
+.nl-modal-editor .hidden {
+  display: none;
+  visibility: hidden;
+}
+.nl-modal-editor .field-editor-tab-contents {
+  clear: both;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+.nl-modal-editor .nl-editor-tab {
+  background: #eee;
+  border: 1px solid #ccc;
+  float: left;
+  padding: 10px;
+  font-size: 120%;
+}
+.nl-modal-editor .nl-editor-tab.selected {
+  background-color: #fff;
+  border-style: solid solid none solid;
+}
+.nl-modal-editor .nl-editor-tab:hover {
+  text-decoration: underline;
+}
 .nl-modal-mask {
   background: #fff;
   bottom: 0;

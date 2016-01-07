@@ -80,6 +80,7 @@ var Workspace = React.createClass({
         var data = JSON.parse(document.getElementById('Form_EditForm_EditableLayout').value);
 
         this._normalise(data);
+        console.log('Workspace._populateComponentStore: ', data);
 
         ComponentActions.create({
             id: data.id,

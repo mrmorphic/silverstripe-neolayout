@@ -386,16 +386,13 @@ abstract class NLComponent extends ViewableData {
 		$result = new stdClass();
 		$result->componentType = get_class($this);
 		$result->id = $this->id;
-		$result->bindings = new stdClass();
-		$result->layout = new stdClass();
+		$result->bindings = $this->rawBindings;
+		$result->layout = $this->layoutValues;
 		$result->children = array();
 
 		if (count($this->cmsHints) > 0) {
 			$result->_cmsHints = $this->cmsHints;
 		}
-		// foreach ($this->cmsHints as $key => $value) {
-		// 	$result->$key = $value;
-		// }
 
 		foreach ($this->children as $child) {
 			$result->children[] = $child->toRaw();
