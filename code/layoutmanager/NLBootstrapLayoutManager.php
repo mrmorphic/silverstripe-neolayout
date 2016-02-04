@@ -17,11 +17,17 @@
  *							push: 0,
  *							pull: 0
  *						}
+ *					},
+ *					visibility: {
+ *						lg: "visible",
+ *						xs: "hidden"
  *					}
  *				}
  *			}
  */
 class NLBootstrapLayoutManager extends ViewableData implements NLLayoutManager {
+	static $sizes = array('xs', 'sm', 'md', 'lg');
+
 	// The hook which enables the layout manager to override default behaviour for components it knows about.
 	// Returns markup if it's a case it understands, or FALSE by default to indicate that the component
 	// should be rendered normally.
@@ -54,16 +60,16 @@ class NLBootstrapLayoutManager extends ViewableData implements NLLayoutManager {
 	// If the component has layout.bootstrap set, augment $extras with additional
 	// classes and attributes accordingly.
 	protected function calcLayoutClasses($component, $context, $extras) {
-		if (!$component->layout || !$component->layout->bootstrap) {
+		$layout = $component->getLayoutValues();
+		if (!$layout || !isset($layout->bootstrap)) {
 			// nothing to see here
 			return $extras;
 		}
 
-		if ($component->layout->bootstrap->columns) {
-			$cols = $component->layout->bootstrap->columns;
-			$sizes = array('xs', 'sm', 'md', 'lg');
-			foreach ($sizes as $size) {
-				if ($cols->$size) {
+		if (isset($layout->bootstrap->columns)) {
+			$cols = $layout->bootstrap->columns;
+			foreach (self::$sizes as $size) {
+				if (isset($cols->$size)) {
 					$d = $cols->$size;
 					// process a size structure:
 					//	md: {
@@ -72,17 +78,30 @@ class NLBootstrapLayoutManager extends ViewableData implements NLLayoutManager {
 					//		push: 0,
 					//		pull: 0
 					//	}
-					if ($d->width) {
+					if (isset($d->width) && $d->width) {
 						$extras['classes'][] = 'col-' . $size . '-' . $d->width;
 					}
-					if ($d->offset) {
+					if (isset($d->offset) && $d->offset) {
 						$extras['classes'][] = 'col-' . $size . '-offset-' . $d->offset;
 					}
-					if ($d->push) {
+					if (isset($d->push) && $d->push) {
 						$extras['classes'][] = 'col-' . $size . '-push-' . $d->push;
 					}
-					if ($d->pull) {
+					if (isset($d->pull) && $d->pull) {
 						$extras['classes'][] = 'col-' . $size . '-pull-' . $d->pull;
+					}
+				}
+			}
+		}
+
+		if (isset($layout->bootstrap->visibility)) {
+			$vis = $layout->bootstrap->visibility;
+
+			foreach (self::$sizes as $size) {
+				if (isset($vis->$size)) {
+					$v = $vis->$size;
+					if ($v == 'visible' || $v == 'hidden') {
+						$extras['classes'][] = $v . '-' . $size;
 					}
 				}
 			}

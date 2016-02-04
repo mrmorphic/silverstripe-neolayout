@@ -119,6 +119,11 @@ var ComponentStore = assign({}, EventEmitter.prototype, {
         return _components[id];
     },
 
+    // Return a component's parent component, or null if there isn't one.
+    getParent: function(component) {
+        return this.getById(component._parent);
+    },
+
     /**
      * @func getChildren
      * @param {string} id - The id of the parent

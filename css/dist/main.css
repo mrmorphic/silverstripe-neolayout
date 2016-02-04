@@ -224,148 +224,148 @@
   top: 0;
   z-index: 1;
 }
-.NLHorizontalBoxLayout .children-1 .nl-layout-component {
+.NLHorizontalBoxLayout > .children-1 .nl-layout-component {
   display: inline-block;
   margin: 0 1%;
   vertical-align: top;
   width: 100%;
 }
-.NLHorizontalBoxLayout .children-1 .nl-layout-component:first-child {
+.NLHorizontalBoxLayout > .children-1 .nl-layout-component:first-child {
   margin-left: 0;
 }
-.NLHorizontalBoxLayout .children-1 .nl-layout-component:last-child {
+.NLHorizontalBoxLayout > .children-1 .nl-layout-component:last-child {
   margin-right: 0;
 }
-.NLHorizontalBoxLayout .children-2 .nl-layout-component {
+.NLHorizontalBoxLayout > .children-2 .nl-layout-component {
   display: inline-block;
   margin: 0 1%;
   vertical-align: top;
   width: 49%;
 }
-.NLHorizontalBoxLayout .children-2 .nl-layout-component:first-child {
+.NLHorizontalBoxLayout > .children-2 .nl-layout-component:first-child {
   margin-left: 0;
 }
-.NLHorizontalBoxLayout .children-2 .nl-layout-component:last-child {
+.NLHorizontalBoxLayout > .children-2 .nl-layout-component:last-child {
   margin-right: 0;
 }
-.NLHorizontalBoxLayout .children-3 .nl-layout-component {
+.NLHorizontalBoxLayout > .children-3 .nl-layout-component {
   display: inline-block;
   margin: 0 1%;
   vertical-align: top;
   width: 31%;
 }
-.NLHorizontalBoxLayout .children-3 .nl-layout-component:first-child {
+.NLHorizontalBoxLayout > .children-3 .nl-layout-component:first-child {
   margin-left: 0;
 }
-.NLHorizontalBoxLayout .children-3 .nl-layout-component:last-child {
+.NLHorizontalBoxLayout > .children-3 .nl-layout-component:last-child {
   margin-right: 0;
 }
-.NLHorizontalBoxLayout .children-4 .nl-layout-component {
+.NLHorizontalBoxLayout > .children-4 .nl-layout-component {
   display: inline-block;
   margin: 0 1%;
   vertical-align: top;
   width: 22%;
 }
-.NLHorizontalBoxLayout .children-4 .nl-layout-component:first-child {
+.NLHorizontalBoxLayout > .children-4 .nl-layout-component:first-child {
   margin-left: 0;
 }
-.NLHorizontalBoxLayout .children-4 .nl-layout-component:last-child {
+.NLHorizontalBoxLayout > .children-4 .nl-layout-component:last-child {
   margin-right: 0;
 }
-.NLHorizontalBoxLayout .children-5 .nl-layout-component {
+.NLHorizontalBoxLayout > .children-5 .nl-layout-component {
   display: inline-block;
   margin: 0 1%;
   vertical-align: top;
   width: 16%;
 }
-.NLHorizontalBoxLayout .children-5 .nl-layout-component:first-child {
+.NLHorizontalBoxLayout > .children-5 .nl-layout-component:first-child {
   margin-left: 0;
 }
-.NLHorizontalBoxLayout .children-5 .nl-layout-component:last-child {
+.NLHorizontalBoxLayout > .children-5 .nl-layout-component:last-child {
   margin-right: 0;
 }
-.NLHorizontalBoxLayout .children-6 .nl-layout-component {
+.NLHorizontalBoxLayout > .children-6 .nl-layout-component {
   display: inline-block;
   margin: 0 1%;
   vertical-align: top;
   width: 11%;
 }
-.NLHorizontalBoxLayout .children-6 .nl-layout-component:first-child {
+.NLHorizontalBoxLayout > .children-6 .nl-layout-component:first-child {
   margin-left: 0;
 }
-.NLHorizontalBoxLayout .children-6 .nl-layout-component:last-child {
+.NLHorizontalBoxLayout > .children-6 .nl-layout-component:last-child {
   margin-right: 0;
 }
-.NLHorizontalBoxLayout .children-7 .nl-layout-component {
+.NLHorizontalBoxLayout > .children-7 .nl-layout-component {
   display: inline-block;
   margin: 0 1%;
   vertical-align: top;
   width: 8%;
 }
-.NLHorizontalBoxLayout .children-7 .nl-layout-component:first-child {
+.NLHorizontalBoxLayout > .children-7 .nl-layout-component:first-child {
   margin-left: 0;
 }
-.NLHorizontalBoxLayout .children-7 .nl-layout-component:last-child {
+.NLHorizontalBoxLayout > .children-7 .nl-layout-component:last-child {
   margin-right: 0;
 }
-.NLHorizontalBoxLayout .children-8 .nl-layout-component {
+.NLHorizontalBoxLayout > .children-8 .nl-layout-component {
   display: inline-block;
   margin: 0 1%;
   vertical-align: top;
   width: 5%;
 }
-.NLHorizontalBoxLayout .children-8 .nl-layout-component:first-child {
+.NLHorizontalBoxLayout > .children-8 .nl-layout-component:first-child {
   margin-left: 0;
 }
-.NLHorizontalBoxLayout .children-8 .nl-layout-component:last-child {
+.NLHorizontalBoxLayout > .children-8 .nl-layout-component:last-child {
   margin-right: 0;
 }
-.NLHorizontalBoxLayout .children-9 .nl-layout-component {
+.NLHorizontalBoxLayout > .children-9 .nl-layout-component {
   display: inline-block;
   margin: 0 1%;
   vertical-align: top;
   width: 3%;
 }
-.NLHorizontalBoxLayout .children-9 .nl-layout-component:first-child {
+.NLHorizontalBoxLayout > .children-9 .nl-layout-component:first-child {
   margin-left: 0;
 }
-.NLHorizontalBoxLayout .children-9 .nl-layout-component:last-child {
+.NLHorizontalBoxLayout > .children-9 .nl-layout-component:last-child {
   margin-right: 0;
 }
-.NLHorizontalBoxLayout .children-10 .nl-layout-component {
+.NLHorizontalBoxLayout > .children-10 .nl-layout-component {
   display: inline-block;
   margin: 0 1%;
   vertical-align: top;
   width: 1%;
 }
-.NLHorizontalBoxLayout .children-10 .nl-layout-component:first-child {
+.NLHorizontalBoxLayout > .children-10 .nl-layout-component:first-child {
   margin-left: 0;
 }
-.NLHorizontalBoxLayout .children-10 .nl-layout-component:last-child {
+.NLHorizontalBoxLayout > .children-10 .nl-layout-component:last-child {
   margin-right: 0;
 }
-.NLHorizontalBoxLayout .children-11 .nl-layout-component {
+.NLHorizontalBoxLayout > .children-11 .nl-layout-component {
   display: inline-block;
   margin: 0 1%;
   vertical-align: top;
   width: -1%;
 }
-.NLHorizontalBoxLayout .children-11 .nl-layout-component:first-child {
+.NLHorizontalBoxLayout > .children-11 .nl-layout-component:first-child {
   margin-left: 0;
 }
-.NLHorizontalBoxLayout .children-11 .nl-layout-component:last-child {
+.NLHorizontalBoxLayout > .children-11 .nl-layout-component:last-child {
   margin-right: 0;
 }
-.NLHorizontalBoxLayout .children-12 .nl-layout-component {
+.NLHorizontalBoxLayout > .children-12 .nl-layout-component {
   display: inline-block;
   margin: 0 1%;
   vertical-align: top;
   width: -3%;
 }
-.NLHorizontalBoxLayout .children-12 .nl-layout-component:first-child {
+.NLHorizontalBoxLayout > .children-12 .nl-layout-component:first-child {
   margin-left: 0;
 }
-.NLHorizontalBoxLayout .children-12 .nl-layout-component:last-child {
+.NLHorizontalBoxLayout > .children-12 .nl-layout-component:last-child {
   margin-right: 0;
 }
 #neolayout h2 {

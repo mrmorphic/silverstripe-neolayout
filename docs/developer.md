@@ -30,7 +30,7 @@ Layout representation
 
 One of the most important characteristics of this module is the layout representation. A layout is
 a hierarchical data structure of objects. Typically, a layout is persisted by saving it as a JSON
-string, although that is secondary to the structure itself. Notably, this structure is can manipulated
+string, although that is secondary to the structure itself. Notably, this structure is manipulated
 both server side and client side.
 
 (It is intended that there may in the future be additional server-side implementations that use the same
@@ -63,6 +63,17 @@ All other property names are reserved, and there should be no expected behaviour
 property is persisted.
     
 Typically, the top-level component is an NLLayoutContainer.
+
+Things you need to be aware of
+------------------------------
+
+ *  It is possible to build a layout that contains primary content, but this is not generally an intended pattern.
+    Rather, content and other managed information should still be created using DataObjects, with the layout
+    referring to the data structure. Content editors may need to support from you to understand that content should
+    still be edited at the page/data object level.
+ *  If a layout is embedded on a page (as NLEditableLayoutPage does), the layout is versioned with the page. However,
+    if components are defined in the database, which are referred to in components or bound to, changes in these objects
+    may update on live immediately, unless versioning is explicitly managed with these objects.
 
 Requirements
 ============

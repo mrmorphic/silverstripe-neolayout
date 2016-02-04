@@ -20,6 +20,10 @@ var EditorLayoutProperties = React.createClass({
         componentdata: React.PropTypes.object.isRequired
     },
 
+    getInitialState: function() {
+        return LayoutManager.getInitialState(this);
+    },
+
     render: function () {
         var componentMetadata = MetadataStore.getComponentByType(this.props.componentdata.componentType),
             // formRows = this._createFormRows(componentMetadata, this.props.contextMetadata),
@@ -29,7 +33,7 @@ var EditorLayoutProperties = React.createClass({
             c += ' hidden';
         }
 
-        var editor = LayoutManager.getPropertyEditor(this.props.componentdata);
+        var editor = LayoutManager.getPropertyEditor(this);
 
         return (
             <div className={c}>
@@ -39,7 +43,7 @@ var EditorLayoutProperties = React.createClass({
     },
 
     saveChanges: function() {
-
+        LayoutManager.saveLayoutProperties(this);
     },
 
     cancelChanges: function() {

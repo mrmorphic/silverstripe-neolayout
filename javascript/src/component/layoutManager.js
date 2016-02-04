@@ -23,10 +23,21 @@ var LayoutManager = {
         return _layoutManager;
     },
 
-    // Get a property editor to edit a component.
-    getPropertyEditor: function(component) {
+    getInitialState: function(propEditor) {
         var lm = this.getImplementor();
-        return lm.getPropertyEditor(component);
+        return lm.getInitialState(propEditor);
+    },
+
+    // Get a property editor to edit a component. propEditor is a react component that will
+    // contain what this function generates.
+    getPropertyEditor: function(propEditor) {
+        var lm = this.getImplementor();
+        return lm.getPropertyEditor(propEditor);
+    },
+
+    saveLayoutProperties: function(propEditor) {
+        var lm = this.getImplementor();
+        lm.saveStateToComponent(propEditor);
     }
 };
 
