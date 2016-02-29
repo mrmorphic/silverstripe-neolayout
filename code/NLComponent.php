@@ -205,7 +205,7 @@ abstract class NLComponent extends ViewableData {
 	/**
 	 * Shorthand form of getting properties, which comes from metadata structure.
 	 */
-	protected function getProperties() {
+	public function getProperties() {
 		$metadata = $this->getMetadata();
 		return $metadata["properties"];
 	}
