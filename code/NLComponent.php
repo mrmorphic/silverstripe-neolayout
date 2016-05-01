@@ -233,7 +233,7 @@ abstract class NLComponent extends ViewableData {
 	 * @return ViewableData		Maps properties to actual values. Uses NLBindingDefinition to determine where the value
 	 * 							comes from, using context. Tolerant of errors.
 	 */
-	protected function getBindingValues($context) {
+	public function getBindingValues($context) {
 		if (!$this->bindingValues) {
 			// We don't have values, let's get them.
 			$this->bindingValues = new ViewableData();
@@ -323,6 +323,10 @@ abstract class NLComponent extends ViewableData {
 				"ExtraAttrs" => $attrs
 			))
 		)->renderWith("NLComponentContainment");
+	}
+
+	public function getChildren() {
+		return $this->children;
 	}
 
 	/**

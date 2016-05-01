@@ -281,7 +281,7 @@ class NLView extends Controller {
 	 * Return the top-level layout component for this view.
 	 * This assumes that the construction of the view always has a layout component at the root.
 	 */
-	protected function getLayout() {
+	public function getLayout() {
 		if (!$this->layout) {
 			// get the view definition. We give it the raw component hierarchy and let
 			// the factory component sort out what classes are actually required.
