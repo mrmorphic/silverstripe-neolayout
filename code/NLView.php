@@ -21,19 +21,10 @@ class NLView extends Controller {
 	protected $context;
 	protected $layoutManager;
 
-	static $default_view_contents_proper =
+	static $default_view_contents =
 		'{
 			"ClassName": "NLLayoutContainer",
 			"children": [
-				{
-					"ClassName": "NLTextComponent",
-					"bindings": {
-						"Text": {
-							"type": "embedded",
-							"value": "<br/><br/>This page has yet to have some content defined.<br/><br/><br/>"
-						}
-					}
-				}
 			],
 			"bindings": {
 			}
@@ -88,7 +79,7 @@ class NLView extends Controller {
 		}';
 
 	// This should really be in the test suite.
-	static $default_view_contents =
+	static $default_view_contents_alt2 =
 		'{
 			"ClassName": "NLLayoutContainer",
 			"children": [
@@ -290,7 +281,7 @@ class NLView extends Controller {
 	 * Return the top-level layout component for this view.
 	 * This assumes that the construction of the view always has a layout component at the root.
 	 */
-	protected function getLayout() {
+	public function getLayout() {
 		if (!$this->layout) {
 			// get the view definition. We give it the raw component hierarchy and let
 			// the factory component sort out what classes are actually required.
@@ -330,6 +321,7 @@ class NLView extends Controller {
 		$subclasses = ClassInfo::subclassesFor("NLComponent");
 
 		// Remove abstracts
+		// @todo do this programmatically
 		unset($subclasses["NLComponent"]);
 		unset($subclasses["NLLayoutComponent"]);
 
